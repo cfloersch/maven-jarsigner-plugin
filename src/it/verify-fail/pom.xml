@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.apache.maven.its.jarsigner</groupId>
+  <artifactId>test</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+
+  <description>
+    Tests that verification of a tampared JAR fails.
+  </description>
+
+  <properties>
+    <maven.test.skip>true</maven.test.skip>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.2</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.3.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.xpertss.maven.plugins</groupId>
+        <artifactId>jarsigner-maven-plugin</artifactId>
+        <version>@project.version@</version>
+        <configuration>
+          <archive>tampered.jar</archive>
+<!-- 
+The tampered.jar is a jar file that originally was correctly signed, but then was "tampered with"
+by truncating the Main.class file. It was built with these commands:
+
+keytool -genkeypair -v \
+  -keystore codesignkeystore.jks \
+  -keyalg RSA \
+  -keysize 2048 \
+  -alias codesignkey \
+  -dname "C=US, O=ExampleOrg, ST=Washington, L=Seattle, OU=None, CN=www.example.com" \
+  -storepass password1234 \
+  -keypass password1234 \
+  -validity 18250
+
+echo 'public class Main { public static void main(String[] args) { System.out.println("Hello, World!"); } }' > Main.java
+javac Main.java
+jar cfe tampered.jar Main Main.class
+jarsigner -keystore codesignkeystore.jks -storepass password1234 -keypass password1234 tampered.jar codesignkey
+
+unzip tampered.jar -d tmp_jar_directory
+rm tampered.jar
+rm tmp_jar_directory/Main.class
+touch tmp_jar_directory/Main.class
+
+(cd tmp_jar_directory && zip -r ../tampered.jar .)
+
+-->
+        </configuration>
+        <executions>
+          <execution>
+            <id>verify-archive</id>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

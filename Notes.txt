@@ -1,0 +1,8 @@
+So the current maven-jarsigner-plugin operates by invoking the command line jarsigner.
+  I want to create a new one that operates by calling the methods in the main.class
+  associated with the jarsigner in the SUN code base. I will probably extract the
+  methods and objectize things a bit so I don't have to deal with all of the MAIN
+  argument parsing (nor the hundreds of variants).
+  
+  In my case the AWS KMS JCE Provider will already be part of the process and the
+  dependency set. Maybe Bouncy Castle too??
