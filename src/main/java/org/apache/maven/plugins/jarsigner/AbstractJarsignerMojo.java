@@ -3,14 +3,13 @@ package org.apache.maven.plugins.jarsigner;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
@@ -202,6 +201,9 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
 
+    @Parameter(defaultValue = "${plugin.artifactMap}", readonly = true, required = true)
+    private Map<String,Artifact> pluginArtifactMap;
+
     /**
      * The Maven settings.
      *
@@ -262,6 +264,51 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
             getLog().info("Toolchain in maven-jarsigner-plugin: " + toolchain);
             jarSigner.setToolchain(toolchain);
         }
+
+
+
+        try {
+
+            String artifacts = pluginArtifactMap.entrySet().stream()
+                    .filter(entry -> entry.getValue().getScope().equalsIgnoreCase("runtime"))
+                    .map(entry -> entry.getValue().getFile().getAbsolutePath())
+                    .collect(Collectors.joining(System.getProperty("path.separator")));
+
+
+            getLog().info("Plugin Classpath: " + artifacts);
+
+
+
+
+            List<String> classpathElements = project.getCompileClasspathElements();
+            String classpath = classpathElements.stream()
+                    .collect(Collectors.joining(System.getProperty("path.separator")));
+            getLog().info("Classpath: " + classpath);
+
+            List<String> runtimeElements = project.getRuntimeClasspathElements();
+            String runtime = runtimeElements.stream()
+                    .collect(Collectors.joining(System.getProperty("path.separator")));
+            getLog().info("Runtime: " + runtime);
+
+
+
+            /*
+            Set<Artifact> artifacts = project.getPluginArtifacts();
+            String classpath2 = artifacts.stream()
+                    .map(artifact -> artifact.getFile().getAbsolutePath())
+                    .collect(Collectors.joining(System.getProperty("path.separator")));
+            getLog().info("Plugin Classpath: " + classpath2);
+             */
+
+        } catch (Exception e) {
+            getLog().warn("Failed to obtain classpath", e);
+        }
+
+
+
+
+
+
 
         List<File> archives = findJarfiles();
         processArchives(archives);

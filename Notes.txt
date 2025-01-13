@@ -6,3 +6,79 @@ So the current maven-jarsigner-plugin operates by invoking the command line jars
   
   In my case the AWS KMS JCE Provider will already be part of the process and the
   dependency set. Maybe Bouncy Castle too??
+
+  In the above case if I merge the Main class into this module then I do not need
+  tools.jar to be in the classpath. Otherwise, I do.
+
+  An alternative might be to simply construct the appropriate classpath and pass
+  it to the existing jarsigner along with the -J-cp argument.
+
+
+  So there is a special PluginClassLoader which extends the Project class loader.
+  All of the dependencies defined by the Plugin are by default within this class
+  loader and can be extended as an example:
+
+       <plugin>
+         <groupId>org.apache.maven.plugins</groupId>
+         <artifactId>maven-antrun-plugin</artifactId>
+         <version>1.3</version>
+         <dependencies>
+           <dependency>
+             <groupId>org.apache.ant</groupId>
+             <artifactId>ant-nodeps</artifactId>
+             <version>1.7.1</version>
+           </dependency>
+         </dependencies>
+         ...
+       </plugin>
+
+  Plugins can inspect their effective runtime class path via the expressions
+  ${plugin.artifacts} or ${plugin.artifactMap} to have a list or map, respectively,
+  of resolved artifacts injected from the PluginDescriptor.
+
+  https://maven.apache.org/guides/mini/guide-maven-classloading.html#Plugin_Classloaders
+
+
+
+  Create an integration test to explicitly test the use case where the
+  jar signer plugin has the following code added to it's definition
+
+
+
+      <plugin>
+        <groupId>org.xpertss.maven.plugins</groupId>
+        <artifactId>jarsigner-maven-plugin</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.xpertss</groupId>
+            <artifactId>aws-kms</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>runtime</scope>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <alias>AWS-KMS-KEY-ALIAS</alias>
+          <storetype>KMS</storetype>
+          <keystore>NONE</keystore>
+          <providerClass>xpertss.crypto.kms.provider.KmsProvider</providerClass>
+          <certchain>kms-rsa4096-certchain.pem</certchain>
+          <sigfile>TESTING</sigfile>
+          <processMainArtifact>false</processMainArtifact>
+          <archiveDirectory>target/classes/jars</archiveDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>sign-jars</id>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify-jars</id>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
