@@ -36,6 +36,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.plugins.jarsigner.TsaSelector.TsaServer;
 import org.apache.maven.shared.jarsigner.JarSigner;
 import org.apache.maven.shared.jarsigner.JarSignerRequest;
@@ -54,7 +55,7 @@ import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
  * @author <a href="cs@schulte.it">Christian Schulte</a>
  * @since 1.0
  */
-@Mojo(name = "sign", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true)
+@Mojo(name = "sign", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true, requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME)
 public class JarsignerSignMojo extends AbstractJarsignerMojo {
 
     /**
@@ -362,6 +363,7 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
     @Override
     protected void executeJarSigner(JarSigner jarSigner, JarSignerRequest request)
             throws JavaToolException, MojoExecutionException {
+
         for (int attempt = 0; attempt < maxTries; attempt++) {
             JavaToolResult result = jarSigner.execute(request);
             int resultCode = result.getExitCode();
