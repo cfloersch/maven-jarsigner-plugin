@@ -18,8 +18,9 @@
  */
 package org.apache.maven.plugins.jarsigner;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -29,20 +30,20 @@ import java.util.Map;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.shared.jarsigner.JarSigner;
-import org.apache.maven.shared.jarsigner.JarSignerSignRequest;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.apache.maven.jarsigner.JarSigner;
+import org.apache.maven.jarsigner.JarSignerSignRequest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.ArgumentCaptor;
 
 import static org.apache.maven.plugins.jarsigner.TestJavaToolResults.RESULT_ERROR;
 import static org.apache.maven.plugins.jarsigner.TestJavaToolResults.RESULT_OK;
-import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.everyItem;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.Mockito.mock;
@@ -51,23 +52,22 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class JarsignerSignMojoTsaTest {
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
 
     private Locale originalLocale;
     private MavenProject project = mock(MavenProject.class);
     private JarSigner jarSigner = mock(JarSigner.class);
 
-    private File projectDir;
+    private Path projectDir;
     private Map<String, String> configuration = new LinkedHashMap<>();
     private Log log;
     private MojoTestCreator<JarsignerSignMojo> mojoTestCreator;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    public void setUp(@TempDir Path tempDir) throws Exception {
         originalLocale = Locale.getDefault();
         Locale.setDefault(Locale.ENGLISH); // For English ResourceBundle to test log messages
-        projectDir = folder.newFolder("dummy-project");
+        assertTrue(Files.exists(tempDir));
+        projectDir = tempDir;
         mojoTestCreator =
                 new MojoTestCreator<JarsignerSignMojo>(JarsignerSignMojo.class, project, projectDir, jarSigner);
         log = mock(Log.class);
@@ -76,7 +76,7 @@ public class JarsignerSignMojoTsaTest {
         when(project.getArtifact()).thenReturn(mainArtifact);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         Locale.setDefault(originalLocale);
     }
@@ -84,7 +84,7 @@ public class JarsignerSignMojoTsaTest {
     @Test
     public void testAllTsaParameters() throws Exception {
         when(jarSigner.execute(any(JarSignerSignRequest.class))).thenReturn(RESULT_OK);
-        configuration.put("archiveDirectory", createArchives(2).getPath());
+        configuration.put("archiveDirectory", createArchives(2).toString());
         configuration.put("tsa", "http://my-timestamp.server.com");
         configuration.put("tsacert", "mytsacertalias"); // Normally you would not set both "tsacert alias" and "tsa url"
         configuration.put("tsapolicyid", "0.1.2.3.4");
@@ -197,11 +197,11 @@ public class JarsignerSignMojoTsaTest {
         verify(log).warn(contains("2 TSA certificate aliases specified. Only first"));
     }
 
-    private File createArchives(int numberOfArchives) throws IOException {
-        File archiveDirectory = new File(projectDir, "my_archive_dir");
-        archiveDirectory.mkdir();
+    private Path createArchives(int numberOfArchives) throws IOException {
+        Path archiveDirectory = projectDir.resolve("my_archive_dir");
+        Files.createDirectories(archiveDirectory);
         for (int i = 0; i < numberOfArchives; i++) {
-            TestArtifacts.createDummyZipFile(new File(archiveDirectory, "archive" + i + ".jar"));
+            TestArtifacts.createDummyZipFile(archiveDirectory.resolve("archive" + i + ".jar"));
         }
         return archiveDirectory;
     }

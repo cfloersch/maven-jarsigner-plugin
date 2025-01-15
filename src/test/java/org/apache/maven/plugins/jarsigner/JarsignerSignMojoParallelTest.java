@@ -18,8 +18,9 @@
  */
 package org.apache.maven.plugins.jarsigner;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -34,39 +35,40 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.shared.jarsigner.JarSigner;
-import org.apache.maven.shared.jarsigner.JarSignerSignRequest;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.apache.maven.jarsigner.JarSigner;
+import org.apache.maven.jarsigner.JarSignerSignRequest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.apache.maven.plugins.jarsigner.TestJavaToolResults.RESULT_ERROR;
 import static org.apache.maven.plugins.jarsigner.TestJavaToolResults.RESULT_OK;
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
 
 public class JarsignerSignMojoParallelTest {
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
 
     private MavenProject project = mock(MavenProject.class);
     private JarSigner jarSigner = mock(JarSigner.class);
-    private File projectDir;
+    private Path projectDir;
     private Map<String, String> configuration = new LinkedHashMap<>();
     private MojoTestCreator<JarsignerSignMojo> mojoTestCreator;
     private ExecutorService executor;
     private Log log;
 
-    @Before
-    public void setUp() throws Exception {
-        projectDir = folder.newFolder("dummy-project");
+    @BeforeEach
+    public void setUp(@TempDir Path tempDir) throws Exception {
+        assertTrue(Files.exists(tempDir));
+        projectDir = tempDir;
+
+
         configuration.put("processMainArtifact", "false");
         mojoTestCreator =
                 new MojoTestCreator<JarsignerSignMojo>(JarsignerSignMojo.class, project, projectDir, jarSigner);
@@ -76,14 +78,15 @@ public class JarsignerSignMojoParallelTest {
                 Executors.newSingleThreadExecutor(namedThreadFactory(getClass().getSimpleName()));
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         executor.shutdown();
     }
 
-    @Test(timeout = 30000)
+    @Test()
+    @Timeout(30)
     public void test10Files2Parallel() throws Exception {
-        configuration.put("archiveDirectory", createArchives(10).getPath());
+        configuration.put("archiveDirectory", createArchives(10).toString());
         configuration.put("threadCount", "2");
 
         // Make one jar file wait until some external event happens and let nine pass
@@ -109,9 +112,10 @@ public class JarsignerSignMojoParallelTest {
         assertTrue(future.isDone());
     }
 
-    @Test(timeout = 30000)
+    @Test()
+    @Timeout(30)
     public void test10Files2Parallel3Hanging() throws Exception {
-        configuration.put("archiveDirectory", createArchives(10).getPath());
+        configuration.put("archiveDirectory", createArchives(10).toString());
         configuration.put("threadCount", "2");
 
         // Make three jar files wait until some external event happens and let seven pass
@@ -141,9 +145,10 @@ public class JarsignerSignMojoParallelTest {
         assertTrue(future.isDone());
     }
 
-    @Test(timeout = 30000)
+    @Test()
+    @Timeout(30)
     public void test10Files1Parallel() throws Exception {
-        configuration.put("archiveDirectory", createArchives(10).getPath());
+        configuration.put("archiveDirectory", createArchives(10).toString());
         configuration.put("threadCount", "1");
 
         // Make one jar file wait until some external event happens and let nine pass
@@ -168,9 +173,10 @@ public class JarsignerSignMojoParallelTest {
         assertTrue(future.isDone());
     }
 
-    @Test(timeout = 30000)
+    @Test()
+    @Timeout(30)
     public void test10Files2ParallelOneFail() throws Exception {
-        configuration.put("archiveDirectory", createArchives(10).getPath());
+        configuration.put("archiveDirectory", createArchives(10).toString());
         configuration.put("threadCount", "2");
 
         when(jarSigner.execute(isA(JarSignerSignRequest.class)))
@@ -203,11 +209,12 @@ public class JarsignerSignMojoParallelTest {
         verify(log).warn(contains("Was '0'"));
     }
 
-    private File createArchives(int numberOfArchives) throws IOException {
-        File archiveDirectory = new File(projectDir, "my_archive_dir");
-        archiveDirectory.mkdir();
+    private Path createArchives(int numberOfArchives) throws IOException {
+        Path archiveDirectory = projectDir.resolve("my_archive_dir");
+        Files.createDirectories(archiveDirectory);
         for (int i = 0; i < numberOfArchives; i++) {
-            TestArtifacts.createDummyZipFile(new File(archiveDirectory, "archive" + i + ".jar"));
+            Path file = archiveDirectory.resolve("archive" + i + ".jar");
+            TestArtifacts.createDummyZipFile(file);
         }
         return archiveDirectory;
     }

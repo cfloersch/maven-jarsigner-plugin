@@ -61,6 +61,14 @@ under the License.
         <groupId>org.xpertss.maven.plugins</groupId>
         <artifactId>jarsigner-maven-plugin</artifactId>
         <version>@project.version@</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.xpertss</groupId>
+            <artifactId>aws-kms</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>runtime</scope>
+          </dependency>
+        </dependencies>
         <configuration>
           <alias>test-01</alias>
           <keypass>key-passwd</keypass>

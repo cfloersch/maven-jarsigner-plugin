@@ -18,10 +18,10 @@
  */
 package org.apache.maven.plugins.jarsigner;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -38,41 +38,41 @@ class TestArtifacts {
     static final String TEST_TYPE = "jar";
     static final String TEST_CLASSIFIER = "";
 
-    static Artifact createArtifact(File file) throws IOException {
+    static Artifact createArtifact(Path file) throws IOException {
         return createArtifact(file, TEST_TYPE, TEST_CLASSIFIER);
     }
 
-    static Artifact createArtifact(File file, String type, String classifier) throws IOException {
+    static Artifact createArtifact(Path file, String type, String classifier) throws IOException {
         Artifact artifact = new DefaultArtifact(
                 TEST_GROUPID, TEST_ARTIFACTID, TEST_VERSION, Artifact.SCOPE_COMPILE, type, classifier, null);
-        artifact.setFile(file);
+        artifact.setFile(file.toFile());
         return artifact;
     }
 
-    static Artifact createJarArtifact(File directory, String filename) throws IOException {
+    static Artifact createJarArtifact(Path directory, String filename) throws IOException {
         return createJarArtifact(directory, filename, TEST_CLASSIFIER);
     }
 
-    public static Artifact createJarArtifact(File directory, String filename, String classifier) throws IOException {
+    public static Artifact createJarArtifact(Path directory, String filename, String classifier) throws IOException {
         return createJarArtifact(directory, filename, classifier, TEST_TYPE);
     }
 
-    public static Artifact createJarArtifact(File directory, String filename, String classifier, String type)
+    public static Artifact createJarArtifact(Path directory, String filename, String classifier, String type)
             throws IOException {
-        File file = new File(directory, filename);
+        Path file = directory.resolve(filename);
         createDummyZipFile(file);
         return createArtifact(file, type, classifier);
     }
 
-    static Artifact createPomArtifact(File directory, String filename) throws IOException {
-        File file = new File(directory, filename);
+    static Artifact createPomArtifact(Path directory, String filename) throws IOException {
+        Path file = directory.resolve(filename);
         createDummyXMLFile(file);
         return createArtifact(file, TEST_TYPE, "");
     }
 
     /** Create a dummy JAR/ZIP file, enough to pass ZipInputStream.getNextEntry() */
-    static File createDummyZipFile(File zipFile) throws IOException {
-        try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFile))) {
+    static Path createDummyZipFile(Path zipFile) throws IOException {
+        try (ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(zipFile, StandardOpenOption.CREATE_NEW))) {
             ZipEntry entry = new ZipEntry("dummy-entry.txt");
             zipOutputStream.putNextEntry(entry);
         }
@@ -80,8 +80,8 @@ class TestArtifacts {
     }
 
     /** Create a dummy signed JAR, enough to pass JarSignerUtil.isArchiveSigned() */
-    static File createDummySignedJarFile(File jarFile) throws IOException {
-        try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(jarFile))) {
+    static Path createDummySignedJarFile(Path jarFile) throws IOException {
+        try (ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(jarFile, StandardOpenOption.CREATE_NEW))) {
             ZipEntry entry = new ZipEntry("dummy-entry.txt");
             zipOutputStream.putNextEntry(entry);
             zipOutputStream.putNextEntry(new ZipEntry("META-INF/dummy.RSA"));
@@ -91,8 +91,8 @@ class TestArtifacts {
     }
 
     /** Create a dummy XML file, for example to simulate a pom.xml file */
-    static File createDummyXMLFile(File xmlFile) throws IOException {
-        Files.write(xmlFile.toPath(), "<project/>".getBytes());
+    static Path createDummyXMLFile(Path xmlFile) throws IOException {
+        Files.write(xmlFile, "<project/>".getBytes());
         return xmlFile;
     }
 }

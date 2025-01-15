@@ -21,17 +21,17 @@ package org.apache.maven.plugins.jarsigner;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.shared.jarsigner.JarSigner;
-import org.apache.maven.shared.jarsigner.JarSignerRequest;
-import org.apache.maven.shared.jarsigner.JarSignerUtil;
-import org.apache.maven.shared.jarsigner.JarSignerVerifyRequest;
+import org.apache.maven.jarsigner.JarSigner;
+import org.apache.maven.jarsigner.JarSignerRequest;
+import org.apache.maven.jarsigner.JarSignerUtil;
+import org.apache.maven.jarsigner.JarSignerVerifyRequest;
 import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
 import org.apache.maven.shared.utils.cli.javatool.JavaToolResult;
 import org.apache.maven.toolchain.ToolchainManager;
@@ -80,14 +80,14 @@ public class JarsignerVerifyMojo extends AbstractJarsignerMojo {
      * {@inheritDoc}
      */
     @Override
-    protected JarSignerRequest createRequest(File archive) {
+    protected JarSignerRequest createRequest(Path archive) {
         JarSignerVerifyRequest request = new JarSignerVerifyRequest();
         request.setCerts(certs);
         return request;
     }
 
     @Override
-    protected void preProcessArchive(File archive) throws MojoExecutionException {
+    protected void preProcessArchive(Path archive) throws MojoExecutionException {
         super.preProcessArchive(archive);
 
         if (errorWhenNotSigned) {

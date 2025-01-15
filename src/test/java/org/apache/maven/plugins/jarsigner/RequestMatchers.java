@@ -22,10 +22,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-import org.apache.maven.shared.jarsigner.AbstractJarSignerRequest;
-import org.apache.maven.shared.jarsigner.JarSignerSignRequest;
+import org.apache.maven.jarsigner.AbstractJarSignerRequest;
+import org.apache.maven.jarsigner.JarSignerSignRequest;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
+
 
 /**
  * Hamcrest matcher(s) to match properties on a JarSignerRequest request instances
@@ -92,7 +93,7 @@ class RequestMatchers {
         return new AbstractJarSignerRequestMatcher<T>(
                 "has archive file name ",
                 expectedFileName,
-                request -> request.getArchive().getPath().endsWith(expectedFileName));
+                request -> request.getArchive().toString().endsWith(expectedFileName));
     }
 
     static <T extends AbstractJarSignerRequest> TypeSafeMatcher<T> hasAlias(String alias) {
@@ -113,8 +114,9 @@ class RequestMatchers {
     }
 
     static <T extends AbstractJarSignerRequest> TypeSafeMatcher<T> hasKeystore(String keystore) {
-        return new AbstractJarSignerRequestMatcher<T>(
-                "has keystore ", keystore, request -> request.getKeystore().equals(keystore));
+        return new AbstractJarSignerRequestMatcher<T>("has keystore ", keystore, request -> request.getKeystore()
+                .getPath()
+                .equals(keystore));
     }
 
     static <T extends AbstractJarSignerRequest> TypeSafeMatcher<T> hasMaxMemory(String maxMemory) {

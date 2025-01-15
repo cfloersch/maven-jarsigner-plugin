@@ -20,6 +20,7 @@ package org.apache.maven.plugins.jarsigner;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +32,7 @@ import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.jarsigner.JarsignerSignMojo.WaitStrategy;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.shared.jarsigner.JarSigner;
+import org.apache.maven.jarsigner.JarSigner;
 import org.apache.maven.toolchain.ToolchainManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +49,7 @@ public class MojoTestCreator<T extends AbstractJarsignerMojo> {
 
     private final Class<T> clazz;
     private final MavenProject project;
-    private final File projectDir;
+    private final Path projectDir;
     private final JarSigner jarSigner;
     private ToolchainManager toolchainManager;
     private SecDispatcher securityDispatcher;
@@ -56,7 +57,7 @@ public class MojoTestCreator<T extends AbstractJarsignerMojo> {
     private Log log;
     private List<Field> fields;
 
-    public MojoTestCreator(Class<T> clazz, MavenProject project, File projectDir, JarSigner jarSigner)
+    public MojoTestCreator(Class<T> clazz, MavenProject project, Path projectDir, JarSigner jarSigner)
             throws Exception {
         this.clazz = clazz;
         this.project = project;
@@ -168,7 +169,7 @@ public class MojoTestCreator<T extends AbstractJarsignerMojo> {
 
     private String substituteParameterValueVariables(String parameterValue) {
         parameterValue = parameterValue.replaceAll(
-                Pattern.quote("${project.basedir}"), Matcher.quoteReplacement(projectDir.getPath()));
+                Pattern.quote("${project.basedir}"), Matcher.quoteReplacement(projectDir.toString()));
         return parameterValue;
     }
 

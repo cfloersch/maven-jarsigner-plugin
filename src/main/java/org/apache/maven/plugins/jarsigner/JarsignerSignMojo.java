@@ -23,6 +23,7 @@ import javax.inject.Named;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -38,10 +39,10 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.plugins.jarsigner.TsaSelector.TsaServer;
-import org.apache.maven.shared.jarsigner.JarSigner;
-import org.apache.maven.shared.jarsigner.JarSignerRequest;
-import org.apache.maven.shared.jarsigner.JarSignerSignRequest;
-import org.apache.maven.shared.jarsigner.JarSignerUtil;
+import org.apache.maven.jarsigner.JarSigner;
+import org.apache.maven.jarsigner.JarSignerRequest;
+import org.apache.maven.jarsigner.JarSignerSignRequest;
+import org.apache.maven.jarsigner.JarSignerUtil;
 import org.apache.maven.shared.utils.StringUtils;
 import org.apache.maven.shared.utils.cli.Commandline;
 import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
@@ -256,7 +257,7 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
     }
 
     @Override
-    protected void preProcessArchive(final File archive) throws MojoExecutionException {
+    protected void preProcessArchive(final Path archive) throws MojoExecutionException {
         if (removeExistingSignatures) {
             try {
                 JarSignerUtil.unsignArchive(archive);
@@ -304,7 +305,7 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
      * {@inheritDoc}
      */
     @Override
-    protected JarSignerRequest createRequest(File archive) throws MojoExecutionException {
+    protected JarSignerRequest createRequest(Path archive) throws MojoExecutionException {
         JarSignerSignRequest request = new JarSignerSignRequest();
         request.setSigfile(sigfile);
         updateJarSignerRequestWithTsa(request, tsaSelector.getServer());
@@ -327,7 +328,7 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
      * {@inheritDoc} Processing of files may be parallelized for increased performance.
      */
     @Override
-    protected void processArchives(List<File> archives) throws MojoExecutionException {
+    protected void processArchives(List<Path> archives) throws MojoExecutionException {
         ExecutorService executor = Executors.newFixedThreadPool(threadCount);
         List<Future<Void>> futures = archives.stream()
                 .map(file -> executor.submit((Callable<Void>) () -> {
