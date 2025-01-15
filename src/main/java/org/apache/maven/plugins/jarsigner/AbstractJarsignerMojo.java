@@ -464,13 +464,14 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
                     .map(entry -> entry.getFile().getAbsolutePath())
                     .collect(Collectors.joining(File.pathSeparator));
 
-            String toolsJar = Paths.get(System.getProperty("java.home"),
-                            "../lib/tools.jar")
-                    .normalize().toString();
+            if(!classpath.isEmpty()) {
+                String toolsJar = Paths.get(System.getProperty("java.home"),
+                                    "../lib/tools.jar")
+                                    .normalize().toString();
 
-            classpath = String.join(File.pathSeparator, toolsJar, classpath);
-            getLog().debug("Plugin Classpath: " + classpath);
-            request.setClasspath(classpath);
+                classpath = String.join(File.pathSeparator, toolsJar, classpath);
+                request.setClasspath(classpath);
+            }
         }
 
         // Preserves 'file.encoding' the plugin is executed with.
