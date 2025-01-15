@@ -16,6 +16,7 @@ To include external Providers you will need to do something like the following:
         <groupId>org.xpertss</groupId>
         <artifactId>aws-kms</artifactId>
         <version>1.0.0</version>
+        <scope>runtime</scope>
       </dependency>
     </dependencies>
     <configuration>
