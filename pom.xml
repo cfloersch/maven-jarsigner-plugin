@@ -22,7 +22,7 @@
       <javaVersion>8</javaVersion>
       <maven.compiler.source>${javaVersion}</maven.compiler.source>
       <maven.compiler.target>${javaVersion}</maven.compiler.target>
-      <mavenVersion>3.8.1</mavenVersion>
+      <mavenVersion>3.8.8</mavenVersion>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
    </properties>
 
