@@ -82,3 +82,90 @@ So the current maven-jarsigner-plugin operates by invoking the command line jars
           </execution>
         </executions>
       </plugin>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Maybe we should create an IdentityProvider/Builder that takes the various keystore parameters (and alias) and wraps them into a
+mechanism to load keys/certs and to validate those certs including any sort of TrustStore. An alternative name might be Signer.
+(keystore is /keystore in $user.home if not specified. Use NONE to indicate the actual file.
+
+
+Identity class has getCertificate(), getCertificateChain(), getPrivateKey(), and getName() methods.
+
+
+I’d like to have a trust store parameter that allows me to specify what trusted key store to use. If unset we default to the standard java trusted keystore. Otherwise, we use the one specified as a file Path.
+
+
+What sort of certificate validation do we really want on signing? There is validating that the certificate allows codesigning (key usage, extended key usage).. And then there is the CertPath Trust model (PKIX). Do we do both or just the former? The later seems more relevant to verify than sign.
+
+By default jarsigner treats certificate validation errors as warnings, unless -strict is used at which point they are errors.
+
+
+Signing Cert appears to be part of the SignatuereBlock???
+
+
+Apparently, verify really only verifies that the contents of the JAR have no been changed from when it was signed. It does NOT (unless -strict is specified) fail because it there is an issue with the signing cert (key usage or trust). It also does not be default error on unsigned entries in the
+
+
+I don’t have any interest in supporting the older Netscape X509 extensions like the default jarsigner does.
+
+
+On verify (if strict) it will error if jar is not signed by the specified key. Equivalent to certificate pinning.
+
+
+
+I can create SignatureFile and SignatureBlock to represent the two files added to the JAR as part of signing.. Likewise, it should be capable of reading and verifying.
+
+Also should have some sort of TSA Impl. Maybe both to track the params but also to perform the work. The jarsigner uses a subclass called Signer (or altsigner) which performs the work. It is currently deprecated but I am might try a similar approach in my impl.
+
+
+Options Specific to Either Sign or Verify
+•	-storepass, -keypass -keystore -storetype, -certchain , -verbose and Alias
+
+
+Options specific to SignJar
+•	-sigfile, -sigalg, -digestalg, -signedjar
+
+Options specific to Verify
+•	-certs, -strict, -verbose
+
+Options built around Providers (possibly both verify and sign).. ProviderClass may just add to Security system, while providerArg is passed to each algorithm load
+•	-providerClass, -providerName, -providerArg
+
+TSA Options (predominately signing)
+•	-tsa, -tsapolicyid, -tsacert
+
+Runtime Options (protected means nothing in a maven context)
+•	-strict, -verbose, -protected
+
+New Options I’d like to add (java default cacerts file as an example)
+•	-truststore
+
+
+
+Verification
+https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#CCHDAJHB
+
+
+
+
+
+
+
+

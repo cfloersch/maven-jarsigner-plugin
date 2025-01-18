@@ -56,6 +56,13 @@ public class JarSigner {
     private JarSigner(Builder builder)
     {
         this.tsa = builder.tsa;
+        this.digest = builder.digest;
+        this.signature = builder.signature;
+        this.certPath = builder.certPath;
+        this.privateKey = builder.privateKey;
+        this.signerName = builder.signerName;
+        this.tsaPolicyId = builder.tsaPolicyId;
+        this.tsaDigestAlgorithm = builder.tsaDigestAlgorithm;
     }
 
     public String getDigestAlgorithm()
@@ -99,6 +106,13 @@ public class JarSigner {
         private URI tsa;
         private String tsaPolicyId;
         private String tsaDigestAlgorithm;
+
+        public Builder(Identity identity)
+        {
+            this.signerName = identity.getName();
+            this.privateKey = identity.getPrivateKey();
+            this.certPath = identity.getCertificatePath();
+        }
 
         public Builder(PrivateKey privateKey, CertPath certPath)
         {

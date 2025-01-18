@@ -1,0 +1,283 @@
+package org.xpertss.jarsigner;
+
+
+
+import org.junit.jupiter.api.Test;
+
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Paths;
+import java.security.KeyStore;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableEntryException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertPathValidatorException;
+import java.security.cert.X509Certificate;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+/*
+ * Copyright 2025 XpertSoftware
+ *
+ * Created By: cfloersch
+ * Date: 1/17/2025
+ */
+public class IdentityBuilderTest {
+
+   @Test
+   public void testKeyStoreNonePath()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      builder.keyStore(Paths.get("NONE"));
+   }
+
+   @Test
+   public void testKeyStorePath()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      builder.keyStore(Paths.get("src", "test", "keystore"));
+   }
+
+   @Test
+   public void testKeyStoreClearPath()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      builder.keyStore(null);
+   }
+
+   @Test
+   public void testKeyStoreDoesNotExistPath()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      assertThrows(NoSuchFileException.class, ()->{
+         builder.keyStore(Paths.get("does", "not", "exist"));
+      });
+   }
+
+   @Test
+   public void testKeyStoreTypeWithExistingProvider()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      builder.storeType(null, "SUN");
+   }
+
+   @Test
+   public void testKeyStoreTypeWithNonExistingProvider()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      assertThrows(NoSuchProviderException.class, ()->{
+         builder.storeType(null, "MISSING");
+      });
+   }
+
+
+
+   @Test
+   public void testTrustStorePath()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      builder.trustStore(Paths.get("src", "test", "truststore"));
+   }
+
+   @Test
+   public void testTrustStoreNONEPath()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      assertThrows(NoSuchFileException.class, ()->{
+         builder.trustStore(Paths.get("NONE"));
+      });
+   }
+
+   @Test
+   public void testTrustStoreClearPath()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      builder.trustStore(null);
+   }
+
+   @Test
+   public void testTrustStoreDoesNotExistPath()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      assertThrows(NoSuchFileException.class, ()->{
+         builder.trustStore(Paths.get("does", "not", "exist"));
+      });
+   }
+
+
+
+   @Test
+   public void testFullKeyLoadNotStrict()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      Identity identity = builder
+                     .keyStore(Paths.get("src", "test", "keystore"))
+                     .storeType("JKS")
+                     .storePass(password("changeit"))
+                     .keyPass(password("key-passwd"))
+                     .alias("foo_alias")
+                     .build();
+      assertNotNull(identity);
+      assertEquals("foo_alias", identity.getName());
+      assertEquals("DSA", identity.getPrivateKey().getAlgorithm());
+      assertEquals(1, identity.getCertificatePath().getCertificates().size());
+
+
+      assertThat(identity.getCertificate(), instanceOf(X509Certificate.class));
+      X509Certificate x509 = (X509Certificate)identity.getCertificate();
+      assertEquals("CN=Olivier Lamy, OU=ASF, O=Apache, L=Marolles en Hurepoix, ST=Unknown, C=FR",
+                     x509.getSubjectDN().getName());
+      assertEquals(x509.getSubjectDN(), x509.getIssuerDN());
+   }
+
+
+   @Test
+   public void testBuildMissingStorePassword()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      assertThrows(UnrecoverableKeyException.class, ()-> {
+         builder.keyStore(Paths.get("src", "test", "keystore")).storeType("JKS").storePass(password("changeit")).alias("foo_alias").build();
+      });
+   }
+
+
+   @Test
+   public void testBuildMissingKeyPassword()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      assertThrows(UnrecoverableEntryException.class, ()-> {
+         builder.keyStore(Paths.get("src", "test", "keystore")).storeType("JKS").storePass(password("changeit")).alias("foo_alias").build();
+      });
+   }
+
+   @Test
+   public void testBuildMissingAlias()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      assertThrows(NullPointerException.class, ()-> {
+         builder.keyStore(Paths.get("src", "test", "keystore")).storeType("JKS").storePass(password("changeit")).keyPass(password("key-passwd")).build();
+      });
+   }
+
+   @Test
+   public void testBuildMissingKeyStore()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      assertThrows(NoSuchFileException.class, ()-> {
+         builder.storeType("JKS").storePass(password("changeit")).keyPass(password("key-passwd")).alias("foo_alias").build();
+      });
+   }
+
+
+
+
+   @Test
+   public void testStrictBuild_ExpiredSelfSigningKeyWithNoKeyUsage()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      CertPathValidatorException thrown = assertThrows(CertPathValidatorException.class, ()-> {
+         builder.keyStore(Paths.get("src", "test", "keystore"))
+                  .storeType("JKS").storePass(password("changeit"))
+                  .keyPass(password("key-passwd"))
+                  .alias("foo_alias").strict(true).build();
+      });
+      assertNotNull(thrown);
+   }
+
+
+   @Test
+   public void testStrictBuild_NotSigningKey()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      CertPathValidatorException thrown = assertThrows(CertPathValidatorException.class, ()-> {
+         builder.trustStore(Paths.get("src", "test", "truststore"))
+                  .keyStore(Paths.get("src", "test", "keystore.jks"))
+                  .storeType("PKCS12").storePass(password("changeme")).alias("tls").strict(true).build();
+      });
+      assertNotNull(thrown);
+   }
+
+   @Test
+   public void testStrictBuild_ExpiredCert()
+      throws Exception
+   {
+      // TODO On another machine will need truststore specified
+      IdentityBuilder builder = new IdentityBuilder();
+      CertPathValidatorException thrown = assertThrows(CertPathValidatorException.class, ()-> {
+         // will throw error on thursday
+         builder.trustStore(Paths.get("src", "test", "truststore"))
+                  .keyStore(Paths.get("src", "test", "keystore.jks")).storeType("PKCS12")
+                  .storePass(password("changeme")).alias("expired").strict(true).build();
+      });
+      assertNotNull(thrown);
+   }
+
+   @Test
+   public void testStrictBuild_ValidCodeSinging()
+      throws Exception
+   {
+      // TODO On another machine will need truststore specified
+      IdentityBuilder builder = new IdentityBuilder();
+      builder.trustStore(Paths.get("src", "test", "truststore"))
+               .keyStore(Paths.get("src", "test", "keystore.jks"))
+               .storeType("PKCS12")
+               .storePass(password("changeme"))
+               .alias("code").strict(true).build();
+   }
+
+   @Test
+   public void testStrictBuild_ValidCodeSingingNoTrustStore()
+      throws Exception
+   {
+      IdentityBuilder builder = new IdentityBuilder();
+      CertPathValidatorException thrown = assertThrows(CertPathValidatorException.class, ()-> {
+         builder.trustStore(Paths.get("src", "test", "keystore"))
+            .keyStore(Paths.get("src", "test", "keystore.jks"))
+            .storeType("PKCS12")
+            .storePass(password("changeme"))
+            .alias("code").strict(true).build();
+      });
+      assertNotNull(thrown);
+   }
+
+   @Test
+   public void testStrictBuild_SelfSignedCodeSigner()
+      throws Exception
+   {
+      // No need for trust store on this one
+      IdentityBuilder builder = new IdentityBuilder();
+      builder.keyStore(Paths.get("src", "test", "keystore.jks"))
+               .storeType("PKCS12").storePass(password("changeme"))
+               .alias("self").strict(true).build();
+   }
+
+
+
+   private KeyStore.PasswordProtection password(String passwd)
+   {
+      return new KeyStore.PasswordProtection(passwd.toCharArray());
+   }
+
+
+   
+}
