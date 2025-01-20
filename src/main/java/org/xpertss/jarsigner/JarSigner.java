@@ -87,12 +87,15 @@ public class JarSigner {
 
 
     // TODO Maybe use a Path instead of an Output Stream?
+    // TODO Maybe use Path instead of ZipFile?
     // Eliminates the need to indicate anything about the output stream state in failure cases
     public void sign(ZipFile file, Path output)
     {
         // default impl does not close ZipFile
     }
 
+
+    
 
     public static class Builder {
 

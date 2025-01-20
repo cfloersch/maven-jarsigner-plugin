@@ -16,6 +16,7 @@ import java.security.cert.X509Certificate;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -211,14 +212,14 @@ public class IdentityBuilderTest {
       IdentityBuilder builder = new IdentityBuilder();
       CertPathValidatorException thrown = assertThrows(CertPathValidatorException.class, ()-> {
          builder.trustStore(Paths.get("src", "test", "truststore"))
-                  .keyStore(Paths.get("src", "test", "keystore.jks"))
+                  .keyStore(Paths.get("src", "test", "keystore.p12"))
                   .storeType("PKCS12").storePass(password("changeme")).alias("tls").strict(true).build();
       });
       assertNotNull(thrown);
    }
 
    @Test
-   public void testStrictBuild_ExpiredCert()
+   public void testStrictBuild_ExpiredCASignedCert()
       throws Exception
    {
       // TODO On another machine will need truststore specified
@@ -226,24 +227,12 @@ public class IdentityBuilderTest {
       CertPathValidatorException thrown = assertThrows(CertPathValidatorException.class, ()-> {
          // will throw error on thursday
          builder.trustStore(Paths.get("src", "test", "truststore"))
-                  .keyStore(Paths.get("src", "test", "keystore.jks")).storeType("PKCS12")
+                  .keyStore(Paths.get("src", "test", "keystore.p12")).storeType("PKCS12")
                   .storePass(password("changeme")).alias("expired").strict(true).build();
       });
       assertNotNull(thrown);
    }
 
-   @Test
-   public void testStrictBuild_ValidCodeSinging()
-      throws Exception
-   {
-      // TODO On another machine will need truststore specified
-      IdentityBuilder builder = new IdentityBuilder();
-      builder.trustStore(Paths.get("src", "test", "truststore"))
-               .keyStore(Paths.get("src", "test", "keystore.jks"))
-               .storeType("PKCS12")
-               .storePass(password("changeme"))
-               .alias("code").strict(true).build();
-   }
 
    @Test
    public void testStrictBuild_ValidCodeSingingNoTrustStore()
@@ -252,12 +241,38 @@ public class IdentityBuilderTest {
       IdentityBuilder builder = new IdentityBuilder();
       CertPathValidatorException thrown = assertThrows(CertPathValidatorException.class, ()-> {
          builder.trustStore(Paths.get("src", "test", "keystore"))
-            .keyStore(Paths.get("src", "test", "keystore.jks"))
-            .storeType("PKCS12")
-            .storePass(password("changeme"))
-            .alias("code").strict(true).build();
+                     .keyStore(Paths.get("src", "test", "keystore.p12"))
+                     .storeType("PKCS12")
+                     .storePass(password("changeme"))
+                     .alias("code").strict(true).build();
       });
       assertNotNull(thrown);
+   }
+
+   
+   @Test
+   public void testStrictBuild_ValidCodeSinging()
+      throws Exception
+   {
+      // TODO On another machine will need truststore specified
+      IdentityBuilder builder = new IdentityBuilder();
+      Identity identity = builder.trustStore(Paths.get("src", "test", "truststore"))
+                              .keyStore(Paths.get("src", "test", "keystore.p12"))
+                              .storeType("PKCS12").storePass(password("changeme"))
+                              .alias("code").strict(true).build();
+
+      assertNotNull(identity);
+      assertEquals("code", identity.getName());
+      assertEquals("RSA", identity.getPrivateKey().getAlgorithm());
+      assertEquals(2, identity.getCertificatePath().getCertificates().size());
+
+
+      assertThat(identity.getCertificate(), instanceOf(X509Certificate.class));
+      X509Certificate x509 = (X509Certificate)identity.getCertificate();
+      assertEquals("CN=Simulcast, O=Xpertss, C=US",
+                     x509.getSubjectDN().getName());
+      assertNotEquals(x509.getSubjectDN(), x509.getIssuerDN());
+
    }
 
    @Test
@@ -266,13 +281,29 @@ public class IdentityBuilderTest {
    {
       // No need for trust store on this one
       IdentityBuilder builder = new IdentityBuilder();
-      builder.keyStore(Paths.get("src", "test", "keystore.jks"))
-               .storeType("PKCS12").storePass(password("changeme"))
-               .alias("self").strict(true).build();
+      Identity identity = builder.keyStore(Paths.get("src", "test", "keystore.p12"))
+                              .storeType("PKCS12").storePass(password("changeme"))
+                              .alias("self").strict(true).build();
+
+
+      assertNotNull(identity);
+      assertEquals("self", identity.getName());
+      assertEquals("RSA", identity.getPrivateKey().getAlgorithm());
+      assertEquals(1, identity.getCertificatePath().getCertificates().size());
+
+
+      assertThat(identity.getCertificate(), instanceOf(X509Certificate.class));
+      X509Certificate x509 = (X509Certificate)identity.getCertificate();
+      assertEquals("CN=Expired, O=Xpertss, C=US",
+                     x509.getSubjectDN().getName());
+      assertEquals(x509.getSubjectDN(), x509.getIssuerDN());
+
    }
 
 
 
+
+   
    private KeyStore.PasswordProtection password(String passwd)
    {
       return new KeyStore.PasswordProtection(passwd.toCharArray());
