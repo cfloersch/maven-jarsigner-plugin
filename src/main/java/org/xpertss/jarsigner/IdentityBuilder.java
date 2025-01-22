@@ -42,6 +42,14 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 
+/**
+ *  Used to parse arguments into an Identity which is loaded from an underlying KeyStore and or a
+ *  certificate chain file. Given certain parameters this will ensure the Identity has appropriate
+ *  certificate trust/usages to be used for code signing.
+ *  <p/>
+ *  An optional trust store can be used to determine if the certificate is trusted as part of that
+ *  checking, overriding the default trusted ca certs database in java.
+ */
 public class IdentityBuilder {
 
    private static final Path NONE = Paths.get("NONE");
@@ -63,12 +71,24 @@ public class IdentityBuilder {
    private KeyStore.PasswordProtection storePass;
 
 
+   /**
+    * Force the validation of the given Identity's certificate to ensure it is trusted, is
+    * configured for Code Signing, and has either digital signature or non-repudiation key
+    * usages set.
+    *
+    * @param strict True to validate the signing certificate
+    */
    public IdentityBuilder strict(boolean strict)
    {
       this.strict = strict;
       return this;
    }
 
+   /**
+    * The alias of the identity within the key store.
+    *
+    * @param alias The alias of the identity
+    */
    public IdentityBuilder alias(String alias)
    {
       this.alias = alias;
@@ -76,6 +96,14 @@ public class IdentityBuilder {
    }
 
 
+   /**
+    * Specify a path to a trust store file from which trusted certificates can be loaded.
+    * <p/>
+    * This must point at a JKS keystore that contains trusted certificates accessible.
+    *
+    * @param trustStore Path to the trust store file
+    * @throws NoSuchFileException If the path does not exist or is not readable.
+    */
    public IdentityBuilder trustStore(Path trustStore)
       throws NoSuchFileException
    {
@@ -84,6 +112,13 @@ public class IdentityBuilder {
    }
 
 
+   /**
+    * Specify the path to a keystore file. Can be <i>NONE</i> for keystores that utilize
+    * hardware or similar as opposed to an actual file.
+    *
+    * @param keyStore The keystore path.
+    * @throws NoSuchFileException If the path does not exist or is unreadable
+    */
    public IdentityBuilder keyStore(Path keyStore)
       throws NoSuchFileException
    {
@@ -95,12 +130,24 @@ public class IdentityBuilder {
    }
 
 
+   /**
+    * Specify the store type (ex: PKCS12)
+    *
+    * @param storeType The store type
+    */
    public IdentityBuilder storeType(String storeType)
    {
       this.storeType = storeType;
       return this;
    }
 
+   /**
+    * Specify the store type and store provider.
+    *
+    * @param storeType The store type (ex PKCS12)
+    * @param providerName The name of the store's provider impl
+    * @throws NoSuchProviderException If the named provider is not known to the VM
+    */
    public IdentityBuilder storeType(String storeType, String providerName)
       throws NoSuchProviderException
    {
@@ -112,12 +159,22 @@ public class IdentityBuilder {
    }
 
 
+   /**
+    * Provide the individual identity's key password.
+    *
+    * @param keyPass The password protection property for the key
+    */
    public IdentityBuilder keyPass(KeyStore.PasswordProtection keyPass)
    {
       this.keyPass = keyPass;
       return this;
    }
 
+   /**
+    * Provide the store's password.
+    *
+    * @param storePass The password protection property for the store
+    */
    public IdentityBuilder storePass(KeyStore.PasswordProtection storePass)
    {
       this.storePass = storePass;
@@ -125,7 +182,12 @@ public class IdentityBuilder {
    }
 
 
-
+   /**
+    * Specify the path to an X509 certificate chain file.
+    *
+    * @param certPath Path to certificate chain file
+    * @throws NoSuchFileException if the given file path does not exist or is unreadable
+    */
    public IdentityBuilder certificatePath(Path certPath)
       throws NoSuchFileException
    {
