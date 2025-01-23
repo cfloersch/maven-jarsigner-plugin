@@ -66,11 +66,11 @@
         <artifactId>jarsigner-maven-plugin</artifactId>
         <version>@project.version@</version>
         <configuration>
-          <alias>test-01</alias>
           <keystore>
             <path>${keystore.path}</path>
             <storepass>${keystore.storepass}</storepass>
           </keystore>
+          <alias>test-01</alias>
           <sigfile>TESTING</sigfile>
           <excludeClassifiers>
             <excludeClassifier>unsigned</excludeClassifier>
