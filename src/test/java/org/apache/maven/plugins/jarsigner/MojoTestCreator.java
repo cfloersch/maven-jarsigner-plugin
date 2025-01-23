@@ -32,7 +32,6 @@ import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.jarsigner.JarsignerSignMojo.WaitStrategy;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.jarsigner.JarSigner;
 import org.apache.maven.toolchain.ToolchainManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,22 +49,20 @@ public class MojoTestCreator<T extends AbstractJarsignerMojo> {
     private final Class<T> clazz;
     private final MavenProject project;
     private final Path projectDir;
-    private final JarSigner jarSigner;
     private ToolchainManager toolchainManager;
     private SecDispatcher securityDispatcher;
     private WaitStrategy waitStrategy;
     private Log log;
-    private List<Field> fields;
+    //private List<Field> fields;
 
-    public MojoTestCreator(Class<T> clazz, MavenProject project, Path projectDir, JarSigner jarSigner)
+
+    public MojoTestCreator(Class<T> clazz, MavenProject project, Path projectDir)
             throws Exception {
         this.clazz = clazz;
         this.project = project;
         this.projectDir = projectDir;
-        this.jarSigner = jarSigner;
 
         securityDispatcher = str -> str; // Simple SecDispatcher that only returns parameter
-        fields = getAllFields(clazz);
     }
 
     public void setToolchainManager(ToolchainManager toolchainManager) {
@@ -84,6 +81,8 @@ public class MojoTestCreator<T extends AbstractJarsignerMojo> {
         this.log = log;
     }
 
+
+
     /**
      * Creates and configures the Mojo instance.
      *
@@ -94,7 +93,6 @@ public class MojoTestCreator<T extends AbstractJarsignerMojo> {
         setDefaultValues(mojo);
 
         setAttribute(mojo, "project", project);
-        setAttribute(mojo, "jarSigner", jarSigner);
         setAttribute(mojo, "securityDispatcher", securityDispatcher);
         if (toolchainManager != null) {
             setAttribute(mojo, "toolchainManager", toolchainManager);
@@ -133,6 +131,25 @@ public class MojoTestCreator<T extends AbstractJarsignerMojo> {
                 String[] values = stringValue.split(",");
                 field.set(instance, values);
             }
+        } else if(stringValue.startsWith("{") && stringValue.endsWith("}")) {
+            Object value = fieldType.newInstance();
+            field.set(instance, value);
+
+            stringValue = stringValue.substring(1, stringValue.length() - 1);
+            String[] parts = stringValue.split("\\s*,\\s*");
+            for(String part : parts) {
+                if(part.isEmpty()) continue;
+                String[] keyValue = part.split("\\s*=\\s*");
+                Field subfield = getField(value, keyValue[0]);
+                setFieldByStringValue(value, subfield, keyValue[1]);
+            }
+            // test if zero arg constructor and create instance
+            // then loop through keys looking for FIELDS
+            // finally recurse back into this for each
+
+            // {key1=one, key2=two, key3=three, key4=four}
+
+
         } else {
             if (!stringValue.startsWith("${")) {
                 logger.warn(
@@ -144,6 +161,7 @@ public class MojoTestCreator<T extends AbstractJarsignerMojo> {
     }
 
     private Field getField(Object instance, String fieldName) {
+        List<Field> fields = getAllFields(instance.getClass());
         return fields.stream()
                 .filter(f -> f.getName().equals(fieldName))
                 .findFirst()
