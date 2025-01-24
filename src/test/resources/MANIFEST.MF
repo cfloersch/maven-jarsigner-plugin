@@ -1,0 +1,63 @@
+Manifest-Version: 1.0
+Application-Name: Simulcast Supplimental Client
+Archiver-Version: Plexus Archiver
+Permissions: all-permissions
+Created-By: 25.432-b06 (Temurin)
+
+Name: com/manheim/simulcast/utilities/ResourceLoader.class
+SHA-256-Digest: P99W943TZx3bVyXgFPCICcv7rmAZ8oVB5yjW8ectqgE=
+
+Name: com/manheim/simulcast/core/factory/TokenDataFactory.class
+SHA-256-Digest: EXmGaVc6YMwE8K6ApSIoXQk2/4/5/UQQzWiQO/bWs6Q=
+
+Name: com/manheim/simulcast/biddisplay/standard/lightYellowOff.jpg
+SHA-256-Digest: rlokGeY0MKIh+EHqNnet1hrEDfMn68/Kk+3VPTlGtmo=
+
+Name: com/manheim/simulcast/biddisplay/standard/fr_CA/lightBidReceived
+ On2-new.gif
+SHA-256-Digest: u3qgW4cEL0v0r49Bvh39ijXB5699z4Qha/T4gdxrJDw=
+
+Name: META-INF/DateFormats_en_CA.properties
+SHA-256-Digest: 1mrkT/sOOnLRPKmxE+C4/7BFfemzHXzMb/wI5lrHWcw=
+
+Name: com/manheim/simulcast/core/domain/model/feature/FeatureBehavior.
+ class
+SHA-256-Digest: ReBq12BNZ6VhGhmUjBAJM6vkBor6C2oVO/thUR4ZOTQ=
+
+Name: com/manheim/simulcast/biddisplay/standard/en/internetBidPanel.gi
+ f
+SHA-256-Digest: f6km/j0jJdXEgXOyB0MewNjyJuY2HqVWKxeN9lft+1Y=
+
+Name: com/manheim/simulcast/messaging/json/JsonMessageSerializer$1.cla
+ ss
+SHA-256-Digest: Jhfl73MCy36nXmk7tN8VQP82CDUJOXMhq7zG3fdzdiA=
+
+Name: com/manheim/simulcast/block/SupplementalClientFrame.class
+SHA-256-Digest: GsqZpvkSidLPEJR/3340B5NzH0iu4yJ/aNAkyOJkVTw=
+
+Name: com/manheim/simulcast/biddisplay/standard/fr_CA/lightBidReceived
+ Off-new.gif
+SHA-256-Digest: cIB9QqFnF5dDoBOrDttxpNuZdyiS6vFmdlRu53OYvLo=
+
+Name: com/manheim/simulcast/biddisplay/43/BidDisplayClientPanel_fr_CA.
+ properties
+SHA-256-Digest: uNvFwZrGniUzUbI290qhMrW6M+o5PmZN/u3rZXQbil4=
+
+Name: com/manheim/simulcast/biddisplay/standard/en/manheimSimulcastLog
+ o.jpg
+SHA-256-Digest: 2bYCnhJSNivdBzS0S058a+JMF+xKkUyc+2pEvx5xGFo=
+
+Name: META-INF/oidmaps/addresses.properties
+SHA-256-Digest: UPLL8/G6Y9uWCxqKt2BI/Tnc+9RtrVImpafxJ+KeT0g=
+
+Name: com/manheim/simulcast/client/HttpClient.class
+SHA-256-Digest: xpiF/kdP/1YFBJ//3uiHPX4j68RXwiHxWJ9CHwnYO54=
+
+Name: com/manheim/simulcast/block/BlockProperties.class
+SHA-256-Digest: v9TgpeDoLWz60rRlokHpAZ+DhZO3Gg5Wb6CzWSOucFY=
+
+Name: com/manheim/simulcast/swing/BoundedNumericDocument.class
+SHA-256-Digest: dEu2HP0GoIs8znHqNHl0mGASAceo4wXpCmMurBNaMtU=
+
+Name: com/manheim/simulcast/biddisplay/standard/lightYellowOn.jpg
+SHA-256-Digest: AfSUZXxH2c8XWw7eLyCtzwiyjDV30s0uzRcSle2oifE=

@@ -1,53 +1,59 @@
 package org.apache.maven.plugins.jarsigner;
 
-import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.utils.StringUtils;
 
+/**
+ * Parameter spec identifying a Java Security provider to install from the current classpath and it's
+ * optional instantiation argument. Each provider will be instantiated and installed into Java's
+ * provider set upon launch.
+ */
 public class ProviderSpec {
 
     /**
-     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
+     * The fully qualified classname of the Provider to instantiate.
      */
-    @Parameter(property = "jarsigner.provider.providerClass")
-    private String providerClass;
+    private String classname;
 
     /**
-     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
+     * An argument to init the newly loaded Provider with.
      */
-    @Parameter(property = "jarsigner.provider.providerArg")
-    private String providerArg;
+    private String argument;
 
 
-    public String getProviderClass()
+    
+
+    public String getClassName()
     {
-        return providerClass;
+        return classname;
     }
 
-    public void setProviderClass(String providerClass)
+    public void setClassName(String classname)
     {
-        this.providerClass = providerClass;
+        this.classname = classname;
     }
 
 
-    public String getProviderArg()
+    public String getArgument()
     {
-        return providerArg;
+        return argument;
     }
 
-    public void setProviderArg(String providerArg)
+    public void setArgument(String argument)
     {
-        this.providerArg = providerArg;
+        this.argument = argument;
     }
+
+
 
     @Override
     public String toString()
     {
         StringBuilder builder = new StringBuilder();
-        if(StringUtils.isNotEmpty(providerClass))
-            builder.append(String.format("providerClass=%s", providerClass));
-        if(StringUtils.isNotEmpty(providerArg)) {
+        if(StringUtils.isNotEmpty(classname))
+            builder.append(String.format("classname=%s", classname));
+        if(StringUtils.isNotEmpty(argument)) {
             if (builder.length() > 0) builder.append(", ");
-            builder.append(String.format("providerArg=%s", providerArg));
+            builder.append(String.format("argument=%s", argument));
         }
         return builder.insert(0, "{").append("}").toString();
     }

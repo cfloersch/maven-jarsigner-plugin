@@ -40,11 +40,14 @@ public class JarsignerVerifyMojo extends AbstractJarsignerMojo {
 
     /**
      * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
+     * TODO Possibly replace this with a general verbose argument that does both verbose and certs
      */
     @Parameter(property = "jarsigner.certs", defaultValue = "false")
     private boolean certs;
 
     /**
+     * TODO This seems redundant with -strict
+     * 
      * When <code>true</code> this will make the execute() operation fail,
      * throwing an exception, when verifying an unsigned jar.
      * Primarily to keep backwards compatibility with existing code, and allow reusing the
@@ -65,7 +68,8 @@ public class JarsignerVerifyMojo extends AbstractJarsignerMojo {
     }
 
     // for testing; invoked via reflection
-    JarsignerVerifyMojo() {
+    JarsignerVerifyMojo()
+    {
         super(null);
     }
 

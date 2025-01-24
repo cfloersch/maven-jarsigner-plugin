@@ -38,21 +38,9 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     /**
      * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
      */
-    @Parameter(property = "jarsigner.alias")
-    private String alias;
-
-    /**
-     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
-     */
     @Parameter(property = "jarsigner.strict", defaultValue = "false")
     private boolean strict;
 
-
-    /**
-     * POJO containing keystore configuration
-     */
-    @Parameter
-    private KeyStoreSpec keystore;
 
     /**
      * POJO containing Security Provider configuration
@@ -61,8 +49,24 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     private ProviderSpec provider;
 
 
+    // TODO Move next two to Sign
 
-    // TODO
+    /**
+     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
+     */
+    @Parameter(property = "jarsigner.alias")
+    private String alias;
+
+    /**
+     * POJO containing keystore configuration
+     */
+    @Parameter
+    private KeyStoreSpec keystore;
+
+
+
+
+    // TODO -
     // private File trustStore;
 
 
@@ -132,6 +136,8 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     /**
      * Archive to process. If set, neither the project artifact nor any attachments or archive
      * sets are processed.
+     *
+     * TODO Do I want this?
      */
     @Parameter(property = "jarsigner.archive")
     private File archive;
@@ -167,6 +173,7 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
 
 
     /**
+     * TODO Do I need this?
      */
     private final SecDispatcher securityDispatcher;
 
@@ -179,19 +186,45 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
 
 
     @Override
-    public final void execute() throws MojoExecutionException {
+    public final void execute()
+       throws MojoExecutionException
+    {
         if (this.skip) {
             getLog().info(getMessage("disabled"));
             return;
         }
 
-        validateParameters();
+        prepareProviders();
+        configure();
 
         List<Path> archives = findJarfiles();
         processArchives(archives);
 
         getLog().info(getMessage("processed", archives.size()));
     }
+
+
+
+
+    private void prepareProviders()
+       throws MojoExecutionException
+    {
+    }
+
+
+    /**
+     * Validate the user supplied configuration/parameters.
+     *
+     * @throws MojoExecutionException if the user supplied configuration make further execution impossible
+     */
+    protected void configure()
+       throws MojoExecutionException
+    {
+        System.out.println("Keystore: " + keystore);
+        System.out.println("Provider: " + provider);
+        // Default implementation does nothing
+    }
+
 
     /**
      * Finds all jar files, by looking at the Maven project and user configuration.
@@ -257,45 +290,7 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
 
 
 
-    public String getStoreType()
-    {
-        return keystore.getStoreType();
-    }
 
-    public String getStorePass()
-    {
-        return keystore.getStorePass();
-    }
-
-    /**
-     * Checks whether the specified artifact is a ZIP file.
-     *
-     * @param artifact The artifact to check, may be <code>null</code>.
-     * @return <code>true</code> if the artifact looks like a ZIP file, <code>false</code> otherwise.
-     */
-    private static boolean isZipFile(final Artifact artifact) {
-        return artifact != null && artifact.getFile() != null && JarSignerUtil.isZipFile(artifact.getFile());
-    }
-
-    /**
-     * Examines an Artifact and extract the File object pointing to the Artifact jar file.
-     *
-     * @param artifact the artifact to examine
-     * @return An Optional containing the File, or Optional.empty() if the File is not a jar file.
-     * @throws NullPointerException if {@code artifact} is {@code null}
-     */
-    private Optional<Path> getFileFromArtifact(final Artifact artifact) {
-        if (artifact == null) {
-            throw new NullPointerException("artifact");
-        }
-
-        if (isZipFile(artifact)) {
-            return Optional.of(artifact.getFile().toPath());
-        }
-
-        getLog().debug(getMessage("unsupported", artifact));
-        return Optional.empty();
-    }
 
     /**
      * Pre-processes a given archive.
@@ -303,20 +298,13 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
      * @param archive The archive to process, must not be <code>null</code>.
      * @throws MojoExecutionException if pre-processing failed
      */
-    protected void preProcessArchive(final Path archive) throws MojoExecutionException {
+    protected void preProcessArchive(final Path archive)
+       throws MojoExecutionException
+    {
         // Default implementation does nothing
     }
 
-    /**
-     * Validate the user supplied configuration/parameters.
-     *
-     * @throws MojoExecutionException if the user supplied configuration make further execution impossible
-     */
-    protected void validateParameters() throws MojoExecutionException {
-        System.out.println("Keystore: " + keystore);
-        System.out.println("Provider: " + provider);
-        // Default implementation does nothing
-    }
+
 
     /**
      * Process (sign/verify) a list of archives.
@@ -410,11 +398,15 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
      *
      * @throws JavaToolException if jarsigner could not be invoked
      * @throws MojoExecutionException if the invocation of jarsigner succeeded, but returned a non-zero exit code
+     *
+     * TODO This can go away replaced by an abstract version of processArchive
      */
     protected abstract void executeJarSigner()
             throws JavaToolException, MojoExecutionException;
 
 
+
+    
     // TODO Where does it get encrypted??
     protected String decrypt(String encoded) throws MojoExecutionException {
         try {
@@ -425,6 +417,10 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
         }
     }
 
+
+
+
+    
     /**
      * Gets a message for a given key from the resource bundle backing the implementation.
      *
@@ -441,5 +437,38 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
         return new MessageFormat(ResourceBundle.getBundle("jarsigner").getString(key)).format(args);
     }
 
+
+
+    /**
+     * Checks whether the specified artifact is a ZIP file.
+     *
+     * @param artifact The artifact to check, may be <code>null</code>.
+     * @return <code>true</code> if the artifact looks like a ZIP file, <code>false</code> otherwise.
+     */
+    private static boolean isZipFile(final Artifact artifact)
+    {
+        return artifact != null && artifact.getFile() != null && JarSignerUtil.isZipFile(artifact.getFile());
+    }
+
+    /**
+     * Examines an Artifact and extract the File object pointing to the Artifact jar file.
+     *
+     * @param artifact the artifact to examine
+     * @return An Optional containing the File, or Optional.empty() if the File is not a jar file.
+     * @throws NullPointerException if {@code artifact} is {@code null}
+     */
+    private Optional<Path> getFileFromArtifact(final Artifact artifact)
+    {
+        if (artifact == null) {
+            throw new NullPointerException("artifact");
+        }
+
+        if (isZipFile(artifact)) {
+            return Optional.of(artifact.getFile().toPath());
+        }
+
+        getLog().debug(getMessage("unsupported", artifact));
+        return Optional.empty();
+    }
 
 }

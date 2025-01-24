@@ -172,10 +172,10 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
     }
 
     @Override
-    protected void validateParameters()
+    protected void configure()
         throws MojoExecutionException
     {
-        super.validateParameters();
+        super.configure();
 
         System.out.println("Digest: " + digest);
         System.out.println("Signature: " + signature);
@@ -219,6 +219,10 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
 
     /**
      * {@inheritDoc} Processing of files may be parallelized for increased performance.
+     *
+     * TODO Move this parallelization into AbstractJarsignerMojo and make it final
+     * Can verify be done in parallel? Answer is yes unless the goal is to dump the
+     * signing info to the log.
      */
     @Override
     protected void processArchives(List<Path> archives) throws MojoExecutionException {
