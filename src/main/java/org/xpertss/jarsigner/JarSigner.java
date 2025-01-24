@@ -4,6 +4,7 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.security.*;
 import java.security.cert.CertPath;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.zip.ZipFile;
 
@@ -55,6 +56,7 @@ public class JarSigner {
 
     private JarSigner(Builder builder)
     {
+        // https://github.com/AdoptOpenJDK/openjdk-jdk11/blob/master/src/jdk.jartool/share/classes/jdk/security/jarsigner/JarSigner.java#L503
         this.tsa = builder.tsa;
         this.digest = builder.digest;
         this.signature = builder.signature;
@@ -121,6 +123,11 @@ public class JarSigner {
         {
             this.privateKey = Objects.requireNonNull(privateKey, "privateKey");
             this.certPath = Objects.requireNonNull(certPath, "certPath");
+
+            // Sun Impl validates the certPath.isEmpty() == false
+            // Sun Impl validates that the certPath.get(0).getPublicKey().getAlgorithm() == privateKey.getAlgorithm()
+            // Sun impl verifies the certPath contains X509 certs
+
         }
 
         public Builder digestAlgorithm(String algorithm)
@@ -226,34 +233,43 @@ public class JarSigner {
         }
 
 
+
+
+
         /**
          * Sets the signer name. The name will be used as the base name for the signature
          * files. All lowercase characters will be converted to uppercase for signature
          * file names. If a signer name is not specified, the string "SIGNER" will be
          * used.
          *
-         * @param name The signer name
-         * @return this builder
+         * @param name the signer name.
+         * @return the {@code JarSigner.Builder} itself.
+         * @throws IllegalArgumentException if {@code name} is empty or has
+         *      a size bigger than 8, or it contains characters not from the
+         *      set "a-zA-Z0-9_-".
          */
-        public Builder signerName(String name)
-        {
-            // If no -sigfile option appears on the command line, then the base file name
-            // for the .SF and .DSA files is the first 8 characters of the alias name
-            // specified on the command line, all converted to uppercase. If the alias name
-            // has fewer than 8 characters, then the full alias name is used. If the alias
-            // name contains any characters that are not allowed in a signature file name,
-            // then each such character is converted to an underscore (_) character in
-            // forming the file name. Valid characters include letters, digits, underscores,
-            // and hyphens.
+        public Builder signerName(String name) {
+            if (name.isEmpty() || name.length() > 8) {
+                throw new IllegalArgumentException("Name too long");
+            }
 
+            name = name.toUpperCase(Locale.ENGLISH);
 
-            // Looks like Sun's impl always truncates this to 8 characters and makes it
-            // Upper Case. Also a signerName must be a-zA-Z0-9-_ Everything else is
-            // converted to underscores. Jarsigner converts aliases and errors on explicit
-            // arguments.
-            this.signerName = signerName;
+            for (int j = 0; j < name.length(); j++) {
+                char c = name.charAt(j);
+                if (!
+                   ((c >= 'A' && c <= 'Z') ||
+                      (c >= '0' && c <= '9') ||
+                      (c == '-') ||
+                      (c == '_'))) {
+                    throw new IllegalArgumentException(
+                       "Invalid characters in name");
+                }
+            }
+            this.signerName = name;
             return this;
         }
+
 
         public JarSigner build()
         {
