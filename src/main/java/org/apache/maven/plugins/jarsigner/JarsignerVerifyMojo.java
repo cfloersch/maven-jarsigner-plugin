@@ -28,20 +28,12 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.jarsigner.JarSigner;
-import org.apache.maven.jarsigner.JarSignerRequest;
-import org.apache.maven.jarsigner.JarSignerUtil;
-import org.apache.maven.jarsigner.JarSignerVerifyRequest;
+import org.xpertss.jarsigner.JarSignerUtil;
 import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
-import org.apache.maven.shared.utils.cli.javatool.JavaToolResult;
-import org.apache.maven.toolchain.ToolchainManager;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
 
 /**
  * Checks the signatures of a project artifact and attachments using jarsigner.
- *
- * @author <a href="cs@schulte.it">Christian Schulte</a>
- * @since 1.0
  */
 @Mojo(name = "verify", defaultPhase = LifecyclePhase.VERIFY, threadSafe = true)
 public class JarsignerVerifyMojo extends AbstractJarsignerMojo {
@@ -63,28 +55,21 @@ public class JarsignerVerifyMojo extends AbstractJarsignerMojo {
     @Parameter(property = "jarsigner.errorWhenNotSigned", defaultValue = "false")
     private boolean errorWhenNotSigned;
 
+
+
+
     @Inject
-    public JarsignerVerifyMojo(
-            JarSigner jarSigner,
-            ToolchainManager toolchainManager,
-            @Named("mng-4384") SecDispatcher securityDispatcher) {
-        super(jarSigner, toolchainManager, securityDispatcher);
+    public JarsignerVerifyMojo(@Named("mng-4384") SecDispatcher securityDispatcher)
+    {
+        super(securityDispatcher);
     }
 
     // for testing; invoked via reflection
     JarsignerVerifyMojo() {
-        super(null, null, null);
+        super(null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected JarSignerRequest createRequest(Path archive) {
-        JarSignerVerifyRequest request = new JarSignerVerifyRequest();
-        request.setCerts(certs);
-        return request;
-    }
+
 
     @Override
     protected void preProcessArchive(Path archive) throws MojoExecutionException {
@@ -110,13 +95,15 @@ public class JarsignerVerifyMojo extends AbstractJarsignerMojo {
     }
 
     @Override
-    protected void executeJarSigner(JarSigner jarSigner, JarSignerRequest request)
+    protected void executeJarSigner()
             throws JavaToolException, MojoExecutionException {
+        /*
         JavaToolResult result = jarSigner.execute(request);
         int resultCode = result.getExitCode();
         if (resultCode != 0) {
             throw new MojoExecutionException(
                     getMessage("failure", getCommandlineInfo(result.getCommandline()), resultCode));
         }
+         */
     }
 }

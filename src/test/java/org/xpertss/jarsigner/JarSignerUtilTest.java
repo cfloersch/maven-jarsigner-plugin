@@ -16,15 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.maven.jarsigner;
+package org.xpertss.jarsigner;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,11 +35,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created on 11/8/13.
- *
- * @author Tony Chemit
- * @since 1.1
  */
-class JarSignerUtilTest extends AbstractJarSignerTest {
+class JarSignerUtilTest {
 
     @Test
     void testUnsignArchive() throws Exception {
@@ -92,5 +91,24 @@ class JarSignerUtilTest extends AbstractJarSignerTest {
             }
         }
         return false;
+    }
+
+    protected Path prepareTestJar(String filename) throws IOException {
+        Path source = Paths.get("src", "test", filename);
+        Path target = Paths.get("target", filename);
+
+        if (Files.exists(target)) {
+            FileUtils.forceDelete(target.toFile());
+        }
+
+        Files.createDirectories(target.getParent());
+        Files.copy(
+                source,
+                target,
+                StandardCopyOption.REPLACE_EXISTING,
+                StandardCopyOption.COPY_ATTRIBUTES,
+                LinkOption.NOFOLLOW_LINKS);
+
+        return target;
     }
 }

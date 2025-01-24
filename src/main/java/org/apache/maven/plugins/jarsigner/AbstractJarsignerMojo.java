@@ -3,10 +3,8 @@ package org.apache.maven.plugins.jarsigner;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenSession;
@@ -15,67 +13,27 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
-import org.apache.maven.jarsigner.JarSigner;
-import org.apache.maven.jarsigner.JarSignerRequest;
-import org.apache.maven.jarsigner.JarSignerUtil;
+import org.xpertss.jarsigner.JarSignerUtil;
 import org.apache.maven.shared.utils.ReaderFactory;
 import org.apache.maven.shared.utils.StringUtils;
-import org.apache.maven.shared.utils.cli.Commandline;
 import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
 import org.apache.maven.shared.utils.io.FileUtils;
-import org.apache.maven.toolchain.Toolchain;
-import org.apache.maven.toolchain.ToolchainManager;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcherException;
 
 /**
  * Maven Jarsigner Plugin base class.
- *
- * @author <a href="cs@schulte.it">Christian Schulte</a>
  */
 public abstract class AbstractJarsignerMojo extends AbstractMojo {
 
-    /**
-     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
-     */
-    @Parameter(property = "jarsigner.verbose", defaultValue = "false")
-    private boolean verbose;
 
     /**
-     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
+     * Set to {@code true} to disable the plugin.
      */
-    @Parameter(property = "jarsigner.keystore")
-    private File keystore;
+    @Parameter(property = "jarsigner.skip", defaultValue = "false")
+    private boolean skip;
 
-    /**
-     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
-     */
-    @Parameter(property = "jarsigner.storetype")
-    private String storetype;
 
-    /**
-     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
-     */
-    @Parameter(property = "jarsigner.storepass")
-    private String storepass;
-
-    /**
-     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
-     */
-    @Parameter(property = "jarsigner.providerName")
-    private String providerName;
-
-    /**
-     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
-     */
-    @Parameter(property = "jarsigner.providerClass")
-    private String providerClass;
-
-    /**
-     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
-     */
-    @Parameter(property = "jarsigner.providerArg")
-    private String providerArg;
 
     /**
      * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
@@ -84,24 +42,35 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     private String alias;
 
     /**
-     * The maximum memory available to the JAR signer, e.g. <code>256M</code>. See <a
-     * href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/java.html#Xms">-Xmx</a>
-     * for more details.
+     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
      */
-    @Parameter(property = "jarsigner.maxMemory")
-    private String maxMemory;
+    @Parameter(property = "jarsigner.strict", defaultValue = "false")
+    private boolean strict;
+
 
     /**
-     * Archive to process. If set, neither the project artifact nor any attachments or archive
-     * sets are processed.
+     * POJO containing keystore configuration
      */
-    @Parameter(property = "jarsigner.archive")
-    private File archive;
+    @Parameter
+    private KeyStoreSpec keystore;
+
+    /**
+     * POJO containing Security Provider configuration
+     */
+    @Parameter
+    private ProviderSpec provider;
+
+
+
+    // TODO
+    // private File trustStore;
+
+
+
+
 
     /**
      * The base directory to scan for JAR files using Ant-like inclusion/exclusion patterns.
-     *
-     * @since 1.1
      */
     @Parameter(property = "jarsigner.archiveDirectory")
     private File archiveDirectory;
@@ -121,32 +90,13 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     @Parameter
     private String[] excludes = {};
 
-    /**
-     * List of additional arguments to append to the jarsigner command line. Each argument should be
-     * specified as a separate element. For example, to specify the name of the signed jar, two
-     * elements are needed:
-     * <ul>
-     *     <li>Alternative using the command line: {@code -Djarsigner.arguments="-signedjar,my-project_signed.jar"}</li>
-     *     <li>Alternative using the Maven POM configuration:</li>
-     * </ul>
-     * <pre>
-     * {@code
-     * <configuration>
-     *   <arguments>
-     *     <argument>-signedjar</argument>
-     *     <argument>my-project_signed.jar</argument>
-     *   </arguments>
-     * </configuration>
-     * }</pre>
-     */
-    @Parameter(property = "jarsigner.arguments")
-    private String[] arguments;
 
-    /**
-     * Set to {@code true} to disable the plugin.
-     */
-    @Parameter(property = "jarsigner.skip", defaultValue = "false")
-    private boolean skip;
+
+
+
+
+
+
 
     /**
      * Controls processing of the main artifact produced by the project.
@@ -161,12 +111,6 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     @Parameter(property = "jarsigner.processAttachedArtifacts", defaultValue = "true")
     private boolean processAttachedArtifacts;
 
-    /**
-     * Must be set to true if the password must be given via a protected
-     * authentication path such as a dedicated PIN reader.
-     */
-    @Parameter(property = "jarsigner.protectedAuthenticationPath", defaultValue = "false")
-    private boolean protectedAuthenticationPath;
 
     /**
      * A set of artifact classifiers describing the project attachments that should be processed. This
@@ -185,18 +129,20 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
 
 
 
+    /**
+     * Archive to process. If set, neither the project artifact nor any attachments or archive
+     * sets are processed.
+     */
+    @Parameter(property = "jarsigner.archive")
+    private File archive;
+
+
 
     /**
      * The Maven project.
      */
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
-
-    /**
-     * Plugin dependencies that will make up classpath passed to jarsigner
-     */
-    @Parameter(defaultValue = "${plugin.artifacts}", readonly = true, required = true)
-    private List<Artifact> pluginArtifacts;
 
     /**
      * The Maven settings.
@@ -220,24 +166,17 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
 
 
 
-    private final JarSigner jarSigner;
-
-    /**
-     * To obtain a toolchain if possible.
-     */
-    private final ToolchainManager toolchainManager;
-
     /**
      */
     private final SecDispatcher securityDispatcher;
 
 
-    protected AbstractJarsignerMojo(
-            JarSigner jarSigner, ToolchainManager toolchainManager, SecDispatcher securityDispatcher) {
-        this.jarSigner = jarSigner;
-        this.toolchainManager = toolchainManager;
+    protected AbstractJarsignerMojo(SecDispatcher securityDispatcher)
+    {
         this.securityDispatcher = securityDispatcher;
     }
+
+
 
     @Override
     public final void execute() throws MojoExecutionException {
@@ -248,14 +187,9 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
 
         validateParameters();
 
-        Toolchain toolchain = getToolchain();
-        if (toolchain != null) {
-            getLog().info("Toolchain in maven-jarsigner-plugin: " + toolchain);
-            jarSigner.setToolchain(toolchain);
-        }
-
         List<Path> archives = findJarfiles();
         processArchives(archives);
+
         getLog().info(getMessage("processed", archives.size()));
     }
 
@@ -265,7 +199,9 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
      * @return a List of File objects
      * @throws MojoExecutionException if it was not possible to build a list of jar files
      */
-    private List<Path> findJarfiles() throws MojoExecutionException {
+    private List<Path> findJarfiles()
+        throws MojoExecutionException
+    {
         if (this.archive != null) {
             // Only process this, but nothing more
             return Arrays.asList(this.archive.toPath());
@@ -299,11 +235,7 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
                 getFileFromArtifact(artifact).ifPresent(archives::add);
             }
         } else {
-            if (verbose) {
-                getLog().info(getMessage("ignoringAttachments"));
-            } else {
-                getLog().debug(getMessage("ignoringAttachments"));
-            }
+            getLog().debug(getMessage("ignoringAttachments"));
         }
 
         if (archiveDirectory != null) {
@@ -322,41 +254,17 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
         return archives;
     }
 
-    /**
-     * Creates the jar signer request to be executed.
-     *
-     * @param archive the archive file to treat by jarsigner
-     * @return the request
-     * @throws MojoExecutionException if an exception occurs
-     */
-    protected abstract JarSignerRequest createRequest(Path archive) throws MojoExecutionException;
 
-    /**
-     * Gets a string representation of a {@code Commandline}.
-     * <p>
-     * This method creates the string representation by calling {@code commandLine.toString()} by default.
-     * </p>
-     *
-     * @param commandLine The {@code Commandline} to get a string representation of.
-     * @return The string representation of {@code commandLine}.
-     * @throws NullPointerException if {@code commandLine} is {@code null}
-     */
-    protected String getCommandlineInfo(final Commandline commandLine) {
-        if (commandLine == null) {
-            throw new NullPointerException("commandLine");
-        }
 
-        String commandLineInfo = commandLine.toString();
-        commandLineInfo = StringUtils.replace(commandLineInfo, this.storepass, "'*****'");
-        return commandLineInfo;
+
+    public String getStoreType()
+    {
+        return keystore.getStoreType();
     }
 
-    public String getStoretype() {
-        return storetype;
-    }
-
-    public String getStorepass() {
-        return storepass;
+    public String getStorePass()
+    {
+        return keystore.getStorePass();
     }
 
     /**
@@ -385,11 +293,7 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
             return Optional.of(artifact.getFile().toPath());
         }
 
-        if (this.verbose) {
-            getLog().info(getMessage("unsupported", artifact));
-        } else if (getLog().isDebugEnabled()) {
-            getLog().debug(getMessage("unsupported", artifact));
-        }
+        getLog().debug(getMessage("unsupported", artifact));
         return Optional.empty();
     }
 
@@ -409,6 +313,8 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
      * @throws MojoExecutionException if the user supplied configuration make further execution impossible
      */
     protected void validateParameters() throws MojoExecutionException {
+        System.out.println("Keystore: " + keystore);
+        System.out.println("Provider: " + provider);
         // Default implementation does nothing
     }
 
@@ -438,55 +344,14 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
 
         preProcessArchive(archive);
 
-        if (this.verbose) {
-            getLog().info(getMessage("processing", archive));
-        } else if (getLog().isDebugEnabled()) {
-            getLog().debug(getMessage("processing", archive));
-        }
+        getLog().info(getMessage("processing", archive));
 
-        JarSignerRequest request = createRequest(archive);
-        request.setVerbose(verbose);
-        request.setAlias(alias);
-        request.setArchive(archive.toFile());
-        request.setKeystore(keystore);
-        request.setStoretype(storetype);
-        request.setProviderArg(providerArg);
-        request.setProviderClass(providerClass);
-        request.setProviderName(providerName);
-        request.setWorkingDirectory(workingDirectory);
-        request.setMaxMemory(maxMemory);
-        request.setProtectedAuthenticationPath(protectedAuthenticationPath);
-
-
-        if(pluginArtifacts != null) {
-            String classpath = pluginArtifacts.stream()
-                    .filter(entry -> entry.getScope().equalsIgnoreCase("runtime"))
-                    .map(entry -> entry.getFile().getAbsolutePath())
-                    .collect(Collectors.joining(File.pathSeparator));
-
-            String toolsJar = Paths.get(System.getProperty("java.home"),
-                            "../lib/tools.jar")
-                    .normalize().toString();
-
-            classpath = String.join(File.pathSeparator, toolsJar, classpath);
-            getLog().debug("Plugin Classpath: " + classpath);
-            request.setClasspath(classpath);
-        }
+        // TODO was used to setup JarSigner
 
         // Preserves 'file.encoding' the plugin is executed with.
         final List<String> additionalArguments = new ArrayList<>();
 
         boolean fileEncodingSeen = false;
-
-        if (this.arguments != null) {
-            for (final String argument : this.arguments) {
-                String arg = argument.trim();
-                if (arg.startsWith("-J-Dfile.encoding=")) {
-                    fileEncodingSeen = true;
-                }
-                additionalArguments.add(argument);
-            }
-        }
 
         if (!fileEncodingSeen) {
             additionalArguments.add("-J-Dfile.encoding=" + ReaderFactory.FILE_ENCODING);
@@ -494,7 +359,7 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
 
 
 
-        // Adds proxy information.
+        // Adds proxy information. TODO Operate on these more directly in TSA Impl
         if (this.settings != null
                 && this.settings.getActiveProxy() != null
                 && StringUtils.isNotEmpty(this.settings.getActiveProxy().getHost())) {
@@ -524,32 +389,33 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
         }
 
 
-        request.setArguments(
-                !additionalArguments.isEmpty()
-                        ? additionalArguments.toArray(new String[additionalArguments.size()])
-                        : null);
 
-        // Special handling for passwords through the Maven Security Dispatcher
-        request.setStorepass(decrypt(storepass));
+        // TODO Special handling for passwords through the Maven Security Dispatcher
+        // What does this really do and do I really need it?
+        //request.setStorepass(decrypt(storepass));
 
+        /*
         try {
-            executeJarSigner(jarSigner, request);
+            // TODO Actually sign jar
+            //executeJarSigner(jarSigner, request);
         } catch (JavaToolException e) {
             throw new MojoExecutionException(getMessage("commandLineException", e.getMessage()), e);
         }
+
+         */
     }
 
     /**
      * Executes jarsigner (execute signing or verification for a jar file).
      *
-     * @param jarSigner the JarSigner execution interface
-     * @param request the JarSignerRequest with parameters JarSigner should use
      * @throws JavaToolException if jarsigner could not be invoked
      * @throws MojoExecutionException if the invocation of jarsigner succeeded, but returned a non-zero exit code
      */
-    protected abstract void executeJarSigner(JarSigner jarSigner, JarSignerRequest request)
+    protected abstract void executeJarSigner()
             throws JavaToolException, MojoExecutionException;
 
+
+    // TODO Where does it get encrypted??
     protected String decrypt(String encoded) throws MojoExecutionException {
         try {
             return securityDispatcher.decrypt(encoded);
@@ -571,26 +437,9 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
      *             the resource bundle fails
      */
     String getMessage(final String key, final Object... args) {
-        if (key == null) {
-            throw new NullPointerException("key");
-        }
-
+        if (key == null) throw new NullPointerException("key");
         return new MessageFormat(ResourceBundle.getBundle("jarsigner").getString(key)).format(args);
     }
 
-    /**
-     * the part with ToolchainManager lookup once we depend on
-     * 2.0.9 (have it as prerequisite). Define as regular component field then.
-     * hint: check maven-compiler-plugin code
-     *
-     * @return Toolchain instance
-     */
-    private Toolchain getToolchain() {
-        Toolchain tc = null;
-        if (toolchainManager != null) {
-            tc = toolchainManager.getToolchainFromBuildContext("jdk", session);
-        }
 
-        return tc;
-    }
 }

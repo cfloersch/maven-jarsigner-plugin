@@ -32,8 +32,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Parser of the generated META-INF/maven/plugin.xml for this project. The plugin.xml contains all mojos their
- * configuration parameters along with default values.
+ * Parser of the generated META-INF/maven/plugin.xml for this project. The plugin.xml contains all mojos
+ * their configuration parameters along with default values.
  */
 public class PluginXmlParser {
     private static final String MOJO_IMPLEMENTATION_TAG = "implementation";

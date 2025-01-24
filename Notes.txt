@@ -1,3 +1,9 @@
+Add integration tests (Sign)
+  -strict fails when using untrusted key
+  -strict fails when using key with no CodeSigning
+
+
+
 So the current maven-jarsigner-plugin operates by invoking the command line jarsigner.
   I want to create a new one that operates by calling the methods in the main.class
   associated with the jarsigner in the SUN code base. I will probably extract the
@@ -176,5 +182,51 @@ https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#CCH
 
 
 
+
+
+    <executions>
+      <execution>
+        <id>sign-jars</id>
+        <goals>
+          <goal>sign</goal>
+        </goals>
+        <configuration>
+            <!-- Config that applies only to sign -->
+            <digest>
+              <algorithm>SHA-256</algorithm>
+              <provider>SUN</provider>
+            </digest>
+            <keypass>key-pass</keypass>
+        </configuration>
+      </execution>
+      <execution>
+        <id>verify-jars</id>
+        <goals>
+          <goal>verify</goal>
+        </goals>
+        <configuration>
+            <!-- Config that applies only to verify -->
+          <certs>true</certs>
+        </configuration>
+      </execution>
+    </executions>
+
+
+  <execution>
+    <id>execution2</id>
+    <phase>install</phase>
+    <configuration>
+      <url>http://www.bar.com/query</url>
+      <timeout>15</timeout>
+      <options>
+        <option>four</option>
+        <option>five</option>
+        <option>six</option>
+      </options>
+    </configuration>
+    <goals>
+      <goal>query</goal>
+    </goals>
+  </execution>
 
 

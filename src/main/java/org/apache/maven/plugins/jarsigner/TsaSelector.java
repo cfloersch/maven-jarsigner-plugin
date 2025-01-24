@@ -19,6 +19,7 @@
 package org.apache.maven.plugins.jarsigner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -58,6 +59,11 @@ class TsaSelector {
 
     /** List of TSA servers. Will at minimum contain a dummy/empty value */
     private final List<TsaServer> tsaServers;
+
+    TsaSelector() {
+        this.tsaServers = Collections.unmodifiableList(Arrays.asList(TsaServer.EMPTY));
+
+    }
 
     TsaSelector(String[] tsa, String[] tsacert, String[] tsapolicyid, String tsadigestalg) {
         List<TsaServer> tsaServersTmp = new ArrayList<>();
