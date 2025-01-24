@@ -4,6 +4,21 @@ Add integration tests (Sign)
 
 
 
+When it comes to jarsigner mojo, I'd love to learn how to take configuration values
+  as multi-faceted inputs like the following:
+
+  <provider>
+     <class>xpertss.crypto.kms.provider.KmsProvider</class>
+     <arg>SomeStringArg</arg>
+  </provider>
+  <digest>
+     <algorithm>SHA-256</algorithm>
+     <provider>SUN</provider>
+  </digest>
+
+
+
+
 So the current maven-jarsigner-plugin operates by invoking the command line jarsigner.
   I want to create a new one that operates by calling the methods in the main.class
   associated with the jarsigner in the SUN code base. I will probably extract the
