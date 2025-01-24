@@ -5,17 +5,11 @@ import org.codehaus.plexus.util.StringUtils;
 
 public class TsaSpec {
 
-    @Parameter(required = false)
     private String cert;
-
-    @Parameter(required = false)
     private String uri;
-
-    @Parameter(required = false)
     private String policyId;
-
-    @Parameter(required = false)
     private String digestAlg;
+
 
     public String getCert()
     {
@@ -57,16 +51,12 @@ public class TsaSpec {
         this.digestAlg = digestAlg;
     }
 
-    public boolean isNull()
-    {
-        return isEmpty(uri) && isEmpty(cert) && isEmpty(digestAlg) && isEmpty(policyId);
-    }
 
     public int validCount()
     {
         int count = 0;
-        if(!isEmpty(uri)) count++;
-        if(!isEmpty(cert)) count++;
+        if(StringUtils.isNotEmpty(uri)) count++;
+        if(StringUtils.isNotEmpty(cert)) count++;
         return count;
     }
 
@@ -91,10 +81,5 @@ public class TsaSpec {
         return builder.insert(0, "{").append("}").toString();
     }
 
-
-    private static boolean isEmpty(String str)
-    {
-        return str == null || str.isEmpty();
-    }
 
 }
