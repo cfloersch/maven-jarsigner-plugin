@@ -93,9 +93,9 @@ public class SimpleDigestTest {
       attributes.put("Name", "com/manheim/simulcast/biddisplay/DefaultFlashingStrategy$LaneModelEventHandler.class");
       attributes.put("SHA-256-Digest","3qbfZ3CnHmSK1smtxKx2KI+3qOyfTvm7loN2WdG3qYU=");
       byte[] encoded = ArchiveUtils.encodeAttributes(attributes);
-      assertTrue(encoded[70] == (byte) 0x0D);   // zero based
-      assertTrue(encoded[71] == (byte) 0x0A);
-      assertTrue(encoded[72] == (byte) 0x20);
+      assertEquals(encoded[70], (byte) 0x0D);   // zero based
+      assertEquals(encoded[71], (byte) 0x0A);
+      assertEquals(encoded[72], (byte) 0x20);
       System.out.println(new String(encoded, StandardCharsets.UTF_8));
 
    }
