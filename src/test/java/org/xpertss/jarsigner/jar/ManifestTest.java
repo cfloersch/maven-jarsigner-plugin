@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -98,19 +97,25 @@ class ManifestTest {
    @Test
    public void testEmptyManifest() throws Exception
    {
-      Manifest.parse(new ByteArrayInputStream(DATA));
+      Manifest manifest = Manifest.parse(new ByteArrayInputStream(DATA));
+      assertEquals("1.0", manifest.getMain().getAttribute(Manifest.MANIFEST_VERSION));
+      assertEquals(2, manifest.getMain().size());
+      assertEquals(0, manifest.size());
    }
 
    @Test
    public void testPartialManifest() throws Exception
    {
-      Manifest.parse(load("PARTIAL.MF"));
+      Manifest manifest = Manifest.parse(load("PARTIAL.MF"));
+      assertEquals("1.0", manifest.getMain().getAttribute(Manifest.MANIFEST_VERSION));
+      assertEquals(5, manifest.getMain().size());
+      assertEquals(0, manifest.size());
    }
 
    @Test
    public void testCorruptHeaderManifest() throws Exception
    {
-      IOException ex = assertThrows(IOException.class, () -> {
+      CorruptManifestException ex = assertThrows(CorruptManifestException.class, () -> {
             Manifest.parse(load("CORRUPT.MF"));
          });
       assertEquals("invalid attribute", ex.getMessage());
@@ -120,7 +125,7 @@ class ManifestTest {
    @Test
    public void testCorruptSectionManifest() throws Exception
    {
-      IOException ex = assertThrows(IOException.class, () -> {
+      CorruptManifestException ex = assertThrows(CorruptManifestException.class, () -> {
          Manifest.parse(load("CORRUPT-SECTION.MF"));
       });
       assertEquals("invalid attribute", ex.getMessage());
@@ -130,13 +135,27 @@ class ManifestTest {
    @Test
    public void testDuplicateSectionManifest() throws Exception
    {
-      Manifest.parse(load("DUPLICATE-SECTION.MF"));
+      CorruptManifestException ex = assertThrows(CorruptManifestException.class, () -> {
+         Manifest.parse(load("DUPLICATE-SECTION.MF"));
+      });
+      assertEquals("duplicate section found", ex.getMessage());
+      assertNull(ex.getCause());
+   }
+
+   @Test
+   public void testDuplicateAttributeManifest() throws Exception
+   {
+      CorruptManifestException ex = assertThrows(CorruptManifestException.class, () -> {
+         Manifest.parse(load("DUPLICATE-ATTRIBUTE.MF"));
+      });
+      assertEquals("duplicate attribute found", ex.getMessage());
+      assertNull(ex.getCause());
    }
 
    @Test
    public void testGarbageManifest() throws Exception
    {
-      IOException ex = assertThrows(IOException.class, () -> {
+      CorruptManifestException ex = assertThrows(CorruptManifestException.class, () -> {
          Manifest.parse(load("GARBAGE.MF"));
       });
       assertEquals("invalid attribute", ex.getMessage());

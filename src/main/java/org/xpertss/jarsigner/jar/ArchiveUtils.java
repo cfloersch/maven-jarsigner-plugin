@@ -91,9 +91,12 @@ public class ArchiveUtils {
             } else {
                String[] nameValue = line.split(":\\s+");
                if(nameValue.length != 2) {
-                  throw new IOException("invalid attribute");
+                  throw new CorruptManifestException("invalid attribute");
                }
-               attributes.put(nameValue[0], nameValue[1]);
+               if(attributes.put(nameValue[0], nameValue[1]) != null) {
+                  // resulting manifest will be modified (signatures invalid)
+                  throw new CorruptManifestException("duplicate attribute found");
+               }
                previous = nameValue[0];
             }
          }

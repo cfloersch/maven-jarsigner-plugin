@@ -151,6 +151,11 @@ public class Manifest {
       modified = true;
    }
 
+   public int size()
+   {
+      return sections.size();
+   }
+
 
    /**
     * Will indicate that the manifest was modified and that the existing signatures
@@ -207,7 +212,9 @@ public class Manifest {
             byte[] sectionBytes = findNextSection(bin);
             Section section = Section.parse(sectionBytes);
             if(section == null) break;
-            sections.put(section.getName(), section);
+            if(sections.put(section.getName(), section) != null) {
+               throw new CorruptManifestException("duplicate section found");
+            }
          }
       }
       return new Manifest(main, sections);
