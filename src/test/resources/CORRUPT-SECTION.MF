@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Application-Name: Simulcast Supplimental Client
+Archiver-Version: Plexus Archiver
+Permissions: all-permissions
+Created-By: 25.432-b06 (Temurin)
+
+Name: com/manheim/simulcast/cache/Cache.class
+SHA-256-Digest:
+
+Name: com/manheim/simulcast/messaging/Message$MessageIterator.class
+SHA-256-Digest: DZofTBh9WRo73jIqviPg+ADuXwNq3HuwOm5uPvnbILs=

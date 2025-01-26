@@ -2,7 +2,10 @@ package org.apache.maven.plugins.jarsigner;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.nio.file.Path;
+import java.security.Provider;
+import java.security.Security;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -16,7 +19,6 @@ import org.apache.maven.settings.Settings;
 import org.xpertss.jarsigner.JarSignerUtil;
 import org.apache.maven.shared.utils.ReaderFactory;
 import org.apache.maven.shared.utils.StringUtils;
-import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
 import org.apache.maven.shared.utils.io.FileUtils;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcherException;
@@ -35,39 +37,15 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
 
 
 
-    /**
-     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
-     */
-    @Parameter(property = "jarsigner.strict", defaultValue = "false")
-    private boolean strict;
 
 
     /**
      * POJO containing Security Provider configuration
      */
     @Parameter
-    private ProviderSpec provider;
+    private ProviderSpec[] providers;
 
 
-    // TODO Move next two to Sign
-
-    /**
-     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
-     */
-    @Parameter(property = "jarsigner.alias")
-    private String alias;
-
-    /**
-     * POJO containing keystore configuration
-     */
-    @Parameter
-    private KeyStoreSpec keystore;
-
-
-
-
-    // TODO -
-    // private File trustStore;
 
 
 
@@ -172,6 +150,11 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
 
 
 
+
+
+
+
+
     /**
      * TODO Do I need this?
      */
@@ -182,6 +165,12 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     {
         this.securityDispatcher = securityDispatcher;
     }
+
+
+
+
+
+
 
 
 
@@ -209,6 +198,27 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     private void prepareProviders()
        throws MojoExecutionException
     {
+        if (providers != null) {
+            for (ProviderSpec provider: providers) {
+                try {
+                    Class<?> clazz = Class.forName(provider.getClassName());
+                    Provider prov = null;
+                    if (provider.getArgument() != null) {
+                        Constructor<?> c =
+                           clazz.getConstructor(String.class);
+                        prov = (Provider) c.newInstance(provider.getArgument());;
+                    } else {
+                        prov = (Provider) clazz.newInstance();;
+                    }
+                    Security.addProvider(prov);
+                    getLog().info(getMessage("provider.loaded", prov.getName()));
+                } catch (ClassCastException cce) {
+                    throw new MojoExecutionException(String.format(getMessage("provider.class.not.a.provider"), provider.getClassName()));
+                } catch (ReflectiveOperationException  e) {
+                    throw new MojoExecutionException(String.format(getMessage("provider.class.not.found"), provider.getClassName()), e.getCause());
+                }
+            }
+        }
     }
 
 
@@ -220,8 +230,6 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     protected void configure()
        throws MojoExecutionException
     {
-        System.out.println("Keystore: " + keystore);
-        System.out.println("Provider: " + provider);
         // Default implementation does nothing
     }
 
@@ -393,16 +401,6 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
          */
     }
 
-    /**
-     * Executes jarsigner (execute signing or verification for a jar file).
-     *
-     * @throws JavaToolException if jarsigner could not be invoked
-     * @throws MojoExecutionException if the invocation of jarsigner succeeded, but returned a non-zero exit code
-     *
-     * TODO This can go away replaced by an abstract version of processArchive
-     */
-    protected abstract void executeJarSigner()
-            throws JavaToolException, MojoExecutionException;
 
 
 

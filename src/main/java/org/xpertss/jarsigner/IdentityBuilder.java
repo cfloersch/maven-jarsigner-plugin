@@ -248,6 +248,9 @@ public class IdentityBuilder {
          }
 
          PrivateKey privateKey = priKeyEntry.getPrivateKey();
+
+         // TODO Validate that the public key cert is the cert associated with the private key
+
          CertPath finalCp = cp;
          return new Identity() {
             @Override
@@ -273,6 +276,9 @@ public class IdentityBuilder {
             {
                return finalCp;
             }
+
+            @Override
+            public String toString() { return String.format("%s (%s)", alias, privateKey.getAlgorithm()); }
          };
       } finally {
          destroy(storePass);

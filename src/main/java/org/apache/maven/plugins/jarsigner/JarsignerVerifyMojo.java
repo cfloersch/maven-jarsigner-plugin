@@ -98,7 +98,6 @@ public class JarsignerVerifyMojo extends AbstractJarsignerMojo {
         }
     }
 
-    @Override
     protected void executeJarSigner()
             throws JavaToolException, MojoExecutionException {
         /*

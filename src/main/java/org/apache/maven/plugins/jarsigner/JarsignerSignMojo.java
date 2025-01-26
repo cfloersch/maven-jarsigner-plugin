@@ -23,7 +23,16 @@ import javax.inject.Named;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertPathValidatorException;
+import java.security.cert.CertificateException;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -38,6 +47,9 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.maven.shared.utils.StringUtils;
+import org.xpertss.jarsigner.Identity;
+import org.xpertss.jarsigner.IdentityBuilder;
 import org.xpertss.jarsigner.JarSignerUtil;
 import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
@@ -48,18 +60,54 @@ import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
 @Mojo(name = "sign", defaultPhase = LifecyclePhase.PACKAGE, threadSafe = true, requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME)
 public class JarsignerSignMojo extends AbstractJarsignerMojo {
 
+
+    /**
+     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
+     */
+    @Parameter(property = "jarsigner.alias")
+    private String alias;
+
+    /**
+     * POJO containing keystore configuration
+     */
+    @Parameter
+    private KeyStoreSpec keystore;
+
+
+    /**
+     * Trusted certificates store. Must be a JKS KeyStore
+     */
+    private File truststore;
+
+
+    /**
+     * Location of the extra certificate chain file. See
+     * <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
+     */
+    @Parameter(property = "jarsigner.certchain", required = false)
+    private File certchain;
+
+
     /**
      * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
      */
     @Parameter(property = "jarsigner.keypass")
     private String keypass;
 
+
+    /**
+     * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
+     */
+    @Parameter(property = "jarsigner.strict", defaultValue = "false")
+    private boolean strict;
+
+
+
     /**
      * See <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
      */
     @Parameter(property = "jarsigner.sigfile")
     private String sigfile;
-
 
     /**
      * POJO to optionally specify the signature algorithm and provider
@@ -88,12 +136,6 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
     @Parameter(property = "jarsigner.removeExistingSignatures", defaultValue = "false")
     private boolean removeExistingSignatures;
 
-    /**
-     * Location of the extra certificate chain file. See
-     * <a href="https://docs.oracle.com/javase/7/docs/technotes/tools/windows/jarsigner.html#Options">options</a>.
-     */
-    @Parameter(property = "jarsigner.certchain", required = false)
-    private File certchain;
 
 
 
@@ -141,6 +183,10 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
 
     /** Exponent limit for exponential wait after failure function. 2^20 = 1048576 sec ~= 12 days. */
     private static final int MAX_WAIT_EXPONENT_ATTEMPT = 20;
+
+
+
+    private Identity identity;
 
     @Inject
     public JarsignerSignMojo(@Named("mng-4384") SecDispatcher securityDispatcher)
@@ -197,6 +243,8 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
             threadCount = 1;
         }
 
+
+
         if(tsa == null) {
             tsaSelector = new TsaSelector();
         } else {
@@ -214,6 +262,33 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
             tsaSelector = new TsaSelector();    // TODO
             //tsaSelector = new TsaSelector(tsa, tsacert, tsapolicyid, tsadigestalg);
         }
+
+
+        System.out.println("Keystore: " + keystore);
+
+        try {
+            IdentityBuilder builder = new IdentityBuilder();
+            builder.strict(strict).trustStore(JarSignerUtil.toPath(truststore))
+               .certificatePath(JarSignerUtil.toPath(certchain))
+               .alias(alias).keyPass(create(keypass));
+            if(keystore != null) {
+                builder.keyStore(JarSignerUtil.toPath(keystore.getPath()))
+                   .storePass(create(keystore.getStorePass()));
+                if(StringUtils.isEmpty(keystore.getProvider())) {
+                    builder.storeType(keystore.getStoreType());
+                } else {
+                    builder.storeType(keystore.getStoreType(), keystore.getProvider());
+                }
+            }
+            // TODO Impl TSA
+            this.identity = builder.build();
+            getLog().debug("Loaded identity: " + identity);
+
+        } catch(Exception e) {
+            throw new MojoExecutionException(e);
+        }
+
+
     }
 
 
@@ -258,7 +333,6 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
      *
      * @throws MojoExecutionException if all signing attempts fail
      */
-    @Override
     protected void executeJarSigner()
             throws JavaToolException, MojoExecutionException {
 
@@ -333,5 +407,12 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
                 throw new MojoExecutionException("Thread interrupted while waiting after failure", e);
             }
         }
+    }
+
+
+    KeyStore.PasswordProtection create(String passwd)
+    {
+        if(StringUtils.isEmpty(passwd)) return null;
+        return new KeyStore.PasswordProtection(passwd.toCharArray());
     }
 }

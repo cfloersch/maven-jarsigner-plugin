@@ -1,11 +1,25 @@
-package org.xpertss.jarsigner;
+package org.xpertss.jarsigner.jar;
 
-import java.security.PrivateKey;
+
+import org.xpertss.jarsigner.TSASigner;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.security.MessageDigest;
+import java.security.Signature;
+import java.util.Base64;
 import java.util.Locale;
+import java.util.Map;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
+import java.util.stream.Stream;
 
 
 
 /*
+
+JAR File Specification + Signature Specs
+https://docs.oracle.com/javase/8/docs/technotes/guides/jar/jar.html
 
 Example
   Notice line length is limited to 70 chars, wrapped line is indented
@@ -55,35 +69,55 @@ SHA-256-Digest: Y1ZsR79kkhSexPsCdHJcTKVUo9/Tek9suk9H3+V5adk=
 public class SignatureFile {
 
    private final String name;
+   private final Main main;
+   private final Map<String,Section> sections;
 
-   private SignatureFile(String name)
+   SignatureFile(String name, Main main, Map<String,Section> sections)
    {
       this.name = name;
+      this.main = main;
+      this.sections = sections;
    }
 
-   public String getName()
+
+
+   public Main getMain()
    {
-      return name;
+      return main;
+   }
+
+   public Section getSection(String name)
+   {
+      return sections.get(name);
+   }
+
+   public Stream<Section> sections()
+   {
+      return sections.values().stream();
    }
 
 
 
-   public byte[] generateBlock()
+
+
+
+   public SignatureBlock generateBlock(Signature signature, TSASigner tsaSigner)
    {
       // TODO Needs Signature and TSASigner.. Generates PKCS#7 signature block
-      return null;
+
+
+      return new SignatureBlock(name, algorithmFor(signature.getAlgorithm()), null);
    }
 
 
    // get .DSA (or .DSA, .EC) file name
-   public String getBlockName(PrivateKey privateKey)
-   {
-      String keyAlgorithm = privateKey.getAlgorithm();
-      return "META-INF/" + name + "." + keyAlgorithm;
-   }
 
 
 
+
+
+
+   
    // get .SF file name
    public String getMetaName()
    {
@@ -91,14 +125,29 @@ public class SignatureFile {
    }
 
 
-
-   public static SignatureFile create(String name)
+   public void write(OutputStream out)
+      throws IOException
    {
-      return new SignatureFile(encodeName(name));
    }
 
 
-   
+
+
+
+
+
+   private static String algorithmFor(String sigalg)
+   {
+      if(sigalg.startsWith("RSA")) {
+         return "RSA";
+      } else if(sigalg.endsWith("ECDSA")) {
+         return "EC";
+      } else if(sigalg.endsWith("DSA")) {
+         return "DSA";
+      }
+      throw new RuntimeException("Unknown signature algorithm - " + sigalg);
+   }
+
    private static String encodeName(String sigfile)
    {
       if (sigfile.length() > 8) {

@@ -42,9 +42,10 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  * @author Tony Chemit
  * @since 1.0
  */
-public class JarSignerUtil {
+public final class JarSignerUtil {
 
-    private JarSignerUtil() {
+    private JarSignerUtil()
+    {
         // static class
     }
 
@@ -55,7 +56,8 @@ public class JarSignerUtil {
      * @param file The file to check, must not be <code>null</code>.
      * @return <code>true</code> if the file looks like a ZIP file, <code>false</code> otherwise.
      */
-    public static boolean isZipFile(final File file) {
+    public static boolean isZipFile(final File file)
+    {
         boolean result = false;
 
         try (ZipInputStream zis = new ZipInputStream(Files.newInputStream(file.toPath()))) {
@@ -74,7 +76,9 @@ public class JarSignerUtil {
      * @param jarFile The JAR file to unsign, must not be <code>null</code>.
      * @throws IOException when error occurs during processing the file
      */
-    public static void unsignArchive(Path jarFile) throws IOException {
+    public static void unsignArchive(Path jarFile)
+       throws IOException
+    {
 
         String filename = jarFile.getFileName().toString();
         Path unsignedPath = jarFile.toAbsolutePath().resolveSibling(filename + ".unsigned");
@@ -116,7 +120,8 @@ public class JarSignerUtil {
      * @return the build manifest with no digest attributes
      * @since 1.3
      */
-    protected static Manifest buildUnsignedManifest(Manifest manifest) {
+    protected static Manifest buildUnsignedManifest(Manifest manifest)
+    {
         Manifest result = new Manifest(manifest);
         result.getEntries().clear();
 
@@ -149,7 +154,9 @@ public class JarSignerUtil {
      *         archive does not contain any signature files.
      * @throws IOException if scanning <code>jarFile</code> fails.
      */
-    public static boolean isArchiveSigned(final Path jarFile) throws IOException {
+    public static boolean isArchiveSigned(final Path jarFile)
+       throws IOException
+    {
         if (jarFile == null) {
             throw new NullPointerException("jarFile");
         }
@@ -168,6 +175,12 @@ public class JarSignerUtil {
         }
     }
 
+    
+    public static Path toPath(File file)
+    {
+        return (file != null) ? file.toPath() : null;
+    }
+
     /**
      * Checks whether the specified JAR file entry denotes a signature-related file, i.e. matches
      * <code>META-INF/*.SF</code>, <code>META-INF/*.DSA</code>, <code>META-INF/*.RSA</code> or
@@ -176,7 +189,8 @@ public class JarSignerUtil {
      * @param entryName The name of the JAR file entry to check, must not be <code>null</code>.
      * @return <code>true</code> if the entry is related to a signature, <code>false</code> otherwise.
      */
-    protected static boolean isSignatureFile(String entryName) {
+    protected static boolean isSignatureFile(String entryName)
+    {
         if (entryName.regionMatches(true, 0, "META-INF", 0, 8)) {
             entryName = entryName.replace('\\', '/');
 
@@ -190,7 +204,8 @@ public class JarSignerUtil {
         return false;
     }
 
-    protected static boolean isManifestFile(String entryName) {
+    protected static boolean isManifestFile(String entryName)
+    {
         if (entryName.regionMatches(true, 0, "META-INF", 0, 8)) {
             entryName = entryName.replace('\\', '/');
 
@@ -201,7 +216,8 @@ public class JarSignerUtil {
         return false;
     }
 
-    private static boolean endsWithIgnoreCase(String str, String searchStr) {
+    private static boolean endsWithIgnoreCase(String str, String searchStr)
+    {
         return str.regionMatches(true, str.length() - searchStr.length(), searchStr, 0, searchStr.length());
     }
 }

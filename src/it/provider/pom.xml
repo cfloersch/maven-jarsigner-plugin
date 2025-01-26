@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.apache.maven.its.jarsigner</groupId>
+  <artifactId>test</artifactId>
+  <version>1.0</version>
+  <packaging>jar</packaging>
+
+  <description>
+    Tests the signing of a simple JAR using an attached provider.
+  </description>
+
+  <properties>
+    <maven.test.skip>true</maven.test.skip>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.2</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.0.4</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.3.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.xpertss.maven.plugins</groupId>
+        <artifactId>jarsigner-maven-plugin</artifactId>
+        <version>@project.version@</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.xpertss</groupId>
+            <artifactId>aws-kms</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <providers>
+            <provider>
+              <classname>xpertss.crypto.kms.provider.KmsProvider</classname>
+            </provider>
+          </providers>
+        </configuration>
+        <executions>
+          <execution>
+            <id>sign-jars</id>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+            <configuration>
+              <alias>test-01</alias>
+              <keystore>
+                <path>NONE</path>
+                <storetype>KMS</storetype>
+              </keystore>
+              <certchain>@project.basedir@/src/it/kms-cert.pem</certchain>
+              <sigfile>TESTING</sigfile>
+            </configuration>
+          </execution>
+          <execution>
+            <id>verify-jars</id>
+            <goals>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

@@ -1,1807 +1,1807 @@
-Manifest-Version: 1.0
-Application-Name: Simulcast Supplimental Client
-Archiver-Version: Plexus Archiver
-Permissions: all-permissions
-Created-By: 25.432-b06 (Temurin)
+Signature-Version: 1.0
+SHA-256-Digest-Manifest-Main-Attributes: KUQaWc0H7aS83+OjigPzkJT/fPgyZ
+ p7Zb4k9cvLoVOc=
+SHA-256-Digest-Manifest: Kds7VEe/DjHhdchwF3rRwRQUrwwHyMm92Nmi0dCZSZc=
+Created-By: 1.8.0_432 (Temurin)
 
 Name: com/manheim/simulcast/cache/Cache.class
-SHA-256-Digest: y81kVgzNYH1L8b58IFVOQMS/Se1Jd1ihwd9All/O0xk=
+SHA-256-Digest: WHmcmNAoJPQ295M7raATOqQLnOHhfN1DLKZ0xwvyndA=
 
 Name: com/manheim/simulcast/messaging/Message$MessageIterator.class
-SHA-256-Digest: DZofTBh9WRo73jIqviPg+ADuXwNq3HuwOm5uPvnbILs=
+SHA-256-Digest: OXsuYkqFB6ifklZ7ScBh0N1Wb2iEWmJA6IMSdstVZ64=
 
 Name: com/manheim/simulcast/swing/Adapted.class
-SHA-256-Digest: 7AYE77uoZcQXcIi5HhF1H2rQO0/M1qqmLU11qo7Y73A=
+SHA-256-Digest: U1pybKdULPdFf/bUJkQ9AmGvWFtRNI8ZMrJtvsmoJe0=
 
 Name: com/manheim/simulcast/core/impl/NoBuyPermission.class
-SHA-256-Digest: G2B2y+XaM2RrBj31MRv3MlwNmH6LwCN8GobAQR34Cgw=
+SHA-256-Digest: F8s1XJqfw6qO1B6HtYwuNe6C4U5qk7rc9KYEcxMxZ74=
 
 Name: com/manheim/simulcast/messaging/messages/OKSALEMessage.class
-SHA-256-Digest: rUB5aMR8Oe6E5wMi6RdKlAKKz2p5IVSXlgJLu5Tk7RY=
+SHA-256-Digest: cnhucqOfUptZ3UbFJivnEH8hnQujGzTrT3KObJZ6znI=
 
 Name: META-INF/Facility.properties
-SHA-256-Digest: UlK6hhnTa8UuTHX+Jd1MukMlrkTE3clpJQr5kVXMvwg=
+SHA-256-Digest: AYab7WJP27eHB1Q5ZyYFv2oQ9dX/rB5xwP2Xi5RxqUk=
 
 Name: com/manheim/simulcast/utilities/collections/FunctionUtils.class
-SHA-256-Digest: JHF24sAFyTgEseuetkJAZV9rVZukhHQ+nf2UPFmnZls=
+SHA-256-Digest: 1wmFEj2OmPKWdVvLEBP7KzWoIfOv235mbnPvw5xCAVo=
 
 Name: com/manheim/simulcast/biddisplay/DefaultFlashingStrategy$LaneMod
  elEventHandler.class
-SHA-256-Digest: EQKGeAEshx7HObh9y1v32VBZe6ChUHcsjiRqOM9Mmh4=
+SHA-256-Digest: 3qbfZ3CnHmSK1smtxKx2KI+3qOyfTvm7loN2WdG3qYU=
 
 Name: META-INF/Errors.properties
-SHA-256-Digest: ea77EhLIz9U7PdLYsrdz50NGXoK+AW4H4slje7JM3r8=
+SHA-256-Digest: XAxJR4UDXPlX1D6Pie4vYLml+w14eACBNFNe6vHxBHA=
 
 Name: com/manheim/simulcast/client/transport/Transport.class
-SHA-256-Digest: NCOTaZ0RDQXWI/3lHSGtPM+fc1LStFyM16K4Nt399k8=
+SHA-256-Digest: EfZvfmNVR3TvXR/fUPJUaVq6p0xBfe6RDf0iSDe+fkI=
 
 Name: com/manheim/simulcast/biddisplay/OnlineBidAcceptedFlashingStrate
  gy$BlockEventHandler.class
-SHA-256-Digest: RyUqifjJgKPvnfo+eBT1LH2vURysKOWQD6i/iWdxZNc=
+SHA-256-Digest: Yf86U2+V/0U7jm14TN98N5NiDojLWAl8mJSxW6I7JR0=
 
 Name: com/manheim/simulcast/messaging/json/JsonMessageDeserializer$1.c
  lass
-SHA-256-Digest: lcpQJADR3M6/bc6IHtzl/ayAF2L0BaTrl6XxnCo2ewA=
+SHA-256-Digest: Y1ZsR79kkhSexPsCdHJcTKVUo9/Tek9suk9H3+V5adk=
 
 Name: com/manheim/simulcast/biddisplay/LightComponent.class
-SHA-256-Digest: 1dpMe/ndeR8+uz6tVWXOw4MXsah2w8YXOZE2fiUSgGg=
+SHA-256-Digest: w2cP8fV6Q5WcQtelAEp0/2ON+MfOSF/sPs/lvKo7ECQ=
 
 Name: com/manheim/simulcast/utilities/EvictingQueue$Itr.class
-SHA-256-Digest: 2AXQgqfGgnt9WmAgMMgL1Y4yVOTBphODi9WKloR0S9Y=
+SHA-256-Digest: C/PHTJJ3ymN3I9yUrg2qoFYCjxZysNSHZd2uun5Jlyw=
 
 Name: com/manheim/simulcast/core/PurchaseVehicleInfo.class
-SHA-256-Digest: mypEtSl7o6ZOo67lrU8J6/nwdxnpiK9Zs+ypVqZ/WoM=
+SHA-256-Digest: 2IFq8IEJI3aDsVjf0AyTi2+PmTscMq+JG4qGLRo6csE=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightWhiteOff.jpg
-SHA-256-Digest: 5LZV+EiuEfYvomfUFDkq71x4PwkxQ6KMzVZayzG2Hi8=
+SHA-256-Digest: cYcVgsnh7knOyMS6rvILgo/SpD/Jq5hNORbR3z9dAHU=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightPurpleOn.jpg
-SHA-256-Digest: GY/yrojOW5gCzd1kV8nUlpfb+5CAwkCEC3TwXasXHDo=
+SHA-256-Digest: YybqtPOUBT/Jb0WGWM5qd4zFhifk0odvHkFsX6+Di74=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightGreenOff.jpg
-SHA-256-Digest: kU6tT1P2ypEEgCCClKY4BcV8rhGv/xUeswlFxxz7w1o=
+SHA-256-Digest: IQ248tMua8PG/d0or5agCv9bVdYKLEOpvPuRMCl3tAY=
 
 Name: com/manheim/simulcast/core/VehicleInfo.class
-SHA-256-Digest: Rf3BHXrXY9vnjoI46RKaty9KUsn1hzq4Saj1wAKRm7w=
+SHA-256-Digest: MzZg9sNK58l25tP3jmBw0GLBVGDzCZL4fjdv6akUSnc=
 
 Name: com/manheim/simulcast/core/BidderRegistrationInfo.class
-SHA-256-Digest: S3jRyEeVuf9XFM6drKko7YuhgugfWj3rQyb6zRiVZ2c=
+SHA-256-Digest: gdWtobHBtvZF9y4kqCbkimUQ3IuzGc4WfyqFZxySJFA=
 
 Name: com/manheim/simulcast/core/impl/BuyerImpl.class
-SHA-256-Digest: dTDI0KWB8UxEDu74KR8Wx4yue0dpDkopKOSxJkOzQE8=
+SHA-256-Digest: Z4Ei9tx491iUjlh4o3BMsfCsQ5nY7uQ0DlubchxdhDU=
 
 Name: com/manheim/simulcast/lang/Warranty.class
-SHA-256-Digest: b9QeIwY0ELPjeIVcDZ/6cm8p+/rojAPLbhVLDIrM/lk=
+SHA-256-Digest: cYWl37pTLZNVvjmtVaqNWzC9TfwAg31fXBJWzknZATY=
 
 Name: com/manheim/simulcast/cache/ServeStaleLoadingCache.class
-SHA-256-Digest: GVT6xhjuBhzPV4QhLWtg0KYz0DigxSF6ayjH9zPTb9Y=
+SHA-256-Digest: 8atsgeHAmm/LqyuJ4MTZIOl1j5s2b2JDFxy2W7gsxOU=
 
 Name: com/manheim/simulcast/messaging/json/JsonMessageSerializer$Defau
  ltTransformationRule.class
-SHA-256-Digest: jGx3HxrfeUCtPNt8Tgb+c2QT2pWkwpaN7EfNQ3JM7Yc=
+SHA-256-Digest: lRCdCHYmumhIB9xCB0f4SHXKQ89m7nOGp8VlND9BbYk=
 
 Name: com/manheim/simulcast/utilities/ResourceLoader.class
-SHA-256-Digest: P99W943TZx3bVyXgFPCICcv7rmAZ8oVB5yjW8ectqgE=
+SHA-256-Digest: R03LzGhVk45C5U4LhTpx6KkU0gqh9h/25YqPDnn50Zs=
 
 Name: com/manheim/simulcast/core/factory/TokenDataFactory.class
-SHA-256-Digest: EXmGaVc6YMwE8K6ApSIoXQk2/4/5/UQQzWiQO/bWs6Q=
+SHA-256-Digest: Le7r7w1QITN3YD8yHr8LkylD8ESy78M7Ixep0MsYspA=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightYellowOff.jpg
-SHA-256-Digest: rlokGeY0MKIh+EHqNnet1hrEDfMn68/Kk+3VPTlGtmo=
+SHA-256-Digest: iuzTqKo2WDpoy5Bm8b9HHjIliOBHG5BtpDOkLFovq1A=
 
 Name: com/manheim/simulcast/biddisplay/standard/fr_CA/lightBidReceived
  On2-new.gif
-SHA-256-Digest: u3qgW4cEL0v0r49Bvh39ijXB5699z4Qha/T4gdxrJDw=
+SHA-256-Digest: FXVKrqcdm6XhUxbLIoU5iMzktttwDIpiUJ5OYxwowXs=
 
 Name: com/manheim/simulcast/utilities/Utility.class
-SHA-256-Digest: bAZu1JViP+d/an4x9nony16+Ihr5BCj3EKMo+z/jLDQ=
+SHA-256-Digest: BsRFOuOwxZBIz3qt55WduKbTf7PCEjHCoXwGg4Qav+w=
 
 Name: com/manheim/simulcast/utilities/LocaleUtils.class
-SHA-256-Digest: GCXfb7Gt90uN/sW9PPPFAxsxYtBYPCTZJdUrLQe+Tjs=
+SHA-256-Digest: Jy8YddDsHm+t7AzT/svkEqA66LFbTs7rTDEWFqhJKnk=
 
 Name: com/manheim/simulcast/core/proxy/ProxyWatchChanges.class
-SHA-256-Digest: hwFlXgqlcQG0WWZDcv4LD6wvBzkMbiD4DZAe1HJTZIY=
+SHA-256-Digest: Br/o5ZPh/oMXFvdnTr3wp/6SlWt6LsB4uqHGMrGvjts=
 
 Name: com/manheim/simulcast/lang/BasicContext.class
-SHA-256-Digest: KON0hK97Iyf10+VgLMwYePAYlMFk8Oq6DTZR/yfepeY=
+SHA-256-Digest: bkafLOedDiOMDyJQZhVT/HnceUisphOL3OUl4dre6/g=
 
 Name: com/manheim/simulcast/core/impl/RunPermissionKeyImpl.class
-SHA-256-Digest: gU+IWNJGKWmY42n9LrPszQh8R1LCxJYky6SC7zkU8Yw=
+SHA-256-Digest: Ak3HqSBuX92QqkqCJRh1G0fPhrpajG7sqRuAxcD9giM=
 
 Name: com/manheim/simulcast/core/util/TimeoutCache.class
-SHA-256-Digest: 5tnID2BzyZdzcyrEe//07kNOWI+4NH1oeuFTBg4vlTg=
+SHA-256-Digest: dN6n08NupJ6QPVIcJ2vKOJzYA1eIVGoX2PlKTlQpTlE=
 
 Name: com/manheim/simulcast/biddisplay/43/BidDisplayClientPanel.proper
  ties
-SHA-256-Digest: XGUP4VNs5vzS1NrMVIUm9/3aLXgexBrAnP8zFU9+EZ8=
+SHA-256-Digest: nGowg0j6eT4/P0CxZmIhGkFk1pHNK3t7w0rV6WS4ODo=
 
 Name: com/manheim/simulcast/swing/ModelAdapter.class
-SHA-256-Digest: VCMhqZ6LwGPLBsWG0FzZj6LT9hQ7fu6wDeeM/HDG4Fw=
+SHA-256-Digest: Hx94Ydak+GhGhzcvIuNdeXWfxQjfwqYiCdcJ0dysbuU=
 
 Name: com/manheim/simulcast/swing/UIContext.class
-SHA-256-Digest: Nv1nrWj8bHC5es67ZsS9hpLB11fJmz89UnFjE/bHss8=
+SHA-256-Digest: 6tk+TKi60R7gjJUijJerbMptNpvCJgAVWEqSztO8lls=
 
 Name: com/manheim/simulcast/swing/SimulcastClientButton.class
-SHA-256-Digest: oeqCJQ6QmcbpnfkMAodKfvwNERWOWPeWBExtnGz2DgU=
+SHA-256-Digest: AYz0Z2idicc6qtlmvL6kivnN5LqVqYX/ZpTcxIVNAOo=
 
 Name: com/manheim/simulcast/utilities/MiscUtils.class
-SHA-256-Digest: Nwa6LSz7aZOQ2diD1MaKk8PSZj4Kg/szD50RWFFl2wo=
+SHA-256-Digest: KdShblVsNb1bC1GjOwsEOsUwVdAgH2j4UgTP6vyJK4I=
 
 Name: com/manheim/simulcast/biddisplay/ApplicationResources_fr_CA.prop
  erties
-SHA-256-Digest: 4Q1OqyTOsy0136pqi9sTL1VK1pqnf3XSUaBzhp/9dPk=
+SHA-256-Digest: yE0uqoFMy35sTz+AAazCLgr+ftyk4tAQJszQieg5zHA=
 
 Name: com/manheim/simulcast/messaging/MessageListenerAdapter.class
-SHA-256-Digest: mw4n7vXQAsDgQbzlVo4jcwQoceQc4xOHUSJKWJibHwI=
+SHA-256-Digest: /95ZVmKRfO4sBdEkeF9VFJPwZ3opExsi/g/J3J9oE/o=
 
 Name: com/manheim/simulcast/utilities/PhoneNumber.class
-SHA-256-Digest: 5TALzri21yjyVjy+JEfm0quchkLt52qoes2ZZ0d8anQ=
+SHA-256-Digest: O7i+KEPUXdFfRaH6GisTCK8iwLUU/INJnM5UJbcaDng=
 
 Name: com/manheim/simulcast/biddisplay/DefaultFlashingStrategy.class
-SHA-256-Digest: 9uS1sQm6xQQaUuZMKpGcUNuWggvQrdgJ+un2XWi1d6w=
+SHA-256-Digest: PjSmhUwNshht3Jw2aoDQZSVNzRel0tagZxl/2d1PqsE=
 
 Name: com/manheim/simulcast/utilities/UserClientInfo.class
-SHA-256-Digest: tSjKyb9Dwv1wI6eOdITpcAQHdF3F73gXcSGhe980kr4=
+SHA-256-Digest: FlByq6/nLNnugXCxTAQl8ly2mwL3ZV4+V0QzgO93if4=
 
 Name: com/manheim/simulcast/utilities/CalendarUtils.class
-SHA-256-Digest: elb7Sy8j5G87/MGih/T9/vCEKQ7kRLYb1KUGcq3eB64=
+SHA-256-Digest: aAckBXV46osJKXicb0VAGQcVsIeM4cGEPCihkduBu9Q=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightBlueOn.jpg
-SHA-256-Digest: HjZTHQk2lyTgHiUpNl2rEpKXBKGD86MdEGSkD8J87sA=
+SHA-256-Digest: mAhlMv+xy8l8znFQ/Mk6BpAc/EdkAwBEUsJ6jVgMstQ=
 
 Name: com/manheim/simulcast/core/domain/impl/property/SaleHID.class
-SHA-256-Digest: uGh98YVVevjx/cp7HErytmWXLt59q0Dd4RAIeNz9CFg=
+SHA-256-Digest: v7AvqwittbdP0ax/YYKt02Sni2U21mwdW6suL7Ihs30=
 
 Name: com/manheim/simulcast/swing/TimerThread.class
-SHA-256-Digest: zNEoFcXDtFvyuSBpunVmR+FLwA40XNE/96d+YGFSbFY=
+SHA-256-Digest: a0XCqNsM+UkrOyvhjWhP1vF6O4rQPikGxd/so63Rxs0=
 
 Name: com/manheim/simulcast/messaging/messages/TXTMSGMessage.class
-SHA-256-Digest: QgqsQU+sGEgx+dnVDFfkDiFA/hNwJyplB7b0FmVLSB4=
+SHA-256-Digest: ZFnlpGybqIqavxQuA3jANc5skMwfIbq7Iu/Hgf+f7cw=
 
 Name: com/manheim/simulcast/block/ConnectDialog.class
-SHA-256-Digest: tn0MjQeBwHwpyaO7OmDdZzv9uG+AdNJOiJ01BKP7BkY=
+SHA-256-Digest: CRkdTqZX5nFNFjobzL8/CYk9gG+58PVeKjOiygMBz7I=
 
 Name: com/manheim/simulcast/swing/ContainerFactory.class
-SHA-256-Digest: dfODLo+n9RBvLVTvcpyo6kmR2ajVrgsZgtXMQHaCt5o=
+SHA-256-Digest: ZGRQ4TZF2VA7wDdpCDzKiMm/cyUMA+soM+QGyXDSoXs=
 
 Name: com/manheim/simulcast/core/impl/SellPermissionImpl.class
-SHA-256-Digest: bpxCBoJHxY6Qve34Mf7y/vdgDGwjg4jPcTzsDw1z874=
+SHA-256-Digest: A8JLXZaNTRr6j51b/UTLpXgmRZoLrP2CjdXhdVWYUmA=
 
 Name: com/manheim/simulcast/core/Keys.class
-SHA-256-Digest: rgZrFhY3mTpo7kGqHGl6EQ/IBAC8AATT3kH5CbEjDh4=
+SHA-256-Digest: yCi4hgYnfJUhueSfN2ZGnI5muTZ6ffX4mfQxC9qOsjw=
 
 Name: com/manheim/simulcast/messaging/messages/LNECHGMessage.class
-SHA-256-Digest: VGne30LP0cXBCTcZeyV9WIE5Dh3mlGH6/SbAOEUGsqs=
+SHA-256-Digest: r3Sa0D7hcVMgFYaqYw4aaVV0BqZdbZP7epkOx3suSjY=
 
 Name: com/manheim/simulcast/messaging/Attachments.class
-SHA-256-Digest: UasmDLcA0a1qhlR76mgFH3ZB7Jmbqv+NDEJE5yXKiHU=
+SHA-256-Digest: 0aPFEWlcUyHUvY5qRKBdXRHFRwHZUgr+KuSWDK78n2k=
 
 Name: com/manheim/simulcast/swing/BoundedDocument.class
-SHA-256-Digest: 5SbUIQNAMz4Z3KMdosk0yQbvQFgmTyFoYxXASAqlYSo=
+SHA-256-Digest: udNwW5gH1U0NTcnP2ZF7OIrieiBgg9LHohdexwlfv9E=
 
 Name: com/manheim/simulcast/core/TokenData.class
-SHA-256-Digest: NeE0ZZqMwJ304RFOOgAg4YcE1DteWOKpywfPpOgRDWQ=
+SHA-256-Digest: HXElbCoH9gansav5yQ20Uoi6DAhlzpAx0dKVu5Tl5SA=
 
 Name: com/manheim/simulcast/core/OffsiteListingInfo.class
-SHA-256-Digest: bnaJt3+ACZX8TK7yoSjXRoXeTLc6bXp41rhH8bvBikg=
+SHA-256-Digest: J3sAi/fKTM73FVFGcvnne3xeM0Fz4KKVmE1p106ojeY=
 
 Name: com/manheim/simulcast/biddisplay/DefaultFlashComponent.class
-SHA-256-Digest: 74GK7RN54qOtqMcovfwo6LvmyCYAFeMvxwWYhU2QAqI=
+SHA-256-Digest: xLSdWlF17Gy8JrM3SRW6vY8utCk6N/jBxess0+2ZGss=
 
 Name: com/manheim/simulcast/client/transport/BasicTransport.class
-SHA-256-Digest: jiACSfjCY4Agm4ED95jXsz5QvCD2/eZWnMpKKFaTCzM=
+SHA-256-Digest: fGAduEuEBL13n7RjebLpraJ1TBlqeEOYzHODP9tKqXY=
 
 Name: com/manheim/simulcast/utilities/UserClientInfo$1.class
-SHA-256-Digest: LvaZoPKnyFAoODM95PGDDrt+7le753aZj1TlmqkKMLY=
+SHA-256-Digest: ubfssIFu6TgA0RDPMl6PCOrt3RbredesnTTAbNUAnOE=
 
 Name: com/manheim/simulcast/messaging/json/JsonMessageDeserializer$Def
  aultTransformationRule.class
-SHA-256-Digest: y3qkz1IVP7h785nkMSIyaFAaZ/4UIG4boym85NiD6VQ=
+SHA-256-Digest: dJwJNOrlfxc/CytG7N0F0A+b7l97jjBAhfwsQWCssM0=
 
 Name: com/manheim/simulcast/core/RunKey.class
-SHA-256-Digest: Gjh8p8ovJXrAIctiWHzo1oL5BuX4ef7qINyz+tvtldY=
+SHA-256-Digest: 7rVU5NBekR5DIHPMiesJloAih8L2Y1Ogz9W+E+YQdvI=
 
 Name: com/manheim/simulcast/client/ClientInfoHelper.class
-SHA-256-Digest: ZujXe8zdu+Q05Weoh8PC/ZaYLLQHKstOXjZVVqp3Eg8=
+SHA-256-Digest: Br1UdkI5jfl+HBerpKf9PH8bAKTnizzFKnOOW8aZcRQ=
 
 Name: com/manheim/simulcast/core/OffsiteListingKey.class
-SHA-256-Digest: PTo21n44KPfFDReD3w6tOTZUVtfb+hfpORVGHgxmJog=
+SHA-256-Digest: TBm7AkA9yGn7gduP8IxiODkbM/R2EJ7sopIN6qeqbeI=
 
 Name: com/manheim/simulcast/core/MailContent.class
-SHA-256-Digest: sljZDsLPirBYAMU46VYf/7hNEG80ylq5D5QN8RVKHAo=
+SHA-256-Digest: ++olG6RxHAy52kYW95JIAw7L9gHbF9zMJgzdM/APgoI=
 
 Name: com/manheim/simulcast/messaging/messages/LOGOFFMessage.class
-SHA-256-Digest: zMVDVU1pQsNUxeZTmDCeUdVyc1qZyc0H0kdDt+cXR9M=
+SHA-256-Digest: DevDtieQSo4DfNfqdj0ZCeBI3odvVp9NFZKk1qu8P/s=
 
 Name: com/manheim/simulcast/messaging/json/AttributeGetter.class
-SHA-256-Digest: 76miKVgOjd/A8V0viQZjftiXoqrErReQTOYxxvAy/bM=
+SHA-256-Digest: XdoI0aPEH1ETmfVVtxxngB7qpz3Ztk4CarOOumwkfOA=
 
 Name: com/manheim/simulcast/core/ContentProvider.class
-SHA-256-Digest: tTyeR3BSpM1lh/jdkHQkKGi7nQaPiMk3Ocn2Ki/bzk4=
+SHA-256-Digest: KuWgFrlYO4JUGZ8qJKj4uvRngqb5PWwNaMOnScLKpYM=
 
 Name: com/manheim/simulcast/core/ProxyBidLog.class
-SHA-256-Digest: 4KasE4bAGSFXGfOpq3BeC6zvq4pTGjSlTcaXpJys03Y=
+SHA-256-Digest: oLZOzA0N631qBdifgUDMXIs/S70DIRkw7GTlPbP1BTo=
 
 Name: com/manheim/simulcast/messaging/messages/SUBBIDMessage.class
-SHA-256-Digest: yRgiB8zSutl5nGMz7sVNwZ3G36gfagccxSLy9vuT4w8=
+SHA-256-Digest: WHqCtBDpsnfRLM5rww0XGMdMdFOUVbKFROOyke6B5DU=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightGreenOn.jpg
-SHA-256-Digest: pkaYC7gIXF5haXV4Jf79CgeP1Xc04Zdm+NNUXMqbWPk=
+SHA-256-Digest: ws7OnlY3l5chQ/zlMubgSxSdlNA8nv5r1NViKk3MFxw=
 
 Name: com/manheim/simulcast/block/commands/SUBBIDCommand.class
-SHA-256-Digest: Kqgnlqaxgj0h4dfLIx7ou1BCHxvo3v3xSgtwgcqOkO0=
+SHA-256-Digest: 0pnloQ8WL0vXpkt1r+knVHGONn5Z6Ws4zuooOtr68fI=
 
 Name: com/manheim/simulcast/client/Client$ClientMessageHandler.class
-SHA-256-Digest: ZdXLN+l6dgFNuXLdNQmxEDIzjODvefYM5GXTM4a9mm4=
+SHA-256-Digest: 5BLd0SlrfQ5d/y9YJLRroXxjyiJySbZtR6Axx2XVb+4=
 
 Name: com/manheim/simulcast/messaging/messages/MVDMessage.class
-SHA-256-Digest: nALdlUI0c1vSjogakZgloI/ooDdIx9YLH50UuS8AeNU=
+SHA-256-Digest: Hmf36FuHdP8dnpJfJsuocJqzTxhSOeycSAML2ViQq+g=
 
 Name: com/manheim/simulcast/messaging/messages/VEHANNCMessage.class
-SHA-256-Digest: Kksc1nsZ+eKVS1td7iS2I8UZ+tiBxJMvJx9rKbjz5N0=
+SHA-256-Digest: d+4rhyekkO2T1fNyYzD5iuWzPjDCct6ecNihUp7hJ8o=
 
 Name: com/manheim/simulcast/swing/SwingDispatcher$Dispatcher.class
-SHA-256-Digest: mDP95bfo2BW+HHn9O6UKPWamm7JHvfJzgfNrg7a+XeI=
+SHA-256-Digest: GxrqVq/yU27fWq5Rh5SuK6/N3qf+0eg7Zw7SXN4TAbc=
 
 Name: com/manheim/simulcast/swing/media/VideoConfig.class
-SHA-256-Digest: V4Zhz3YuMcIxPiveIStggaPSn/YLDeb85DCTPN84+GU=
+SHA-256-Digest: sA17fzfkRrW4FfDBso3pNv/5GMYSGiYOog4dE3RgE4Y=
 
 Name: com/manheim/simulcast/block/SupplementalClient.class
-SHA-256-Digest: zMH4D1Rpx6VlREAP7gb++1L+5RxwbIut2OS6sfjvPeU=
+SHA-256-Digest: HuBg7/Ff7kCMRN7IHYv0QgODOwlphPtHXWczXkivi44=
 
 Name: com/manheim/simulcast/messaging/json/JsonMessageDeserializer$Str
  ingToDateTransformationRule.class
-SHA-256-Digest: 31GBB4aqXQ7sf5hDQ38W+LGxNUXwca2VTfCD8yhvR3s=
+SHA-256-Digest: SqJ+ePH0pEi0xh2T4UcjXWLh24pyD3Ncih8+NlvgqEQ=
 
 Name: com/manheim/simulcast/utilities/ClassLoaderResolver$1.class
-SHA-256-Digest: WYG0zPJVnJQ+6X5KmliX0qE/JraEMjoAqZnF3vKGRAk=
+SHA-256-Digest: LCZIcXXLBeoqDIQWj2QTqkR2mQ5kix7pA1v9Ns0VXjg=
 
 Name: com/manheim/simulcast/utilities/NumberParser.class
-SHA-256-Digest: sfocEakre729Tn7SjmdpbtYAD+vXU2CbJFd6LpXxeQU=
+SHA-256-Digest: dpNdqgzzRfC4aKuOneIgJs/mpEXz2KgzPa5HTdivi5I=
 
 Name: com/manheim/simulcast/swing/ScrollLabel.class
-SHA-256-Digest: UjiLdUQfsRcg9JABS9P4ybAi0g8e4YspgvTdkolvMbA=
+SHA-256-Digest: kOwuFwRxrGeopZmCffszGhx5A94rQLSMRnA8wfArU0U=
 
 Name: com/manheim/simulcast/core/event/BuyerAdapter.class
-SHA-256-Digest: LQ3kg27oz8/lBHd8tjxWM3l/pBevfwIjsxeHvoWV4ss=
+SHA-256-Digest: Z1Jtg4K1V7QrEWqO3RCXNIjglm165ed0d/mtBnkU/dw=
 
 Name: com/manheim/simulcast/messaging/messages/ECRIMAGEMessage.class
-SHA-256-Digest: tCvpvlYBwG6EHo8IjuU8dBHl0u6BujZua6LVaZ2kLjg=
+SHA-256-Digest: LwC0kxnkMXdri3CpAnBJeU3bbDW2hCIkzbiY9naTdaE=
 
 Name: com/manheim/simulcast/messaging/MessageConstants.class
-SHA-256-Digest: EWajRe8+nxEDSh4GV7GY6aZ8jYKX+HWo+qvklB39EnU=
+SHA-256-Digest: 2JJ52f8s+l66W5nmN3a23ySxfGVkFnBCCFRFOgizuIA=
 
 Name: com/manheim/simulcast/biddisplay/169/VehicleInformationPanel_fr_
  CA.properties
-SHA-256-Digest: wTpZ/hSv5DBtxYw/zV8UQ+xUj75b24qDGixvDhmZ9mk=
+SHA-256-Digest: FJKbA7y+EiMjPRep34e6BK0vm4/4CnXIRVtU0gYWdOk=
 
 Name: com/manheim/simulcast/cache/ConcurrentCache$ForwardingNode.class
-SHA-256-Digest: HGyPyO2U8jcpgRp498uWMRMziEEfINiNHMoWGIc3MyM=
+SHA-256-Digest: n24aASfJX9ujaCi3CkClo4aBa1vfMe9v+hO7rhJRKAA=
 
 Name: com/manheim/simulcast/utilities/Base64.class
-SHA-256-Digest: Zo5DQi4HksDxIG6KED/p0n3Qtdav3JPhrMHKpkg+vtA=
+SHA-256-Digest: 4v7+TSy6RZ5BddP8SSS+s/l4m35RjBWGCygENAFNpqA=
 
 Name: com/manheim/simulcast/swing/BoundedTextComponentHelper.class
-SHA-256-Digest: HRAnTpNsF8ACNIXaexcXUD1ateJ4n+ZgrJ/M0JyrqH8=
+SHA-256-Digest: x5v0jpQRtZsW6pHfxwknekcvoaNtvahX0MLAGacn49A=
 
 Name: com/manheim/simulcast/messaging/Message.class
-SHA-256-Digest: JtkMjbqlC0/Fy8ic5Mw4s479hJ8lO2mLWqpwHAmkXaM=
+SHA-256-Digest: c6oSqJigA2HhFr2Dr+p5R3b93+/Xi9+TMnVsY/Cfong=
 
 Name: com/manheim/simulcast/biddisplay/standard/fr_CA/vehicleInfoPanel
  .gif
-SHA-256-Digest: hVmWHcJWDkXUoptqXLNHbUlth97Iy3GbC+nATCD6P7I=
+SHA-256-Digest: hqoapvatQ2Rb5RA/2btw8t5uqY2red51BzCqfXhBD4s=
 
 Name: com/manheim/simulcast/messaging/MessageListenerSet.class
-SHA-256-Digest: pJnCqMi6Dd1Lxmpsb5Ywm95PRVDxPZcR48+8HUJaXlU=
+SHA-256-Digest: U4RFltXTnTM+BYWCO47Dzp2QyhpP8BVrU+hDpE3BJy0=
 
 Name: com/manheim/simulcast/core/KeyFactory.class
-SHA-256-Digest: Rh3mPJxBjDRJIclpsRkJXR4IF83m3eVOJDye5kMJuQI=
+SHA-256-Digest: y6WlE8HI9uDFqM1zIgTyuXPJbL+O7Pb7vzXX5i5MJNg=
 
 Name: com/manheim/simulcast/core/domain/model/feature/EnableState$1.cl
  ass
-SHA-256-Digest: bT2xfsJFwPcHpZGMtuSsESV82RTVe3IcV7ribE+akYc=
+SHA-256-Digest: E2MAL5ljS3ThdDzf+O0kRwUqD4isIfJd+9V3SLy0B6Q=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/vehicleInfoPanel.gi
  f
-SHA-256-Digest: rtnUsr3olDosiObWceO7siPKZA4pVcp27DRZhkUCi34=
+SHA-256-Digest: y03HE4aiVVF6+dohFKr+4WoCsTOw6aE+7DBZTaY+KDo=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightBlueOff.jpg
-SHA-256-Digest: QAL5RcB3QIslKEJ/PTlWTsE15ZEjZoutGL8mxJeb2zw=
+SHA-256-Digest: 53Rp1FJrmy4OfMgrg82KEP4QPQm2xyBr0ld7wL9Koxg=
 
 Name: com/manheim/simulcast/core/RepAccount.class
-SHA-256-Digest: lIvk9uyMhIjaEcAlYOnV7pCrwm/iP5BetZDtTrgswhw=
+SHA-256-Digest: exCiwPwiCxXgXMX1w0MhvRFb3WK1t7fRFvrXn2H6AtM=
 
 Name: com/manheim/simulcast/cache/ConcurrentCache$CounterHashCode.clas
  s
-SHA-256-Digest: Z7MQqEQ7H/0RX6/v1WxSZng0cuKKkxJPC2fe01rU3z0=
+SHA-256-Digest: 0KdEBO5o4mdzhaYj8LogX/vTNr3mFxjC8pyzQ0lqcxg=
 
 Name: com/manheim/simulcast/swing/SimulcastClientNumericLabel.class
-SHA-256-Digest: J9hkAOF4HG/afEC30FmuYuoNnVVqHzsfbDKQ9M6WcV8=
+SHA-256-Digest: mBIiwoaW64H3mxA6HF0cWjwDhZl9zPjnzvF3aOTYkj4=
 
 Name: com/manheim/simulcast/SimulcastException.class
-SHA-256-Digest: vd0BEF46OLCvcUIkxpSLSfgfRSk5rUnJLHEtw9bP35Q=
+SHA-256-Digest: ZBuY0arDDemwDKqVjDHol6wMTI1QBO5EuUtTd57elr4=
 
 Name: META-INF/oidmaps/messages.properties
-SHA-256-Digest: e+yzohXLVgovSa2wUnEFLVsUjPr+5zHG2vpsHOyv6wg=
+SHA-256-Digest: cVFpfexI/UrDQsZqAOTUJtxlHQxrFOzNAunlLWDfFQU=
 
 Name: com/manheim/simulcast/utilities/PropertyUtils.class
-SHA-256-Digest: y2aGrdtMFsLkhMlaltCbOEl1tRjKmtVDaWZ4CHpCLzQ=
+SHA-256-Digest: ASaqgUG66L/xhblxU5Oc9C69sJ9ynh7otOJrRCADPQ8=
 
 Name: com/manheim/simulcast/lang/Destructable.class
-SHA-256-Digest: Y4ShwTT2GFFxMjkCaqoRzJWbt2wzml5zyBHYAzXbHSk=
+SHA-256-Digest: ZSy24Wk0T4Gd7SNXU2cBYSQpk3rPQi18tvT1uaK1EIg=
 
 Name: com/manheim/simulcast/utilities/ThreadUtils.class
-SHA-256-Digest: hy/qpGeJmpnAVetKdnfArVVE9Nel4fDVmaYgYUUl7s0=
+SHA-256-Digest: QXtAZfsYC1z1Oaq+o8pWQ0JS92rPE+sq8lMLNP/xbQg=
 
 Name: com/manheim/simulcast/client/SimulcastLoginStrategy.class
-SHA-256-Digest: cCVLMgVIe806K9cNYI0B5/tOF529r/lLN75hlBaFuf0=
+SHA-256-Digest: H4Rj3M7ZrTGf6LTfPg70R6X4NzrwVqdypcip/fAse1Q=
 
 Name: com/manheim/simulcast/core/domain/model/property/PropertyValues$
  1.class
-SHA-256-Digest: xiu6UjLoVpPuTZw0TLpFrD7Yd9uzPRFKtYODQdXFuWk=
+SHA-256-Digest: 6d950QzcMXxWBGl2op7gmQ9Db9rzDggFCQcxaFbpWW0=
 
 Name: com/manheim/simulcast/core/WatchRow.class
-SHA-256-Digest: Xi3ShIYuiv50Cb7+XdyAwHya1x3bTnEwbSvzQZqQYkc=
+SHA-256-Digest: fDELUN2D4pNYLZywvRWVYqvRty5qb1K6do22WbR9YiM=
 
 Name: com/manheim/simulcast/messaging/address/TokenAddress.class
-SHA-256-Digest: NQNP7Vt98yDK2HawR1UnRbKsfiloRLmeufLao01Ociw=
+SHA-256-Digest: cNe7TmBr0MhjDBaIpWRAnv80FOT2DmQvDITiEeHQ0GI=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightOrangeOn.jpg
-SHA-256-Digest: w//1rZv1gBafyja7jqxSNpfsqPSEmHUbiajVVYKepi0=
+SHA-256-Digest: XbCejWVTCDiOfi/SrpwILzdzKg3qSCFrIy1WSuWUkSg=
 
 Name: com/manheim/simulcast/utilities/AgedObject.class
-SHA-256-Digest: j9lIoeWCB/Qdbtdx0wGRj/Yw3DMqOPzyMtWBWMrlmVY=
+SHA-256-Digest: 8+MCTnDKepG1Qdy6DDFPX//TgSkUN/RBIGJf43R07NY=
 
 Name: com/manheim/simulcast/swing/ComponentHelper.class
-SHA-256-Digest: iIChsWUhvsrbRHy5NohQT9fvQ1+FsFz9IkyJPP/bjfQ=
+SHA-256-Digest: 1RKUcXjIRPU1sJFaHAOnrdpa0y7IbBIGsJVaXrqGnJ4=
 
 Name: com/manheim/simulcast/utilities/ClassLoaderResolver$Resolver.cla
  ss
-SHA-256-Digest: Gr3qG3NyiT0vAWUP/a0HZ7LCjZHAB9YzeSYd8WnNgfs=
+SHA-256-Digest: 6krNtKQ66NAXisTnnAjYk5M7/H04FwsF9QHWMIaW+qU=
 
 Name: com/manheim/simulcast/core/OAuthSubject.class
-SHA-256-Digest: UvSgFii46ExlUP6Sf08Mwpyb0eLvPwrbPZKvtVyFBpw=
+SHA-256-Digest: ddeV81GlOydScHQLdEB94UdqLV1Aonl5J5nO+YIK+yw=
 
 Name: com/manheim/simulcast/core/SaleRun.class
-SHA-256-Digest: BGmGiqB45onNmEYp+fqsxu15fIaNb5Spv7tA8jgP91k=
+SHA-256-Digest: kbwac+2xFs80TevWLE+rvOmOqupwjWqIBVhzBOmt5LY=
 
 Name: com/manheim/simulcast/core/AccountType.class
-SHA-256-Digest: pE2gTtI3kO1FCslcHv6h7IK+14SVTI1IyLLSSPKpFOU=
+SHA-256-Digest: llb/C77tIVz3OKmK461JKgp03lBrTlQ7KR8KPqA926E=
 
 Name: com/manheim/simulcast/core/LaneStatus.class
-SHA-256-Digest: e9k0rgxQfnphKZcIgzLkmpbieT9ZCkol3byOMemV/98=
+SHA-256-Digest: y+rB0H3Gx81t+WmHxFIFX3KHwHl0cHOYUvvYegcsRTI=
 
 Name: com/manheim/simulcast/core/RegistrationAttributes.class
-SHA-256-Digest: NOIt4YznSXaGBDYy0q3POch5Ixh0xDqoHAEubnuyRSI=
+SHA-256-Digest: OTu3L1T78e5rjA8BqJyRdQ8u0LySDVSeEf02/hTWQnY=
 
 Name: com/manheim/simulcast/utilities/JmxNotifier.class
-SHA-256-Digest: Loz7QHvFTj8q7sPjNP38W9gWDQ9m2sdvQpGqMlrNH/w=
+SHA-256-Digest: 0BOxvPZzBCWZ8YoYkvwRyezFtuveVpQcJTIZVLqxsd0=
 
 Name: com/manheim/simulcast/biddisplay/VehicleInformationPanel.class
-SHA-256-Digest: mxWBKQD6QahTtMnj9KR7hmeW0ncSHeghBfA4KtL/ZOg=
+SHA-256-Digest: JooN3qx6ciPVQY7firsThXPm2xN3tx5OKHBvxqOObpU=
 
 Name: com/manheim/simulcast/messaging/messages/VEHSUMMARYMessage.class
-SHA-256-Digest: nStcM6kAst8NT0mFJypM0qxREgaHrhJSQkmFI2o3cLE=
+SHA-256-Digest: qkUUpmi5mLRevJW+MES0XSJVY5NrOgA3Ndg5wsc8hxg=
 
 Name: com/manheim/simulcast/core/StringKey.class
-SHA-256-Digest: QdIWwzc21EzD+XtojbbaG5+eT7NbDG75bZw2ZT3uu7U=
+SHA-256-Digest: kkQYHO+R5bN8LdiVzq/A99EBJ0bgqlQ+NWCWnqNQskw=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/askingBidPanel.gif
-SHA-256-Digest: eAcdG1kiObiMsc2Jtv7SnxhcBDcxzulHbBwqcckxF18=
+SHA-256-Digest: JxdvuQJSehnLxsJfyNeu1wx2p8A8U/QVFfbuaMujr2U=
 
 Name: com/manheim/simulcast/core/filter/SaleFilter.class
-SHA-256-Digest: bUOlUtR4M+yWj4VED1x2AWVkUbYto6NJ2eQiDb5aBLM=
+SHA-256-Digest: r8/CzlUALv6QACjG6x4rPInQSbhjff7ChRM6deojYb8=
 
 Name: com/manheim/simulcast/swing/ComponentFinder.class
-SHA-256-Digest: OSNjIJO/I6Qjv5md36GKUOk1BUIiag8q/QkfsG65nEE=
+SHA-256-Digest: /pn6IpI1tuB77Xei40aBTX0Wv+uM8f3mcTmkKv7N4UE=
 
 Name: com/manheim/simulcast/core/Auction.class
-SHA-256-Digest: KVOKrz8gpx1GWw2qZpdxnePLQurBrlnEeY7cxYcYKok=
+SHA-256-Digest: TGezLvvFnuLYMBfUI4RtEIn+fLPV98Jwvd7EYo6RIGY=
 
 Name: com/manheim/simulcast/messaging/json/JsonMessageSerializer$Metho
  dFilter.class
-SHA-256-Digest: VUYudIUJMKWEf5+j7bDzh+VVdUVkBNUxuYzz0NqVXkA=
+SHA-256-Digest: 3Hdtkc3Zatg6AksISU+OBPzs769lE7H7eBn1LMHdT8M=
 
 Name: com/manheim/simulcast/core/filter/SaleDateFilter.class
-SHA-256-Digest: 4m3jKPA6Z+ygsVx5uchc6ZUyG6Qbtz4rfeOwY4qwHPs=
+SHA-256-Digest: aQjfjjet84nCcnbCYcuNeMi8yJxPmbJG2UJI6uRbqyM=
 
 Name: com/manheim/simulcast/utilities/SupportedUserAgent.class
-SHA-256-Digest: rl4/pQmfWV+ADH+2ISesVQxt6KizSQ1FVCn/AHvY3fk=
+SHA-256-Digest: IHsWEkDN85PtmL2Rs91wYhjQrGlvfXVMmkmXpwYlSW8=
 
 Name: com/manheim/simulcast/core/NumericKey.class
-SHA-256-Digest: nd/teok1pJt8Jccou2UnZSLqUH1mONsu2M5vuwmJQwM=
+SHA-256-Digest: uXtB0WRclfiYFmgyZLHC4tAWME/byY2SkSmlQGaxYjg=
 
 Name: com/manheim/simulcast/biddisplay/LightsPanel.class
-SHA-256-Digest: 67BeAjINq0NzJDkLUxxNKwESAk+HgNPKCExPftns7WA=
+SHA-256-Digest: oYRp15F949QaQtruWM7lzVNWRdXgELFYpisj+44KFGI=
 
 Name: com/manheim/simulcast/core/event/LaneModelListener.class
-SHA-256-Digest: OYk92Md2wjEeagMeqDixrtr58l4qAZ08rmsjayPFfzQ=
+SHA-256-Digest: 32ZOJlvKxc0utS2eF/22k9/dfu6UKqguKrfRhw1COpY=
 
 Name: com/manheim/simulcast/core/ClientStatusCount.class
-SHA-256-Digest: 5YLe1l+gRry4YUtKJM6Bclc5TRsnzYJt+m16z/AeUyY=
+SHA-256-Digest: blrpN58u1c+KvNgvr7bd7WAaneLfeEvf0i8o9TnqZ+4=
 
 Name: com/manheim/simulcast/messaging/messages/REQUESTMessage.class
-SHA-256-Digest: rD3yF6ukcGjsHxKFZ435KxRtvJ9a3tt4qfgwrC0cQNw=
+SHA-256-Digest: WNCo2w5wBc9QTPLJmRobHOVi5Tbdqiq3LaFuf3iDhVI=
 
 Name: com/manheim/simulcast/core/AuctionNote.class
-SHA-256-Digest: 2Q1y7znh40jj8YQKQ2OmRAK/gJ3Fd1/BRA3lAS6aq90=
+SHA-256-Digest: csiSBb7q1A95r0weXmXttI/QBhitTT+PFq9kX3zVo80=
 
 Name: com/manheim/simulcast/biddisplay/DefaultFlashComponent$Component
  Flasher.class
-SHA-256-Digest: Sc+Il6o2zp+dYVCe6lYUT6ca5K6sp3/HMywXEPaFM+I=
+SHA-256-Digest: xzAdjKb6eHWc02Mlq8+C90IbFAjIM2poWnp/S16J5TM=
 
 Name: com/manheim/simulcast/block/commands/ASKCommand.class
-SHA-256-Digest: Tv76gpaqiDt+mEYAijoPg+s1O9ibY0ESL8b/jtonOaY=
+SHA-256-Digest: OYc6JeQ01kZgMX07faLnmAeS9R5OoAZxDm7j7cxw2P4=
 
 Name: com/manheim/simulcast/core/domain/impl/property/SaleNumber.class
-SHA-256-Digest: 4uDrYIj2QahauIqgHIEh/u6O2MIyK2xOYMs5tdcGlmU=
+SHA-256-Digest: Io4luWhyVrRAjV9BKQ4t3vdu0ct1fBxWVQI5GjMskVk=
 
 Name: com/manheim/simulcast/biddisplay/BidDisplayPanel$LaneModelHandle
  r.class
-SHA-256-Digest: wg5mtR6Nh7wp6NN1BHbBL0f7kfxRN+w3ODuuleLmQ5A=
+SHA-256-Digest: V58Fp+/i6ALFr/20iDwumQ23HKAM2yeQ6ExdtYE3OY4=
 
 Name: com/manheim/simulcast/messaging/messages/COUNTEROFFMessage.class
-SHA-256-Digest: nE09927hfdX/qV23C0FQx1XVbhGoupEameh5OVKZnVg=
+SHA-256-Digest: 52Q1ZIyS2x0E/+i1Yp8eUM6C8tpegEm1iXpdLVwHZ4E=
 
 Name: com/manheim/simulcast/core/ProxyBids.class
-SHA-256-Digest: RKuoTwF6aUNOiiNnEjxN8/lMqMqpTKKNQQrUUdmLci0=
+SHA-256-Digest: iO+jyZmy2/msA5fXqdYISx3QgA99vijy4NsWxOEc6xU=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/lightBidReceivedOn1
  -new.gif
-SHA-256-Digest: eB/bSOKI9n3Wp7hDmGpDIWJRBEH9P7WB84O8RtKO/PE=
+SHA-256-Digest: jej72UDoZCBEMhH2oElztLItCvWf0hhDsTSNnzBkExU=
 
 Name: com/manheim/simulcast/core/LaneRun.class
-SHA-256-Digest: 1L1o31lndmwLrll++TWs6Wx/yh/WNRe8S4nwynos06g=
+SHA-256-Digest: EhdXPejtoInezcNh09q5u5Xhrny0qxS9TWDjuT6nDjg=
 
 Name: com/manheim/simulcast/utilities/EvictingQueue.class
-SHA-256-Digest: O+Y08k+WLZUMI3hijeF/tJd5vg+IMOyOphH3TzlD72I=
+SHA-256-Digest: uauDHq9OxRa9HaK2QGZCZ9uUGxITX6BVkUqMGUmb/no=
 
 Name: com/manheim/simulcast/biddisplay/BidUIContext.class
-SHA-256-Digest: 6dsvPYa+72QCStHiJasl+9IZ3nyqb+pbrErWljveSlc=
+SHA-256-Digest: yDI6bh3s2lKrcqvbAeq/URLitmEUtoGWMebyYI6L2YA=
 
 Name: com/manheim/simulcast/lang/RunLights.class
-SHA-256-Digest: TEaELTMQkRDTa+vJR7kdBgB327ivtwZKWWK3a0TzwfU=
+SHA-256-Digest: CXtlW4bpwBS+0YUaO7drD2Psc/GoF746SF8EgF/u4r0=
 
 Name: com/manheim/simulcast/swing/image/ImageLoader.class
-SHA-256-Digest: 3+03uwdX/vH87WZpsTu0z+QnShqgfcaniSaTOCJih7w=
+SHA-256-Digest: Y1oi9h46YVyXwuaEd6KjrKFQ20wlU976WWle8Yb7aCE=
 
 Name: com/manheim/simulcast/utilities/MapMessageFormat.class
-SHA-256-Digest: EDWA/e/ienZKInQ4qKp6fm94IaBciU0GcsGaduMMZvk=
+SHA-256-Digest: hnY5W+t9ZGA+VN9Tjk2EYF0CouO75m5pHOYz+Un4zZQ=
 
 Name: com/manheim/simulcast/swing/SimulcastToggleButton.class
-SHA-256-Digest: j271Z4s4gh7acbHPdOxQ44JlrLXVMmERG7OYywbJuCg=
+SHA-256-Digest: Ac/0ZMwHWvdrfPvrbsUDL/vdZpCMLswJS3+UgIfPPK8=
 
 Name: com/manheim/simulcast/biddisplay/BidDisplayFrame.class
-SHA-256-Digest: 9Q52bPvzPiJMbmOeYmQlWszr+C7AWKzxsFH1MCZkMl0=
+SHA-256-Digest: G6EGTokpXXnQP3sUvkaADyIwOZa8GwqWTNa0yuCt4Dg=
 
 Name: com/manheim/simulcast/swing/TaskQueue.class
-SHA-256-Digest: FMcdhquMgmSq20MZH3xs2hRTTNZVy6K9k5iTbykDf7M=
+SHA-256-Digest: ndB0BMrw8NmGudCzimwxRmoQNf5vfbLUT0gaIbfC1tM=
 
 Name: com/manheim/simulcast/swing/SimulcastClientTextArea.class
-SHA-256-Digest: BWkyV3bK8Ua4o8kyD8s6ZQkEtBU9mk2meeczMdBkDBQ=
+SHA-256-Digest: //ru1VedAmwolvdtE+JLrysjPYS11lk7kO/gWgEtKc8=
 
 Name: com/manheim/simulcast/messaging/address/AddressRegistry.class
-SHA-256-Digest: IMoorfJbyQHr0d4iZDDXMIzhcuhfZn+H8bwluCVGaa0=
+SHA-256-Digest: ehlhwH5O+6rtDyyBckCzLKD2iMY0MxZ+z71uwCkssLo=
 
 Name: com/manheim/simulcast/core/factory/ChannelIdFactory.class
-SHA-256-Digest: QJIt6Wq18NwOw7QwGNryOPl0ZFCUtG3TAb1aZEt0y2A=
+SHA-256-Digest: isWCjMmIhcP1VNyOp4GaJQ0CAnKxn+k6bmDkJ85y7ME=
 
 Name: com/manheim/simulcast/client/transport/AbstractTransport.class
-SHA-256-Digest: UeqFI1eGzIQuYc+H3G5Guvfy1tFvai1ZPqX9AWqAaXc=
+SHA-256-Digest: dXC9C/yYppQuAzcp+2pfDP2prca5kR/EB6yaDeBeFwg=
 
 Name: com/manheim/simulcast/messaging/helpers/BidderType.class
-SHA-256-Digest: BDtjeAr+IbFdHH1YfPDDWkHuZMrAaIFqgIc+LogViUw=
+SHA-256-Digest: gatXQVzyAwZvw3xe/plVygw5CuTUnmond1IbxntAy2c=
 
 Name: com/manheim/simulcast/core/event/BuyerListener.class
-SHA-256-Digest: 8sJH+KihiUnmsatxl5dwyH0Vjh5hbhfQosHCci2ED2w=
+SHA-256-Digest: oOI7j/u7IEWKMI+akZS+b9xxA/7OejYlb1TFgKt9pIM=
 
 Name: com/manheim/simulcast/biddisplay/DefaultFlashingStrategy$BlockEv
  entHandler.class
-SHA-256-Digest: pm67DgbRz/JbB0tIxSoIz3SiDbzutzHkRSfb/5k7blg=
+SHA-256-Digest: 0UQVLYUrgh22tFfJt2pdP6ym+aIC6k9CCzymjjJ+VGQ=
 
 Name: com/manheim/simulcast/core/OAuthCredentials.class
-SHA-256-Digest: IvbQCqT5LITZCKyqMGDc1vtzk7OvIkMzq1pp2crai98=
+SHA-256-Digest: APldZVaNI/lxzAUFYuEca5XCR+5TT8ikwkUu16Tnui4=
 
 Name: com/manheim/simulcast/messaging/MessageEnvelope.class
-SHA-256-Digest: b7NMB0HpVdrQvpdpoO640XrbWCnAGus1i9lV4SGas5o=
+SHA-256-Digest: aIUCDGTNlO6YAQpGBlepMP6CK2w09ipgi63EBQj92SQ=
 
 Name: com/manheim/simulcast/core/reports/ProxyBidHistoryResult.class
-SHA-256-Digest: WNdw6NiTjh2HQaI2s871A7rX+w+7ah+WvV5sK8ySucA=
+SHA-256-Digest: DeEW5zUHNaWTeJWsVc4CDMoNaI9s8UCDOcwoum1fC6M=
 
 Name: com/manheim/simulcast/core/DealerMap.class
-SHA-256-Digest: vtPudbLcQrCHxNmBcw0wG/6XBtPpm9AUtxIp7lRgh8A=
+SHA-256-Digest: 1hen1jEv3meIs0Jh6FNRxD6ngpLYSWRXMXuRaRO2vog=
 
 Name: com/manheim/simulcast/biddisplay/log4j.properties
-SHA-256-Digest: +jt04SUwD2MW+ZwLCweMkt6Xf8vfawA7npbLOknlYNU=
+SHA-256-Digest: q9YO/rFwBwTCIt85nM/clZNR+1iCCcqAwAa2/TMld+s=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightPurpleOff.jpg
-SHA-256-Digest: 83UxbEQhpT78wDZY3Ysq72ToPJgOmWEeXbCWMvzz+dg=
+SHA-256-Digest: 3ra2jPqecJ02trTtnIHu9t9Fv1wNQiv+P08QBn4kh8I=
 
 Name: com/manheim/simulcast/utilities/Objects.class
-SHA-256-Digest: H3+RQuXoA6Y4Bd1L7JAM6TC0sVoO14xUV10NFYw4900=
+SHA-256-Digest: ebccCggU4Bj4PJZ7c4OQtFyXjZhLO6ghCAr5yR0svOE=
 
 Name: com/manheim/simulcast/core/Login$LoggedInVia.class
-SHA-256-Digest: jrT88S90xnrHHvl8J5F7jU6JSRhin8mURKqe3sJHrEI=
+SHA-256-Digest: 45cOzrHMlyXwqmj6f6ZX3lfG45r0u5ra0f8ZrrmfKB4=
 
 Name: com/manheim/simulcast/messaging/messages/IDLESELLERMessage.class
-SHA-256-Digest: CAEZpS7ipX2oyiCx1BuzCCOUt1MSeSIuGxRkKaXNP7k=
+SHA-256-Digest: 0Jq7gqjmKYEPNdsR+qJa3SLewdKOrweNahjBZU+BCEc=
 
 Name: com/manheim/simulcast/messaging/MessageListener.class
-SHA-256-Digest: Hsl82b2BeQu2i/I3efT2xxwhyM2WYHEq+gQo3sBoPsk=
+SHA-256-Digest: KafmrNNeqoz9clk46B224G1iHjBPW3oyWIa5GBEK2cE=
 
 Name: com/manheim/simulcast/biddisplay/AbstractFlashingStrategy.class
-SHA-256-Digest: 0AjHH9s+FSOeNMfS5JxAin6BpS9K5U4qUOUXN0sfegg=
+SHA-256-Digest: FakjXdfpOW32fTb+NOMyYEnIDXrp6ZO7lsLk07kdlsU=
 
 Name: com/manheim/simulcast/messaging/address/Address.class
-SHA-256-Digest: AivD+dfwzSwRJSiDgtf45/44Z3qFDGEkgZifYoMTEqM=
+SHA-256-Digest: ntTCUS/q2WlcMoB2vp+CgEFThlNKmLHGbFo3K1CJ7v4=
 
 Name: com/manheim/simulcast/biddisplay/standard/bidPanel.gif
-SHA-256-Digest: cGjCTLfmKf66/zY7sCmz2YrYZTrDZOdiZV6YxlRYIAI=
+SHA-256-Digest: nSRDj0pc3rvyG3IVtdUs+zPjzZPFlVr7PoZHnjWFwZE=
 
 Name: com/manheim/simulcast/swing/GenericPropertySupport.class
-SHA-256-Digest: XW2nAlpLwWjcsXF+ZAvoOPuOYD7fJcsTarrQQ20TNaY=
+SHA-256-Digest: MvFKFEV80W7HmS/gEscoLD0hsxiht9sPzInU9Q1W8zI=
 
 Name: com/manheim/simulcast/messaging/messages/BIDDERREGMessage.class
-SHA-256-Digest: ZMJa8BgJpU9g/589VsVucj1cg1I8LdIwWB2HYcNwhx4=
+SHA-256-Digest: z0+Z+sSxpvb9sAuWNPr1MKLqdd+wSJjXVK1lvakBZbQ=
 
 Name: com/manheim/simulcast/block/commands/LNECHGCommand.class
-SHA-256-Digest: niTMdyHGqwyAhubDblFf/06QuMZ4/lkYNajLJP9ohIU=
+SHA-256-Digest: 2qT13wIA2FccLP1uAkr5/sPSETyD+mTS+YQZvvgHXMA=
 
 Name: com/manheim/simulcast/utilities/ClassLoaderResolver$SimpleResolv
  er.class
-SHA-256-Digest: yKdv1IQghTh5cCWn/zOHhTBMPkkc71Xwxa3JMBUZSoY=
+SHA-256-Digest: XkHOESkHxNXXXW6tNJRlOHgIhLrhQzEuZ/x+HPSeYPc=
 
 Name: com/manheim/simulcast/core/impl/LookerBidderRegistration.class
-SHA-256-Digest: WeRYvd19AQiIyVcFgMg21Ee85YKHdTgS9Ogvq/8THlY=
+SHA-256-Digest: 2wXlHeyQxsKM1AaTBubTMUIWyHUvkSSrVkOwgbskjC0=
 
 Name: com/manheim/simulcast/messaging/Message$NullIterator.class
-SHA-256-Digest: Hvv621kFz2l0HuiuDT2Q0wvw/rwYJPCOAh5qRG0/hew=
+SHA-256-Digest: EqvSuMlymRo4sn6/9ZMagQYIs+BGmHATtZ0YJS8VSVI=
 
 Name: com/manheim/simulcast/messaging/json/JsonMessageDeserializer$Tra
  nsformationRule.class
-SHA-256-Digest: /UPiEWTcfx6e6vsn+sjE8YxeaxPEuVjiZXHh9wGlY4k=
+SHA-256-Digest: yPNqJaEZMCn0ZxMeXfWQjA7peaEK2oDC8Vme4WEBmmc=
 
 Name: com/manheim/simulcast/core/domain/model/property/PropertyValues.
  class
-SHA-256-Digest: stsRAJ9lTm3dPTrQLknUt7V8REEYOzAkBiCBZWxgBMk=
+SHA-256-Digest: h4iwF1o78vVY6PUFgUUNWHbwbEzKtCOMNw9s2AEkyas=
 
 Name: com/manheim/simulcast/core/Key.class
-SHA-256-Digest: HE8UChQ8e7vOax+Lgs3tXkHk8xHTKUBRtdsD6YC7T8A=
+SHA-256-Digest: Qltum5nV/LY11WwOUwwE87Nig05U+HBry+gxcPix/8A=
 
 Name: com/manheim/simulcast/messaging/messages/LOGINRESPMessage.class
-SHA-256-Digest: ztwpu+CQ/TQWgns6ecLb+Gwd5BLWnssXuvtkV5CkA9c=
+SHA-256-Digest: ruCXNgHDSSHC5bAStAWshkXyCId3GZKmWkIW+YqtGvA=
 
 Name: com/manheim/simulcast/client/ClientListener.class
-SHA-256-Digest: tqvaldsPOtN3aXaJ/fxcw4QsRMMQkPSAizH0jiru4AE=
+SHA-256-Digest: bsGwmtnmZHg0sDvtyJGPBsiX4GP+3HB1vPXuwHuc/hA=
 
 Name: com/manheim/simulcast/cache/ConcurrentCache$1.class
-SHA-256-Digest: iMWlh0hc3crjeaTm33TJ4wekSe0oG/UK8m2TvfGtn3o=
+SHA-256-Digest: XernoQR5CCotkEDqlB/U7g6L0ea0yRiHQR4PjWW5NF4=
 
 Name: com/manheim/simulcast/core/domain/model/feature/EnableState.clas
  s
-SHA-256-Digest: chlYtyYLqtsY+fM5lUzlRL3L9V1hdpW5RCSYwobGcWo=
+SHA-256-Digest: Vt+PoKGeS/EtgzhljNs017EXc/6iIxXNT3pHb8/QepE=
 
 Name: com/manheim/simulcast/core/domain/model/property/StandardComposi
  teProperty.class
-SHA-256-Digest: OcofgQBpf4tKfNNDiwANv+qBQ11PYUtwlkbq07S+WaA=
+SHA-256-Digest: zFTx/LHG/D/gFIdhRvT/gH39E89ofefakq85ZCjgHcg=
 
 Name: com/manheim/simulcast/core/keys/SimSequenceKey.class
-SHA-256-Digest: BqWwTBuyxQNg5pTJsBnLluVhbqCcxH+TINXePhFHewQ=
+SHA-256-Digest: i3IA+mWsy86OrWX6ootAkS/rD7glFRLvGo4ymNlR8Xk=
 
 Name: com/manheim/simulcast/utilities/Strings.class
-SHA-256-Digest: Z1YJkYOM1Kq3vXYiIuXesqwk7jALLf44YZrHud+6a/Y=
+SHA-256-Digest: FRBgzqGNKKZM2ztil0WQfU3b0gccHb8A6r73oSc81cQ=
 
 Name: com/manheim/simulcast/messaging/json/JsonMessageDeserializer.cla
  ss
-SHA-256-Digest: sffHhdgqz6ml/gazEn1vjyYCVOvu/pPHEsWybAdHxPA=
+SHA-256-Digest: CqVjTZzbDfpAn+Q3DEXrOIDzwVKfJnrchOUgT3v5zC0=
 
 Name: com/manheim/simulcast/core/keys/CMCKey.class
-SHA-256-Digest: WwV77gKSTQNPRJN+ibvRyQKAiR6BkWodnrmXTPc96YE=
+SHA-256-Digest: hd7Vouo0v5nYjvhlxYEdnQm0xRLcMNIA1k/DrDx5EaI=
 
 Name: com/manheim/simulcast/utilities/TimeParser.class
-SHA-256-Digest: ozAx7HVC0ZTGlgCP5v6cPeAGOIssyHt7WsenjSUVshI=
+SHA-256-Digest: XJos7Ty+sTFiTeHIkPKu9Dh7hBO4T+9qb1NYvtzFvn4=
 
 Name: com/manheim/simulcast/utilities/StateProvince.class
-SHA-256-Digest: 1TbdcurtJFCDOFU/gxeM3Ek53LJIKCwk6140F9WTz1Y=
+SHA-256-Digest: eDcj2imfMBLZQrmVU6LZZyxqb6khFCdRjSW36qAK3U0=
 
 Name: com/manheim/simulcast/messaging/CommandContext.class
-SHA-256-Digest: Iei38Gbrtt+Ellu7dmyJ7K9fEz77IGQ4J+DO7ODyy8k=
+SHA-256-Digest: hjh7TgaV3m+uKwjRV8V0aqE+QGoCLMupEO6StfvHG+8=
 
 Name: com/manheim/simulcast/core/RunSummary$1.class
-SHA-256-Digest: pUtKDYCrQzmKtAuFqVL0l0stX9rWeXTySF1ccrU+FOs=
+SHA-256-Digest: Ye8PTqp3En1Wzwl+U/VmVVcISGY/1aiaMb1hjDZylBk=
 
 Name: com/manheim/simulcast/core/impl/RegistrationAttributesImpl.class
-SHA-256-Digest: FWNAQIBSf4VrIXGF4nAAoH46FM/LQWjhVQH6JJoWTXE=
+SHA-256-Digest: LL+YhIrfkIQOAx7KMNoEzY0HNp0wDHVlvYUt1YzKSUw=
 
 Name: com/manheim/simulcast/biddisplay/standard/fr_CA/askingBidPanel.g
  if
-SHA-256-Digest: t+ZjuKRjfuRGPful/A+rE9kc8k68VUfh911VYtxPgW0=
+SHA-256-Digest: p9CC2ub+2T8eGquk49IheFjjCjbxTuqJrs6WVVHS2oY=
 
 Name: com/manheim/simulcast/swing/SimulcastSwingToggleButton.class
-SHA-256-Digest: REfJIJmij5rEtza4bynw2s/hVNGhE2HAjiUVoDSfeMo=
+SHA-256-Digest: 7W7HffjKJ+Y/Qedv7+bPDjCXJaztKT2LCFrSaROJqjc=
 
 Name: com/manheim/simulcast/messaging/MessageProcessor.class
-SHA-256-Digest: 6a+1SdVWCVCkXZlIH7Q26PYmZjzJAL9acKyCzIE+e1A=
+SHA-256-Digest: rjp0bsuubzASnRq7Z75NGKwq5eyXTffvnVbTPzMesGo=
 
 Name: com/manheim/simulcast/messaging/messages/VEHCHGMessage.class
-SHA-256-Digest: eYZpAqcRAo12Y0zyRZA+EMOLhQ4AnUcvYzPazJFerMk=
+SHA-256-Digest: tgH1T24THqJTmCHf+84E6jbsf4/UndNCwI6+bkeRkxM=
 
 Name: com/manheim/simulcast/core/BusinessObject$DataError.class
-SHA-256-Digest: hIfh4ZMasVs3zkEBh/cGhIYH7R6qcsbAwGubxBgu42g=
+SHA-256-Digest: GSGSoLW/9eOexDtewellFWEqP6lrAF8XftGFi+Xz5mE=
 
 Name: com/manheim/simulcast/core/ProxyWatchKey.class
-SHA-256-Digest: yElYKsTFd3NTNk09zGftrDBnu9MrpfVvii/PTLgKbCs=
+SHA-256-Digest: Y8BJpEeIBJcFKEBue+xy+GjY45Vv1V+M74he3ilFGjA=
 
 Name: com/manheim/simulcast/core/AccountRep.class
-SHA-256-Digest: QXxhUgDvgZc+XfMzcf9e9JXopbBqjMHooJ/hqe7s29Q=
+SHA-256-Digest: 11EQFnULO+l+1+l6Rg6Yl0W3t/yKdrBsipSZ/aJ/Lrs=
 
 Name: com/manheim/simulcast/biddisplay/standard/fr_CA/lightBidReceived
  On1.gif
-SHA-256-Digest: O/BdgaQwuO1X6y8YDz/xGmovjfuFTLOBIfTD2lUE654=
+SHA-256-Digest: DFLd2rvLrpfwwfniuRzmBczmWJ6Hf0QrKATEIHniAPE=
 
 Name: com/manheim/simulcast/swing/image/ImageReceiver.class
-SHA-256-Digest: wTmqmNIouN1Flv4/qg0oCUl1qdgZdKHuVgc7+e+VZ4c=
+SHA-256-Digest: 1iBTGa7es0xceO6n9KGoGJLwcj4VuihaWNB5fjph4YY=
 
 Name: com/manheim/simulcast/messaging/json/JsonMessageSerializer.class
-SHA-256-Digest: 0Ct4aniQZ2BskP1hFeF5SF05GfoetXrXCCnWEIv+DlY=
+SHA-256-Digest: nu9kfVuAYS2nDA/6LCoGwY6hk3wsVykdViwlvquX6/Y=
 
 Name: com/manheim/simulcast/utilities/JmxUtils.class
-SHA-256-Digest: fW8hOEaFcQhGUwsW/IeTkaUcCSrhM6Cq7UL+bMU1Ku8=
+SHA-256-Digest: wksgiCd9pZwqEUjphQvU77FV57Dms8Y4dFysRxgSnP0=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/lightBidReceivedOn3
  -new.gif
-SHA-256-Digest: phr1OpWAdwiuww4p9USM1/h+RgMkqL5W7jtiMP/rJ2A=
+SHA-256-Digest: mKCxTRXHj9zpCmhaN+ezqF8ZVaxzl3UT0VHqSHn7SoI=
 
 Name: com/manheim/simulcast/biddisplay/LightsPanel$BlockEventHandler.c
  lass
-SHA-256-Digest: GKcyU1FEIql7F8l+pzpJsm8s4pK6mKjU2svpQAfkJ9o=
+SHA-256-Digest: 7LwjJsc0Sdw1TuGQWTNElPVP2qO8RdB0V0x8BMMjWic=
 
 Name: com/manheim/simulcast/block/SupplementalClientLoginStrategy.clas
  s
-SHA-256-Digest: jQ6op/atqskiXFkGJP1PEcGJOkas2FXpiNR719KrL6E=
+SHA-256-Digest: 2K74AO9vGJt/zkx42Zy+hKQNTwDfrIfMKtGkOp9GJpE=
 
 Name: com/manheim/simulcast/core/RunInfo.class
-SHA-256-Digest: 8v1ll9fBR3GPjFBcTyCG9De93+tntbX3GC4PWKGNvwc=
+SHA-256-Digest: UBJSsUWQVZeEkdVkGezims8/7ns6zG7awN+tNflkg34=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/lightBidReceivedOn1
  .gif
-SHA-256-Digest: 7fQpWI8bgYhyhi8Ht4AQyyVo3XD6noX9YSn6p2zQh6s=
+SHA-256-Digest: XMriQ0HVX7L8kbjiowKw1sJPQxtSled4QEpxRUZvMQ4=
 
 Name: com/manheim/simulcast/core/WatchOriginator.class
-SHA-256-Digest: +DSuOdzVZQrtHwvJMtF2GwUCo/s7E+MJbXgpvc/TOW8=
+SHA-256-Digest: HzIQnbiEalqwGZs/+r+w90paLL7RAui85FPE2hSYAFI=
 
 Name: com/manheim/simulcast/swing/SimulcastClientNumericTextField.clas
  s
-SHA-256-Digest: e4xq0fxGNo9n7lfZo3BQPdbdAba/fglCST1TUREP0iE=
+SHA-256-Digest: laqxEtUQVSX6lINSrtIQkHv+3keqRFF6CteLMr3pGYc=
 
 Name: com/manheim/simulcast/block/commands/VEHLOCCommand.class
-SHA-256-Digest: u5DpVd94AqGJSgvV3qyh0EVkaWGQZeLuPHouce9pIGQ=
+SHA-256-Digest: ySTdWuncXB1P9t6qa3orONPjgs+lgPbkEgrn4Y+zuks=
 
 Name: com/manheim/simulcast/swing/SimulcastRadioButton.class
-SHA-256-Digest: +Qx6Ff3GuULNct8X2wFe2q4bpB108F31Q2K35y0F8J0=
+SHA-256-Digest: Nlnn/5299sV+YUTklbIS8O5j+n14NhH3cjvJ9cti4T0=
 
 Name: com/manheim/simulcast/core/util/BlowfishCipher$BCException.class
-SHA-256-Digest: jpXr3rcRpiRvLJqcSVFOEKPwts3X5+F01Q2yj/qM7i8=
+SHA-256-Digest: 5DOQsktgXepKGzP78PUDIjkt13aXMItMM7usbSJWPsk=
 
 Name: com/manheim/simulcast/core/ConsignorFranchiseMap.class
-SHA-256-Digest: v3dr6siiWAhf4COockrRIp5+0JiuaK1imIXTp21dbUQ=
+SHA-256-Digest: 8NI6VlnREbQXFeNsml+TqngpMv+TDTJ10XqKtjYtmxI=
 
 Name: com/manheim/simulcast/core/SaleResult.class
-SHA-256-Digest: fUZomqQOv5JenbnFmkz+lHV8L5wvE+z78AFcVBXlsxY=
+SHA-256-Digest: ne8bfxhRmAkkBmspW4mry4R7VOEUgNnXyZIE1n/RRuM=
 
 Name: com/manheim/simulcast/biddisplay/BidDisplayPanel$1.class
-SHA-256-Digest: Uvm794nBYF/FnYgzur/t/jAQZgzec25W906sBp6QHFU=
+SHA-256-Digest: +yuuDZM1MURq2JiHDtwTl27YOQHPc6md+delPPHUg08=
 
 Name: com/manheim/simulcast/swing/BoundedPasswordField.class
-SHA-256-Digest: 88fq8WFxBJ9U8AsPX/Tl+o9HR1czL4ho7Y8iiC8r0uU=
+SHA-256-Digest: 2xFo6/CEZzd7JXyfScb6BSdEJ7nQkgOnTpBxa5HqCe8=
 
 Name: com/manheim/simulcast/biddisplay/CurrentRunDisplay.class
-SHA-256-Digest: YCTa7bHHRpZVA0EdaQeUmZ7VC2ZETNwrsEjmwDTySt8=
+SHA-256-Digest: NzoXKUtbEhtpaqZUQHZItYBCwkkhBQKcGPZ75trnv5Y=
 
 Name: com/manheim/simulcast/messaging/messages/PINGMessage.class
-SHA-256-Digest: QcdHeteNqnEnjBDtyH5NY7DXkFWSzP43dIbXtONcRuw=
+SHA-256-Digest: Nzqbdwq7CnzYIp2nXG+p5kZVv84b59fnGHOrrBk6pn0=
 
 Name: com/manheim/simulcast/core/domain/model/property/CompositeProper
  ties$1.class
-SHA-256-Digest: vMwUCMYoujbpZpr7AT6TzSET/GE9l0o43wnL4t2VBxM=
+SHA-256-Digest: HDHBhj9iRzA5izFWnq1BSIA2kHiHFjqQ6QwevMJFPlA=
 
 Name: com/manheim/simulcast/core/MultiAuctionVehicleInfo.class
-SHA-256-Digest: 7D7aM/TYaIr9sFaJViIgSkW3qwrXq5t1450GoEAZifQ=
+SHA-256-Digest: m3wgYPWedtUFrGCB2ezXmM8RcSLinYooi0E+wP4aUuA=
 
 Name: com/manheim/simulcast/swing/SimulcastClientComponent.class
-SHA-256-Digest: d5B9AZzvBAl5VhSgYyCSNlhJdMZ3SMnIzjbf6Vxa5v0=
+SHA-256-Digest: lTAkE7r9+BqN7+9LCPqeoHwLFG0eZqx8OYzEROFfzoI=
 
 Name: com/manheim/simulcast/biddisplay/standard/fr_CA/lightBidReceived
  On2.gif
-SHA-256-Digest: xsxiMXKX7KvR8dqb/XYoFCoNbQD2XzWyRr327uqdPA8=
+SHA-256-Digest: sQjz/U7UiFSSjxZMBI5/5TQgdnR3sEH3MEkyIqeC8ic=
 
 Name: com/manheim/simulcast/swing/SimulcastLabel.class
-SHA-256-Digest: VZOhCW4svRoEW5wDRAzjJLynDfqJWfQ4uGAfjWkVJGo=
+SHA-256-Digest: o60phG7sRPPPULsYSYAEqpr08CKtLd//mBRrujnt4ls=
 
 Name: com/manheim/simulcast/lang/Address.class
-SHA-256-Digest: UtntZywyy2eWJ1PSlnms8ZQRADuMpCudtypLMGh3ZNU=
+SHA-256-Digest: 49Lp/RIEPo+p1KAUdoFVkrxaXOwyAO2yZ6vOI0v/lHo=
 
 Name: com/manheim/simulcast/utilities/ThreadUtils$1.class
-SHA-256-Digest: vwgp9NEo2FIDklpgrvg7EkTtSyk8IUpnfoWTI2mGCPo=
+SHA-256-Digest: mn1xnwtoerMX4Qi+G6Pyg7jdd5E3hooZ7WWzo9WXrnE=
 
 Name: com/manheim/simulcast/cache/CachingSupplier$Sync.class
-SHA-256-Digest: O2cs/no+Kh9tNsNynk8ozTE0n3n2uCA2tjwRCgz3oUE=
+SHA-256-Digest: sX3w8HMS1h/3emWxTTxZp4L5fmAbq575zqswO9JpiDw=
 
 Name: com/manheim/simulcast/swing/media/VideoSourceFactory.class
-SHA-256-Digest: fxTeRCaiXg0QhUWVIuMBKYL0tp7xHftbQKyeV8+41M4=
+SHA-256-Digest: cJtDa8XNixxCL02MvfuQKLOxGthmO/1yrnvt1y9qpAI=
 
 Name: com/manheim/simulcast/utilities/Bootstrapper$1.class
-SHA-256-Digest: gsbV6KUZZ7n68w4wfBa0PzChyVjq+awn2tP05abdWhA=
+SHA-256-Digest: 7wgRP+XQSwNyqaaxOJR0kMEfg24DF72YkvH35po9A3Y=
 
 Name: com/manheim/simulcast/core/VehicleGroupMatchComparator.class
-SHA-256-Digest: fia+OIa8PLag6LumcJBekjzLePSJL+URbVwh1eJfHV4=
+SHA-256-Digest: P+UY/AER/l5/Y8FyZ3fvNC0fgCLaUI7/XXv6XeX4IDo=
 
 Name: com/manheim/simulcast/block/commands/SupplementalClientCommand.c
  lass
-SHA-256-Digest: wlTQ3oAhg9O+jbw3VjM0NbFidIIriJSsFxYsjgPijAk=
+SHA-256-Digest: S+/kKahW/dgpR9h0n2z3EMT/2ICQeLVdZY3dhqiEcLo=
 
 Name: com/manheim/simulcast/messaging/messages/VEHIMAGEMessage.class
-SHA-256-Digest: c5E/K9kNjFwmVizdce5hUBr0P6wpzl518ki5s111ahU=
+SHA-256-Digest: MluHBhYtCpDBqLWSWrn3aCfCBQ0M5lKCwP3ZxsFoi90=
 
 Name: com/manheim/simulcast/core/ProxyEmailData.class
-SHA-256-Digest: vULq+2k9LGJ/b1CYBI3VQEERWyg2hps6BJxam2d8ev4=
+SHA-256-Digest: j1jilZzUm1o0y/sBZyChzCCWFW5XM3Vvvs3a9wDY90w=
 
 Name: com/manheim/simulcast/block/commands/UNDOALLCommand.class
-SHA-256-Digest: ykl1saXdknC+tInH9RNQ8vlbblFRKjbyYO1dKO3t7wI=
+SHA-256-Digest: ay7FXVXC4I0x8GVo4GlCoSZ2k+uQCFb02Ss8yjeCYVo=
 
 Name: com/manheim/simulcast/utilities/ConditionGradeEnum.class
-SHA-256-Digest: rQ7ErAltt/CU5G/pb//JUgGuMQDhUVoAcBARXpnxpfw=
+SHA-256-Digest: HWuqsYO0MBN4M+E4ZMcrBeCaN0o3dy5tPk2vHk7uT/0=
 
 Name: com/manheim/simulcast/utilities/ThreadUtils$DaemonThreadFactory.
  class
-SHA-256-Digest: ZJqc3Znb51SqYTpxJEHmEyjN1sVlylTGtRUe4fRskLI=
+SHA-256-Digest: mAdrsaXzkFZZa0or2tXQCrQ00nvb7Ka/Jq3sHe5zPHk=
 
 Name: com/manheim/simulcast/core/TokenDataImpl.class
-SHA-256-Digest: g4IcmbY5+mW/Go2Ghz1QEQTs1LmvoHZzaGPQ7APgjS4=
+SHA-256-Digest: mZK9V73WxZ8M8YNLRUa85HWct0r+6ggBetifA/YblFo=
 
 Name: com/manheim/simulcast/messaging/messages/SERVERREQMessage.class
-SHA-256-Digest: VTb4SCETDSK2985eDtBUmk55WLQsE9Z0lKMKKPgkxrQ=
+SHA-256-Digest: z8y1OHCX0CNr5Y71hHf5A+5OG9vWTNB1Y870HpWxquM=
 
 Name: com/manheim/simulcast/swing/SimulcastSwingButton.class
-SHA-256-Digest: 4NwDzc1JaKDgVxnmtdqJbIfG5gaT6ptsenD5G3XpSAI=
+SHA-256-Digest: aJOWkYwwxpDiyC76hvApnrwq5ww72cr2PM3VDouxFeY=
 
 Name: com/manheim/simulcast/messaging/messages/PROXYCANCLMessage.class
-SHA-256-Digest: TAqDcl9isaGjwDvVsxecmxkDEDtaQGNBocK58R6w3zw=
+SHA-256-Digest: tnwGG85aBBto3dHnZIx+md3Hk0/21H3jgZgyX6+A53M=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/lightBidReceivedOn2
  -new.gif
-SHA-256-Digest: N0LWZAhN7P0mTqpWE+gAQrIaPpb3Hx42hYDO2UgVNl0=
+SHA-256-Digest: LixggqMFMFeYmn039eVMynoaHXuQBzDTH3tNgI5vCzU=
 
 Name: com/manheim/simulcast/swing/SwingDispatcher$1.class
-SHA-256-Digest: v1I5rU4MlKOLBuCjbbbCV3keiAx3WfAXVMgd8R+sYWA=
+SHA-256-Digest: 2EHjcl3UiU/UJjLeSX0egciob3cSHBIm7h3jgDau2wA=
 
 Name: com/manheim/simulcast/swing/CheckBoxButton.class
-SHA-256-Digest: Dk08p74LUClW8fAIMMUwMH7nFsS0D+QOeiQq+QR7RXE=
+SHA-256-Digest: z4gd7wsU/4rsFsL0N4x2sHtRXFGHbd5iCMPs7dFxEN4=
 
 Name: com/manheim/simulcast/core/RegistrationKey.class
-SHA-256-Digest: hhdwQs9lkQCWE/WwQwwHFSF5gUqswPKq9qPWwAfihPQ=
+SHA-256-Digest: iqJ16E7cNCo+wmr28iTYkyjcJUx+iqCzTKUlduJeB6A=
 
 Name: com/manheim/simulcast/utilities/Strings$1.class
-SHA-256-Digest: ixxSDyOV87E4fX7dy/Bo8PuH3WYIvaW738Esz+SM8Zg=
+SHA-256-Digest: plBA8UENhc8hf/UNXQPWBmalX7J/MM0aRfz0xXzJnQ8=
 
 Name: com/manheim/simulcast/swing/SwingWidgetFactory.class
-SHA-256-Digest: 9wJdjIjuxIGKLraydA8ZKQ2UdtYcCJxzBTXnlh7K9ZE=
+SHA-256-Digest: 0rqS/Ufdd03lYSgE2BHf69ErD2zQR40puXub0wPJB+I=
 
 Name: com/manheim/simulcast/utilities/JAXBUtils.class
-SHA-256-Digest: 6pQd1ff183u1wQD1Znvd0X4a7hklAsIC9fEiqN15LBc=
+SHA-256-Digest: +DDt6KWYG1jH7ZVG/Ji2zaw2ZK1kMgHgnBuJpA48S5o=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/lightBidReceivedOn2
  .gif
-SHA-256-Digest: olwZRMF5g9z4qoEzJPavdWUmZV8FqRoSV/Uc2ymcIe4=
+SHA-256-Digest: k5a3sWflCz01erckfsBbzniWY2KLUcsyMC8Rz8nCMOU=
 
 Name: com/manheim/simulcast/core/LightsConfig.class
-SHA-256-Digest: rE8LUwEvnC4m2qrHyJ8cjr+Q32cwiG7eGLzm1gF8mOg=
+SHA-256-Digest: 3VH6I/pInmin3JJ+7Cb5o2yPdhRcMtd+q7ovqNqzp5Y=
 
 Name: com/manheim/simulcast/swing/media/AudioPlayer.class
-SHA-256-Digest: MKJaG7P+XR7l9BWgPtz2XeZsWeuB5pQlN1yM885iLtc=
+SHA-256-Digest: NxihSB9UFRp4WFMH043aljSQhYlneqmWXCL3oorRaHk=
 
 Name: com/manheim/simulcast/cache/CachingSupplier$Pair.class
-SHA-256-Digest: CDIhv6VW48aUrYTWmuBpb5TUtJ0rx4e84CFwTpBHj1g=
+SHA-256-Digest: RwfKfNxGhmAPRKsRRfP28+p2gkn4U4N9fXYg0AFS9xc=
 
 Name: com/manheim/simulcast/messaging/messages/LOGINMessage.class
-SHA-256-Digest: jWk48vUjYRr6DnCNYP8Auo0eweo5zkHIhM6oboMVAUQ=
+SHA-256-Digest: IKnXuG3HVu3/jckpm3hCdHJUjvAPJ6q9g/Lu8MKfyU0=
 
 Name: com/manheim/simulcast/messaging/messages/ENDCHANNELMessage.class
-SHA-256-Digest: ImGlldN5/l+pMpz0cI3F+HdFqk//dWOe7PjahEGHSUw=
+SHA-256-Digest: 3lRILo2QDr85cYhPepaSC4PUX9ibRMLeEvO1EBm0jI0=
 
 Name: com/manheim/simulcast/utilities/AverageMBean.class
-SHA-256-Digest: XMkmG4EX2GCjI81Kq+NCwoNlp4cTuRkh7Q5K2/J0hq8=
+SHA-256-Digest: d2NC1dqLIMAYpHfWcPQkkXRKISnaXKYHltysGOmAIko=
 
 Name: com/manheim/simulcast/core/domain/model/property/ComparableCompo
  siteProperty.class
-SHA-256-Digest: ZzgQBoZ4rQnk54/Po2OepSsBX7zT33ERVJUTMzCPNP4=
+SHA-256-Digest: 5B46MW0ON/c5WJADYLVuu4rp8UcO8O0Bsy8NFza3qMA=
 
 Name: com/manheim/simulcast/biddisplay/VehicleInformationPanel$BlockEv
  entHandler.class
-SHA-256-Digest: B+7aDYe0kD9qncWgEmgjDamcxkeDpujW5U87FZLArlM=
+SHA-256-Digest: H1YMfjVKaNuk2Mh1G+g9MyRFVIruHhFr7AFg5+MW0t4=
 
 Name: com/manheim/simulcast/core/WindowStickerBean.class
-SHA-256-Digest: S/uLtZdjDFWx6nYNSGB2rUfIr8j3DoaJWTp7Ko/lFjY=
+SHA-256-Digest: 1y/BSFkPabVMIZJydSUudkLBaScQOpvvKUIM9uj1z5M=
 
 Name: com/manheim/simulcast/utilities/Key.class
-SHA-256-Digest: FtcVB5ySCM1YGquva3B9lh+uUiwWRjyUJQefHsH06Og=
+SHA-256-Digest: GoR9c1VhnuiJJG2DFzQGVQDyytf0G58AeIeYBn5/JwA=
 
 Name: com/manheim/simulcast/messaging/messages/RECONNECTMessage.class
-SHA-256-Digest: wO3tG+BxIYEiBtWR7C/eZqJGGlL1UxP/gElF601qMfc=
+SHA-256-Digest: jzqcKbHgCEUM6QV2TkUbh0ALLZznId28H/T6+KsOMCo=
 
 Name: com/manheim/simulcast/utilities/IOUtils.class
-SHA-256-Digest: hwewYdhKOu4myPKIAlNnAdjViKm3FO3qRI7sMrKTEZI=
+SHA-256-Digest: r+zUcbklSI7tRzCp3SgcaIlidYHaMXybDf1sXXD3wvk=
 
 Name: com/manheim/simulcast/biddisplay/OnlineBidAcceptedFlashingStrate
  gy.class
-SHA-256-Digest: kvsGT7elOZ+hideoMxlK5KGEpwU5k9RUuPOaTR89rx4=
+SHA-256-Digest: bTP8pMR5XdSyvavPXHlVsc6x99l37/fC208P8jJlFJs=
 
 Name: com/manheim/simulcast/client/transport/URLTransport.class
-SHA-256-Digest: 75MgEpAq3exwz3x4Kg7ffb7HLHfFL2obo43OMdWEjOk=
+SHA-256-Digest: IZqMqLr/WqQ3X2TdNo3AcHoFlJJyTqsFGLMdssUzzi0=
 
 Name: com/manheim/simulcast/client/protocol/AsnProtocol.class
-SHA-256-Digest: uTYQqLe9/0YeofgIuQxd2slXvBXp27EBigRMQtoe4Y8=
+SHA-256-Digest: JZF8N9F8Evu3A5JyK5kxuM1AOyFwRh2/fTZEZZiBLR8=
 
 Name: com/manheim/simulcast/core/Territory.class
-SHA-256-Digest: eeY4J9KZBomemDpS6+frmU+KOCAa+sT8le45NOfqYm4=
+SHA-256-Digest: 4RIk54LAHo/h1SONQkRGVsHRLWcdCZRxoRPIHtz4ghQ=
 
 Name: com/manheim/simulcast/core/domain/model/property/BasePropertyVal
  ue.class
-SHA-256-Digest: /0Spm5fj5Jfh7nYgRAMjeFqxnmtjYPX4GsZ5uHyVFAw=
+SHA-256-Digest: 3EXMeikwlXXuH6dxXF8EuSiMpE+qgCG/kNcccsVPWdk=
 
 Name: com/manheim/simulcast/core/VehicleNote.class
-SHA-256-Digest: Esrb3IVPDAU148V07kRF6jTkzLU7zLcxXzQ69TyRY/8=
+SHA-256-Digest: xR7WvPXRh3VzIgbAa48Pz3N/+8FfnN2ZVNXfFY30YTI=
 
 Name: com/manheim/simulcast/biddisplay/43/VehicleInformationPanel_fr_C
  A.properties
-SHA-256-Digest: ekYZy9PGo6qexK0C+WGruaLJihSxdT3IKlJqLmMdT64=
+SHA-256-Digest: S6cix0yxLAJG4oCCLeNdcFKMkQIg+kNAKFuq2zW9Mfw=
 
 Name: com/manheim/simulcast/core/impl/DefaultLaneModel.class
-SHA-256-Digest: OphLxh2H3cQp9DxtECDuOmK2/gskZHHk9s7Sy5kaJq4=
+SHA-256-Digest: dtpkPyZO6iBIN1nYB9DT7hUVB6c7T4Fs3AwVoMK3FSU=
 
 Name: com/manheim/simulcast/messaging/messages/INCCHANGEMessage.class
-SHA-256-Digest: 6uOFToRbYpw0P/zzhVXlBE3WDbKqDMyjaGcWUhz9rMc=
+SHA-256-Digest: iABMrEmjr2VO6S4P0GoJ2WOKF+GyoNhseXWHXehMauA=
 
 Name: com/manheim/simulcast/text/SimulcastFormat.class
-SHA-256-Digest: cNJpqz141Rapim/XwUQZ9WBSuOffQEAtkUu73Crah/E=
+SHA-256-Digest: 1WVGwx4bNPsdbz8hEBbEADfW4OfGL7JquVtRTbGHrJE=
 
 Name: com/manheim/simulcast/biddisplay/LightsPanel$1.class
-SHA-256-Digest: lSxHGhgo1EqJZYdnrK6rf45UP/QI59susfR0kySWWNE=
+SHA-256-Digest: UJDjXOooC9c6meJHACfLtzT3XzLWs3G6GCfe2quayl0=
 
 Name: com/manheim/simulcast/messaging/Attributes.class
-SHA-256-Digest: lyaTy6VMS9Ok2oexL+tXMwCSFUg7EvUZWDImGHAqZ6M=
+SHA-256-Digest: H+rh3Lz87a8csjgEHBxDajKboMBLXT4JMLcrFauhMF8=
 
 Name: com/manheim/simulcast/block/commands/CURRUNCommand.class
-SHA-256-Digest: dSZFx03VsEgDvroKnDzv8nhb4bGhTbB91SJNbl1E8SI=
+SHA-256-Digest: /ADWRsJoCZwG0Uju2s8YQFKEKTYoQKOJEDiWub8YfeI=
 
 Name: com/manheim/simulcast/utilities/UniqueIdUtility.class
-SHA-256-Digest: AXfL5asTnSrsvpyyGrhXqUNLR62K0IeWrQKLwurCMAc=
+SHA-256-Digest: lrHSn950XA/feg/D0qbUt+FGkwO+YERaI3NN2nqonMA=
 
 Name: com/manheim/simulcast/cache/CachingSupplier$1.class
-SHA-256-Digest: N4q+ZYY9OWGhqrFMe4I9MkoMQlZEKt507Lk0Cnj57Po=
+SHA-256-Digest: LbZDgNaDTomRdteQDb6VhaK5mbOoJi19Wz5HgIhw/J8=
 
 Name: com/manheim/simulcast/messaging/messages/UNAUTHBUYRMessage.class
-SHA-256-Digest: jsHnqtk5HOGPwOV63wVT2U6qjeSXTV43xLEXzdI0sJE=
+SHA-256-Digest: Rtq4AbQHDtu9TG/dPbNO7LBNjrJNqXt3/Y6xTDqgB34=
 
 Name: com/manheim/simulcast/biddisplay/standard/fr_CA/manheimSimulcast
  Logo.jpg
-SHA-256-Digest: 2bYCnhJSNivdBzS0S058a+JMF+xKkUyc+2pEvx5xGFo=
+SHA-256-Digest: y2H+PGqPBHslkhT8FVRhIIkNo3ek7tobfoKBEuXCTfo=
 
 Name: com/manheim/simulcast/swing/SimulcastCheckBox.class
-SHA-256-Digest: 9fWbGv0U17ZlA/bxSeRD4P3CiV5zTzaS0QSDllMCShc=
+SHA-256-Digest: cm66qrRhx3qpPy0jnp4ro1+pdFGoda60jTVZqEvjN7E=
 
 Name: com/manheim/simulcast/swing/BoundedTextComponent.class
-SHA-256-Digest: QTimptudrk1nIEXLQTTzU3mpKaLH6u5G5iT654q5pnk=
+SHA-256-Digest: e59jVSEPyUmDEr+fd1iQaLz8DTNDWbdVwQh5OcLmmC8=
 
 Name: com/manheim/simulcast/biddisplay/standard/fr_CA/bidDisplayBackgr
  ound.jpg
-SHA-256-Digest: WXYD0ck3ARbzuB3eh9B14Rf6bvRx8h0Uyx1V3FPYbqc=
+SHA-256-Digest: luVfPo3ZYDxYghJSNp1vYGtNwtYnmznsN1Ud8mrcZ14=
 
 Name: com/manheim/simulcast/biddisplay/standard/fr_CA/lightBidReceived
  On1-new.gif
-SHA-256-Digest: Pgb0/48ggdUnxPc4whp+EczKmk09aYDJ6Sgg0eAOl7w=
+SHA-256-Digest: t146o/hP4xydeC7BC/jDqeMhwGluHYLLY6A7Nq4SrBk=
 
 Name: com/manheim/simulcast/swing/SimulcastClientImageComponent.class
-SHA-256-Digest: dqljset/BSRczdOOiF8wEZ5tQNctlL2jIFUF+RB9TFQ=
+SHA-256-Digest: 1dIJCnZ2UklugIEsQKg71H5c0nazc31sttEJOXlBMF8=
 
 Name: com/manheim/simulcast/messaging/address/PrimaryAddress.class
-SHA-256-Digest: Fp4UwCwYXlF/JCjfQhD78oP2KerjEPkZvWyzVXbjGXk=
+SHA-256-Digest: H8absc5ULkMCPiUHiQKC/bgc/Yfiyb6e6QumGDuxsOs=
 
 Name: com/manheim/simulcast/biddisplay/standard/fr_CA/lightBidReceived
  On3.gif
-SHA-256-Digest: OnH8bgSbkdKkNShNts68GgaFGgpVMoYJHy3vhYe7BHc=
+SHA-256-Digest: vv9aoWwws0yJKyPYQCDZTAt5nhFG0PNVjsdlhFzPyv4=
 
 Name: com/manheim/simulcast/cache/ConcurrentCache$TreeBin.class
-SHA-256-Digest: 7bPhEXxaFWM0cGeWd1U5Xc3894dwZmyQiDuGVIV/kio=
+SHA-256-Digest: cOSOp7k1QaN7FywoL97zM60TAO/Ika7+HhSYsA0IT7s=
 
 Name: com/manheim/simulcast/utilities/SystemDate.class
-SHA-256-Digest: RWE7ncxdGAVMFXi39D6OepqU3UgE6LMWCeqFm1e1NFM=
+SHA-256-Digest: dNV9pi+uzdA23ux8WAWTE1jdtgeufHda68bQD77iqow=
 
 Name: com/manheim/simulcast/messaging/messages/ASKMessage.class
-SHA-256-Digest: lriqJttncWN8+0OAdEK02JoHEYWCt/Yo6o+hyZrb4j4=
+SHA-256-Digest: z+3El+oRNtEJpmpjLeHlR/la8DTcQOHLYQjQ/lLUAvI=
 
 Name: com/manheim/simulcast/client/Client$Latch.class
-SHA-256-Digest: +oxCNL/CaRzNpfGYeoZWNfUevrJ3DoyTtT9PKLJlVv8=
+SHA-256-Digest: D3BWCGvGCJcufAzWY17gLqBoTAN7BmfRqcRPGHAXsdk=
 
 Name: com/manheim/simulcast/swing/SimulcastClientHTMLLabel.class
-SHA-256-Digest: 8fsBJi1GQqKuQHOGZM0wGEwsCxYIB1cl8x4BpZevH0M=
+SHA-256-Digest: Rn9EhC85eM8JqC7UuAVYq/zX/vy7LueirW1EFQMWMTk=
 
 Name: com/manheim/simulcast/core/impl/BlockMessageProcessor$Processor.
  class
-SHA-256-Digest: qtdJwoh8P/0fe8V7zMbOGNNWEJD+OmJd2SV57FZsdEU=
+SHA-256-Digest: FLRWNzvREKVvGhsDTwXHd7FEASO3thyoIUNUQkMJ5DU=
 
 Name: com/manheim/simulcast/core/RunPermissionKey.class
-SHA-256-Digest: KUXEKEXAlTduFV6I4Tlc7bfNTy13bn2shaoq/V0vNAE=
+SHA-256-Digest: 3Cq8bV28VvVAg2oMin8hiRkVF0kZKmKH9rJPD0bt9M0=
 
 Name: application.properties
-SHA-256-Digest: L6iNwxwTsVZnGl9AI+sMVaNtO+5hShLTTYZxuKuiBGc=
+SHA-256-Digest: bnfu5i0c6IJkQrDv1hGNfN4g4kZpu53GNaLu4pfcCMk=
 
 Name: com/manheim/simulcast/core/AuctionWatches$1.class
-SHA-256-Digest: i5ntBG4V9n/zK6Te2/eIqdZprBrYVlG+dhLxisAgrOM=
+SHA-256-Digest: T7PPDbiDPOpp/GKskA7RjnHUlrM6KHvO/GKCuVr90PE=
 
 Name: META-INF/Facility_fr_CA.properties
-SHA-256-Digest: wFhcZGIvndpuPyEpAHFlbLFCpPAvX0Dh3w6P339Wp4Q=
+SHA-256-Digest: AwFbvvgq0X06wRNt5jPwL1nqh7UnK4T6BYf2Sl/63v8=
 
 Name: com/manheim/simulcast/utilities/IOTimedOutException.class
-SHA-256-Digest: DumlEXkKtqpNvTwfdwSiRJv9IGZr/Nu1Wdvv8BT7zQM=
+SHA-256-Digest: qiufSp4sIgECHaZFJpXpk1m2KdFaflLoaxdIdp4o4B4=
 
 Name: com/manheim/simulcast/cache/ConcurrentCache$ReservationNode.clas
  s
-SHA-256-Digest: 8HOWavNG8zaLA0ZJmx+bMTQm6UWztW9mvQ3oP1Fix6I=
+SHA-256-Digest: Hfuos2lzt7XKMgbQ9/P/F92ylR0kX6o/fsmfVAiNGfU=
 
 Name: com/manheim/simulcast/block/commands/VEHCHGCommand.class
-SHA-256-Digest: rvLcmHICyNUxM7++nSpbbtoJUdHLCpHPgeJuhK02Mag=
+SHA-256-Digest: u9XwIN6D6kfrx90f+Hxkuwfdm6UHRN2MV2fV1JL1e7M=
 
 Name: com/manheim/simulcast/utilities/ApplicationResources.class
-SHA-256-Digest: 6EKjKlLyShNCGBpHjYDIy0sHBdzUCuoG+XgTuEbD/mQ=
+SHA-256-Digest: gczRI51P0aBpLe96+HoXUxtXui/Cpr8D7kTb++aKm1w=
 
 Name: com/manheim/simulcast/core/util/CMCKeyUtil.class
-SHA-256-Digest: 7r0HsV7Jqyo9PybZyGWuACoAj7gPjgSbNcJeX1eSEC0=
+SHA-256-Digest: 3WXuUb4hRwnKc65QbtJxH5sbD8D358W5XDFSVDhWmfA=
 
 Name: com/manheim/simulcast/biddisplay/BidDisplayPanel$BlockEventHandl
  er.class
-SHA-256-Digest: bztBZ3b7DjT96uYsCue2IaaoAE/8sF4QZ7iluwTkoQM=
+SHA-256-Digest: T6oQF3b3PP566hnZIyjXcxettIQ4Ram2JJqduZsz1h8=
 
 Name: com/manheim/simulcast/swing/GroupController.class
-SHA-256-Digest: rsBiFHfRI9JweAS6hGfVrdpTaqpZflqMdfMVUPOkDnc=
+SHA-256-Digest: 7UAputa/bekwH/DKUuEKyQM754iSkUfp/NdsSipxeMc=
 
 Name: com/manheim/simulcast/messaging/address/AddressInfo.class
-SHA-256-Digest: B8bdZMU7Qs7HcIyQd6V1B3m25/5/KNeGop5g+cwNJCw=
+SHA-256-Digest: zbI7OWma8wGPbMvOB0lATruu9mpXHK+NBvm3kT1ARdw=
 
 Name: com/manheim/simulcast/core/Login.class
-SHA-256-Digest: /pDfPqvmFloYYYMTaTKc/oZV9kajGyJ2UrhY6Uhzs2Q=
+SHA-256-Digest: 7CPDwBr+QwVy+BPtvKEir6AHyEuuORdHdIDheVEFCkg=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightPinkOff.jpg
-SHA-256-Digest: i8Er8QiXZqXbAvmYxuw6PwN51Yngco91rKQ6ag5da3E=
+SHA-256-Digest: cgsPWzJBndh5FNmzsXD9LvFOT+D47sjMsGPSsIUskMs=
 
 Name: com/manheim/simulcast/core/AuctionInfo.class
-SHA-256-Digest: HjJy0JnULXDKBOz7dduuyAgbFytop4Ow63cMp3kvJzU=
+SHA-256-Digest: NK5Up1mb1F6hNfPJ+SxrxM8X30MyZPh3yRIkLG9lhrc=
 
 Name: com/manheim/simulcast/messaging/messages/WATCHESMessage.class
-SHA-256-Digest: N9+yNHVtamqWw+yK21L8aDWdP4lhP33BbmPcTpKyQxM=
+SHA-256-Digest: hiNsaVHi/lfECWhwNw4avjBwEYbY8xU7Og74llUCV5E=
 
 Name: com/manheim/simulcast/lang/Facility.class
-SHA-256-Digest: EQkCak1EfaBTg+X6qlR5H4lEL1R7hGQyftPlPCXO6uk=
+SHA-256-Digest: 5/wgzRt3L7MF8eIu8VChF0E+Pj60L5UrmyL79yul4tA=
 
 Name: com/manheim/simulcast/swing/SelectAllOnFocus.class
-SHA-256-Digest: 2yN+jXKsHKeQVLMseXVSv+yz2EIUkAaA+OSixxR7NVg=
+SHA-256-Digest: ifSsELAr4vkOjl8WIhQcKh4Cfw3HKEypeI2CXOOd9ng=
 
 Name: com/manheim/simulcast/swing/FlashingJLabel$1.class
-SHA-256-Digest: LDCavi82Z7tK6OEqj0xZH1ETdHiJWN7OMDPZCdl6uL8=
+SHA-256-Digest: uPD1UbKyHq9ddT/Negc4mhl9/FrMolADkuJ2Gy74mvc=
 
 Name: com/manheim/simulcast/utilities/collections/FunctionUtils$1.clas
  s
-SHA-256-Digest: 18ToDGH96Vrzqs+bUBTwRx6Bj5PXVa8n/YLXTkTVfnM=
+SHA-256-Digest: M/MBxH3RiFimp2aux64GHNUVssBtFqAhOy8dCfZxWK8=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightRedOn.jpg
-SHA-256-Digest: Pl5RbxsNDqB1TwlzYo9lt3rlXbuv4vSw5gwueTMpKCQ=
+SHA-256-Digest: dIOSZmY3yVrIOYf6oGlKd+rsu4FhsddNcRIlgtDL2Fc=
 
 Name: com/manheim/simulcast/core/MultiAuctionRunInfo.class
-SHA-256-Digest: KzbLz1RxRUNMeOCAjNzODxqKkxdtPsXqhub/FVmxMYE=
+SHA-256-Digest: FV22bbWypwqa42RBZJWRspw12Nh0oS9zMWNxDkuCD+A=
 
 Name: com/manheim/simulcast/core/RepAccountKey.class
-SHA-256-Digest: zRUTcXouKBY+Sevf4l3JIFwA2Nouxb3GaVOiFzlQwIQ=
+SHA-256-Digest: Gx+EwTDPwA4ETUOG9EG+wVJ6XYCd8oYXtr/dLMRXA+A=
 
 Name: com/manheim/simulcast/swing/UIAction.class
-SHA-256-Digest: 23ExZO/PxaiBDjX340awHTjbtuU1ticOBOZKBLGnpRk=
+SHA-256-Digest: Ku8IfvnGRQODzaUBsfvge5Mrj9fkT+116hGvq344Q6A=
 
 Name: com/manheim/simulcast/core/filter/Filter.class
-SHA-256-Digest: I/4uXjSB6tpHMgE3JX9q24DpPBMA16J4VFMSvYFxiR8=
+SHA-256-Digest: /zLer0OymAyUT1LpjNIHN5Bv4fyw/uhNTFye6uouC4w=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/lightBidReceivedOn3
  .gif
-SHA-256-Digest: Sk6clPPm9ClfON1l7D0Z30hq4RAxO3eBnfIlYnqHfik=
+SHA-256-Digest: dmc50XyUy34DGQiSll4gVEDEv6gJZZtHipvTowTGcR0=
 
 Name: com/manheim/simulcast/messaging/MessageListenerSetImpl.class
-SHA-256-Digest: kXobqUMebU5BUWZyqVo/t1aIpDpRVRbbcrzQVHyHYPk=
+SHA-256-Digest: ppKDpOefcQ84N3V4sCj0Fimp9yPDa0IqzfuItTe5yK0=
 
 Name: com/manheim/simulcast/swing/image/ImageLoader$LoadDispatcher.cla
  ss
-SHA-256-Digest: hyFXb0R91vK0Mg0V+5m3rt8R+3FTt7/U44P7aDXwkbs=
+SHA-256-Digest: 9Vgl4hWGDIlWZvEM+ygGeE3Hu61+Y3NF+zjbCAPVgX8=
 
 Name: com/manheim/simulcast/swing/SwingTimer.class
-SHA-256-Digest: uTCjZhndTpCaMLIVNaNhMXTZdwRjg5krAW553FwMXPo=
+SHA-256-Digest: EoaC1mCNSdZA3jrX6eIliMTTmmHiG+v+x0Vl6EclMrY=
 
 Name: com/manheim/simulcast/messaging/SendFilter.class
-SHA-256-Digest: EFdk2cJHPH1zj/ICA8cVve0sucZ4CjI206YiHve9/9M=
+SHA-256-Digest: 2nAwCRoBHPV8/M0nG9nJfOyrcFDld+Dp0D7eJcndcV4=
 
 Name: com/manheim/simulcast/core/comparator/AuctionInfoStateComparator
  .class
-SHA-256-Digest: qrtQxfDCOH7R5DX0rTFBh7HL6agd2FO/h9lKV7mc208=
+SHA-256-Digest: pOJR/iHE2mr6v9vIyBHQ/aVINL1T7+V+ilcV7pFrcxY=
 
 Name: com/manheim/simulcast/core/Contact.class
-SHA-256-Digest: T4+wxX5UBs29uivEJXw+BwMDgfEyPGFYH5Sf2uvDXkg=
+SHA-256-Digest: sfYVlW0lRSYEPA3G9xS9fwjSrP+/dBIGIXfvcwW4xvQ=
 
 Name: com/manheim/simulcast/core/SellPermission.class
-SHA-256-Digest: GPgggGoKXlLhfF5+wVLGO7yctPtq1WTFcmrgirH+uRA=
+SHA-256-Digest: BGeOWFnFRp4hr6vgsHQAEN0GYSQZA5en3dezAD7CloI=
 
 Name: com/manheim/simulcast/core/BidDisplay.class
-SHA-256-Digest: 7qkhhvC5SY75wgR74Bt3UdzpC356KyAMnX1t7DqM1wk=
+SHA-256-Digest: mNm6vAGRKevqdk+XlSacFps4IcvJWYrMR9rYs4bni8w=
 
 Name: com/manheim/simulcast/messaging/address/BidderAddress.class
-SHA-256-Digest: XiKC5MtB40aIX+e7jYEDNLJ5sI3Wy9gkYSof7cmUmQE=
+SHA-256-Digest: qpUZT87NMHf6tLk9yDwjrGZZzbwVhdSlpBOjMOc6zB8=
 
 Name: com/manheim/simulcast/core/RunSummary.class
-SHA-256-Digest: hnfuZ3AvK+x5EtOPojF7NIAWCOpYGSgtkOxj9fvaZfc=
+SHA-256-Digest: hX93CcDt+Tieg4Hoz6nY3oA/HkeoTdNBxjofMwcXCyU=
 
 Name: com/manheim/simulcast/swing/SimulcastComboBox.class
-SHA-256-Digest: U3uXgimDkkVWaIY8oZUBdOhU7W0nXZByEiJwD61vDkg=
+SHA-256-Digest: 3eugZgWKJKLch58Dt2VXbhM9N9ehpt3t1OcaJsPLfLg=
 
 Name: com/manheim/simulcast/core/AuditEvent.class
-SHA-256-Digest: ZBCI7xFGUmrF5WcqvFdLFXna+7aZ83zOtKJSf2QDnwM=
+SHA-256-Digest: Af5DETHEMsjx6x84onC/Sdg6/5NndNd4Mn7Pwfjkvys=
 
 Name: com/manheim/simulcast/core/domain/model/property/CompositeProper
  ties$2.class
-SHA-256-Digest: fqjwpLgjTDE6BQRrJaJ7GiQoFh5OnlHNW8bKfFY+JL4=
+SHA-256-Digest: YkpA4rLnnV7f6DZz9XE446NEyRVl8wLK0dWal3sSD00=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightWhiteOn.jpg
-SHA-256-Digest: F+yQ6E/WyFFdNy1DScHy9q5uAbwlNybQeKMy6sKXjU8=
+SHA-256-Digest: 21RVvY8CfrbhAwMBRC0dOI+WGezon5KmgAnzUCjHhYw=
 
 Name: com/manheim/simulcast/messaging/Command.class
-SHA-256-Digest: MYNl481/N1yN11CUrQWiArABuiRM4sBR/B6IAYtjmtA=
+SHA-256-Digest: VA3ju7T7TUVsjMgztchyfsL+FRnTT09zn39F7Rshmew=
 
 Name: com/manheim/simulcast/client/Client$1.class
-SHA-256-Digest: pJvXKXGAvIYrGrjaOcFNyYSCgOCqt4Yeb+XENrjxdUY=
+SHA-256-Digest: vN0zQG/u/B70gGzAuBotq7PkeaXYeDu1kKAtp5RrXYI=
 
 Name: com/manheim/simulcast/core/domain/model/feature/SettingScope.cla
  ss
-SHA-256-Digest: 2Q2KW+lcTE/OYDpx0ojSeKA+kOBaOU+18yjexaKVAfI=
+SHA-256-Digest: EAvz0wM7Y/aZhyLdBMQHhLJZBis0/+ItWJNT2Vz+euo=
 
 Name: com/manheim/simulcast/biddisplay/BidderIdDisplay.class
-SHA-256-Digest: rIfRpsEaU/EO5KkBpMIHnGpj0MEy35PWG9rurdI+YdA=
+SHA-256-Digest: BVFpfhD+VSpqzLvO9J6Pd0iyB4FIDMb5y13utDK9zfc=
 
 Name: com/manheim/simulcast/client/protocol/Protocol.class
-SHA-256-Digest: Lod1S6exb8li1IBHEJHt1puEIXcM0YYGJak9Gme2/4U=
+SHA-256-Digest: 4twrQ+lN3Rl6CFkwty3vWy3k1lnMO2FFqKNpyfzcRHw=
 
 Name: com/manheim/simulcast/swing/media/VideoSource.class
-SHA-256-Digest: +lDUJNFQ7Y58JZSjNWzBRyPGSjDG6K3mRfQfYJtXCew=
+SHA-256-Digest: NmFPRbciUt6UIqHGSWw+XE8/UTB1B6m1cfixf/wLP18=
 
 Name: com/manheim/simulcast/client/WebSocketClient.class
-SHA-256-Digest: d9ZG2oqWMKYxAwaqWyJQwbBd1tNhjJ7Gt7FnXAIxh+c=
+SHA-256-Digest: UQ8dZHk/+VDkc4whqosCVxT0bU3b2aNFC99JuC4AuDA=
 
 Name: com/manheim/simulcast/messaging/messages/USERINFOMessage.class
-SHA-256-Digest: 8T5CVzBYTpp/pDTJs/pOTOKGCKvEfwxhqMndMjkOH90=
+SHA-256-Digest: ZPsqAWZkg2Zo7rEDJFefEiFZQp+uukJilJutI19M5lg=
 
 Name: com/manheim/simulcast/utilities/Config.class
-SHA-256-Digest: c36bvyk4Vn7J0dX8coz+jKRuR1Wqgv0nLBAPRe7vltk=
+SHA-256-Digest: /iQ8jLNkiV8LNkK00VmfSIGdMzJdpOhg1U4LNEhF8Xo=
 
 Name: com/manheim/simulcast/swing/UIActionComponent.class
-SHA-256-Digest: fI4LpLWoZYLcjhe7P5mXZMeC8UdCa7OwWLUsxpbk7tM=
+SHA-256-Digest: 1wbzCoO4RrP4aNJYhjRNO6m/RxyJhl13+iuSX70uFFI=
 
 Name: com/manheim/simulcast/swing/JImageComponent.class
-SHA-256-Digest: Zkc+LzHnMGpP4rveQ1r1kdKRYp3KZOtVlHeBMQ7sHjE=
+SHA-256-Digest: LNih2QFVJ2zRf0VKl5UobxsoR0yJWjv7cFqhP/QN5Pw=
 
 Name: com/manheim/simulcast/client/ClientInfo.class
-SHA-256-Digest: 6iqRQRxIUdoEv1PoKRk2EA93I1Q/DLqPE5z0nzSNCJQ=
+SHA-256-Digest: inRBXvUvNH3jRrAxyIiTW0LuMPzvCgSN0TcLXtHA1Eo=
 
 Name: com/manheim/simulcast/messaging/messages/BIDRECMessage.class
-SHA-256-Digest: kzoT6aLP/mursy8XT8lqWu2q5vnd3n70iq0RRKizn2w=
+SHA-256-Digest: CA4mGRPNACe02kbsqHtxPEORFbaXj7MvKghW8y9G4KY=
 
 Name: com/manheim/simulcast/utilities/EvictingQueue$Node.class
-SHA-256-Digest: b0Etw8OswpPKfCUP+j7dtRDfKdIJ1l0L5STeVfWci0U=
+SHA-256-Digest: YXI/5lu4jOS/EVEAc65ZGmvT0gYuk9di78qu/EqwRug=
 
 Name: com/manheim/simulcast/messaging/address/UserTypeAddress.class
-SHA-256-Digest: o21BMmE0eq+UWF9c5xJZCp1ahbLfvhZq9hRCy5vaYdM=
+SHA-256-Digest: MOEngBxvHq58vqqsR+wKhZJSTCyPWiUW/hbUyVqvqEA=
 
 Name: com/manheim/simulcast/core/AuctionWatches.class
-SHA-256-Digest: P8wEwrJ01xwJvd2tkAuzcwQpErsANZ7EJNvpTRzGWUs=
+SHA-256-Digest: fgsrdWv+ls+w0V2odOCJRpcjqM6x9wX6KVzGhlPK+60=
 
 Name: com/manheim/simulcast/core/ConsignorKey.class
-SHA-256-Digest: bTcWasy0jj/LYjTgIG/jp508hQqLJ0TszvGmXb4Yzag=
+SHA-256-Digest: j5P+PzswhX4hN8xwlEcy2qK39gE0bNI8s0I1eFNgqEk=
 
 Name: com/manheim/simulcast/core/AuctionWatches$Builder.class
-SHA-256-Digest: 1ZJGnI5+DWEyckMq05xW4WKDcrPdy0bF2d2Ez23wfEY=
+SHA-256-Digest: NwUwFcL5JWtqrQhUSY2iQcEgpWer40XRCpZELgb2UBE=
 
 Name: com/manheim/simulcast/swing/image/ImageLoader$1.class
-SHA-256-Digest: JOrK1eGOjHMc16SdP+xUUjvFEmzde3cq53dzFpAxAYI=
+SHA-256-Digest: +dPgQsVJJxA8HapDBDpjrck0Uhpw4kmrcx2O9f1dQJs=
 
 Name: com/manheim/simulcast/core/domain/model/property/CompositeProper
  ty.class
-SHA-256-Digest: BbL/px/DvDI2IveRMFhqpnYGtVl1uyPhHl1RvuPfOSs=
+SHA-256-Digest: b1nVmePDLVDy7z6tXBM99LYzHcmkrqJnUGuxXWrpi2Y=
 
 Name: com/manheim/simulcast/biddisplay/VehicleInformationPanel$LaneMod
  elHandler.class
-SHA-256-Digest: CQydmp7S4l3DTOEsPZaRutOvxjLOvI3LZU6WcbWN2k8=
+SHA-256-Digest: AZOeGbEsGnx8cRDU0XaTi716qfWjmNgfcjl9UlVMKKE=
 
 Name: com/manheim/simulcast/swing/Attributed.class
-SHA-256-Digest: IqsX7SqM8hB27YlFfJnKgl5PAlDlAsGw0c/iuy+doiM=
+SHA-256-Digest: RR4g2F0KKzyilpLra/satV7/JaefZXUmPyl1YnOKYmk=
 
 Name: com/manheim/simulcast/core/VehicleImage.class
-SHA-256-Digest: TjB3+y1rGU8yYygoKKKL4YbXYsnOuGN/uwXLe053yWk=
+SHA-256-Digest: yOMM+flZiDGGxMbhe/gGh6FKD+Z8qjf00m1zlzuY5p0=
 
 Name: com/manheim/simulcast/core/domain/impl/property/DealerNumber.cla
  ss
-SHA-256-Digest: bEySr28ZqI02uEIFFBBEEjvXSW03mRpzYEgLAnTWweE=
+SHA-256-Digest: ST84kIZW5MBIfl76wmCcQWQrAFzOEgVqBbYYpGnOyKM=
 
 Name: com/manheim/simulcast/client/BaseMessageModel.class
-SHA-256-Digest: 4iUddMVYrLfYFfZiLqT8E8TomY4NihoTRhuphO8CjqA=
+SHA-256-Digest: IWDas2s52mBdGLPFwJXSmmSD+o9g3KZW1OqfKtFEz5s=
 
 Name: com/manheim/simulcast/core/ConfirmationEmailData.class
-SHA-256-Digest: Y5s5Gf0FK2aeHLExRWrXrTgLkZ4j1fZwGzXs1fjm+jI=
+SHA-256-Digest: tMbKtwFi2j/YlDBMflR1voLkLdHuWY6mSojdijSv6M0=
 
 Name: com/manheim/simulcast/messaging/messages/UNDOSALEMessage.class
-SHA-256-Digest: vd/9zSDFSpEDtLvU8PoLrbafT2YIZTF7QbFZeqLBkLU=
+SHA-256-Digest: 9939qfC3pAzLIsYFadhS4n9ezO1G8LaZ+mytGSiAz+8=
 
 Name: com/manheim/simulcast/core/domain/model/TypedString.class
-SHA-256-Digest: OsFEak80uvJBH70JaDPE91NXitxsY3I7wrKO0IYG1NM=
+SHA-256-Digest: bLJ+eRRSYMonY87feeC62TgbiFQ6w0XTdH/PWdCi+HU=
 
 Name: com/manheim/simulcast/messaging/Attachment.class
-SHA-256-Digest: EDXRaAMtzb3DSDQflH1efD+jF1h5Bz4C+GVjzOf15DY=
+SHA-256-Digest: tbZewIjtqG038uvYknDuxMEfhWUbUQCilBoxFbbR+Uw=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/lightBidReceivedOff
  .jpg
-SHA-256-Digest: anoq5jGsGTAuHHEf8bX9JLA1mrfgR9Xcq0wxUY8A8Gs=
+SHA-256-Digest: ZcI31vzVLiabo5qLsH5J85aWRMF6WcQKoOw4ippX/uA=
 
 Name: com/manheim/simulcast/core/event/BlockClerkAdapter.class
-SHA-256-Digest: PfJ7RuyeW4PgyBUBANjTcECEzYj7ey5TzaZrY1mDV/4=
+SHA-256-Digest: Munb0jfrwd/aIBK4MkKZjsiFfvRzl8/LX7jt7VTCiHo=
 
 Name: com/manheim/simulcast/utilities/PropertyManager.class
-SHA-256-Digest: yl2bdWiSfWi4ZFJRV4sDaDHdGUvevAdrRR5SIyu38wY=
+SHA-256-Digest: 3IBikbS4A8ups/wEa5Bz4azBhDkxAEzlmLODQle/gCo=
 
 Name: com/manheim/simulcast/core/CheckoutInfo.class
-SHA-256-Digest: 9/ujw2c0VH8awKfXBRgaQjQrWcn5+Ee/bEggHRN8nMg=
+SHA-256-Digest: EXy6ZYShzPhBxPurqu0j3HaebfLs3tvinc24tE2jnhs=
 
 Name: com/manheim/simulcast/core/InvoiceTemplate.class
-SHA-256-Digest: XeS39zCRczm7zSejIWGBzAIeCEgoHau9UIUnBWtvzh0=
+SHA-256-Digest: kZWMvKWpwRN8vUmQbLXknR3fMB58f/pzS47aJ9oVHKo=
 
 Name: com/manheim/simulcast/core/keys/SimSaleKey.class
-SHA-256-Digest: n42aTh3WxHwkBwmwjsEcSCRBzQNAAiHpQrgEPgyf6z8=
+SHA-256-Digest: EN0VUS54++inPGTuuRmdEewcKx0B/DOkb0mr2+Ys2cU=
 
 Name: com/manheim/simulcast/messaging/messages/VEHLOCMessage.class
-SHA-256-Digest: 7K9UmNCmhmC+YroN5JMogymtCxB3Iqe1H2NRiNOPrpk=
+SHA-256-Digest: oVj3SHe6WRuRk6HnlITWLS4JcChPD2T0c2rbsVX4mu8=
 
 Name: com/manheim/simulcast/core/SbluKey.class
-SHA-256-Digest: fLf3nXPOqTgO6WZ/+U9TfU4Hr4nyWxK90QuwTnRerYI=
+SHA-256-Digest: 95XNQEbMxK+UIt2ugg95pi6osYvseb3aKAu4bvxzPa0=
 
 Name: com/manheim/simulcast/messaging/MessageHandler.class
-SHA-256-Digest: 3JoVJGI2gDL5DL+agScKH/lelmlzx5uAdzP00AxCOE8=
+SHA-256-Digest: 6eWePFq2t9DIlIqNDc0PtwI9+kshMgld+8xW8GA2ZUI=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/lightBidReceivedOff
  -new.jpg
-SHA-256-Digest: lF19L/62B468jkY5ygW5+tJQ0uhL6Ga5m/oO7gEK7cI=
+SHA-256-Digest: w+n+L1tttfkbEJe3lkAPnZTt/VlREXeifWreUmX1SDQ=
 
 Name: com/manheim/simulcast/biddisplay/standard/fr_CA/lightBidReceived
  Off.jpg
-SHA-256-Digest: aU9LFnqijHWZu3irUzkfJy54C5FA41UvEXaLxzujKxs=
+SHA-256-Digest: lOJo0pTd/ZORYjOt8OjBfrzx2XDUOEEeJqd8i6C6fcI=
 
 Name: com/manheim/simulcast/core/BidderRegistrations.class
-SHA-256-Digest: 8rksJnTSvTeDVUgxxqf+Bti1aK+xlw9DUEs5uAjf61Q=
+SHA-256-Digest: lJlx/ljorBdvQ7WYGCk36kQiqlD30BAliG0ZazZnjLU=
 
 Name: com/manheim/simulcast/biddisplay/43/VehicleInformationPanel.prop
  erties
-SHA-256-Digest: we/v2S0vwSLkA2k4uTKEKVUgtrpH+S1cDcJUXhsqdiw=
+SHA-256-Digest: 1/CgWZZPnVOn3IzWkQm72u7mtr2oX1IQevcZeB9PgIM=
 
 Name: com/manheim/simulcast/LocalizedException.class
-SHA-256-Digest: XyeVulumwUJiv6cnzrvDfPdydqWhAMXMjOGmvHQYMzI=
+SHA-256-Digest: sQ0sSNm/9lt4Qjx1KRiz2Fi7fevJrWOabEGAivwj6gI=
 
 Name: com/manheim/simulcast/cache/ConcurrentCache$CounterCell.class
-SHA-256-Digest: Iu9EzcCRJiWWyvrH3jJJ68bS7n+y5icKTOe25wxd3LQ=
+SHA-256-Digest: TVq/JJsiDWsB02EERpfalhIlCBEXuRyxxhm93ae4tUo=
 
 Name: com/manheim/simulcast/cache/ServeStaleLoadingCache$1.class
-SHA-256-Digest: F6KFpML+7nLNaTHfcoiIApFZpY3o6BleblMcTE1f3VI=
+SHA-256-Digest: j3+TJfEqI/+zcNZaE2i1cealo8EW+ahYJMYZHvHO5hw=
 
 Name: com/manheim/simulcast/core/impl/BidderRegistrationImpl.class
-SHA-256-Digest: ZPR0DU1epjLwEIP9D/YFCq7dZ+B3rrBRfdPnIy8S2YU=
+SHA-256-Digest: uNpB9urmzTONDyIJyrykQHKq2fpNb13oJZGcX0AU2D4=
 
 Name: com/manheim/simulcast/block/commands/BIDRECCommand.class
-SHA-256-Digest: r+54Puln+zIxVzQXaYIfOe8rKZuRg70Yss9A7OVsFEM=
+SHA-256-Digest: uE/zpc5ZGCUFlByWp8nsqvlhkh5XR1BaHutKz4m5/h4=
 
 Name: com/manheim/simulcast/client/Client.class
-SHA-256-Digest: k1T/5PTOvUodNp842aM7egNGsFbpHKMG4HdxFpSuZns=
+SHA-256-Digest: kFFFkP2NZpjC/x167MfDwlTMZyzQtRx4BbHk4fEERrw=
 
 Name: com/manheim/simulcast/utilities/JAXBUtils$CustomLoader.class
-SHA-256-Digest: ta9ccT0D2Ib4YYBgkCYibyfLDYyctZcwEVSmEhR0JR4=
+SHA-256-Digest: +ePFIyCH0v66fSuhXSPX61fdtBf8Ehqbof18N94B51E=
 
 Name: com/manheim/simulcast/messaging/Message$1.class
-SHA-256-Digest: x4ke6GM8pLyl+RxypTvotjpxji2Aj+Gneg0V12eRHnc=
+SHA-256-Digest: PovYIfnQGSEVKql0O+kow2oZddjhme9tPx3UrzNHfz8=
 
 Name: com/manheim/simulcast/core/domain/model/feature/EnabledCheck.cla
  ss
-SHA-256-Digest: bFvfrBZKKPlyQbAW9GwVTslKFDSCHnvtH3hmQn32d5I=
+SHA-256-Digest: 7cFQPtTjHs/F60XpxFTMbh5EkcI52keSfKSshAlWoD4=
 
 Name: com/manheim/simulcast/messaging/MessageReceiver.class
-SHA-256-Digest: 8eagO+cnwkBuIHAuAw1U79pobrIsArld3CyaV7olZAk=
+SHA-256-Digest: prvXddZxWu5yuoL2i06cdhgy+1v78nhAgiODaSsZtHA=
 
 Name: com/manheim/simulcast/core/domain/model/feature/FeatureContext.c
  lass
-SHA-256-Digest: yvmOU+wTjHKa+ue8rQKknZToxvUL8pgNMf/NI/BOMdM=
+SHA-256-Digest: ex8zy//C+Q6mNlRIkXTGdnmRW3daK1sLmLOSxPnk8o4=
 
 Name: com/manheim/simulcast/core/util/InvoiceUtil.class
-SHA-256-Digest: 7MGOaTzxGFu+5yF+eMlTy/gL/EipJuZNEx20RdKaGPM=
+SHA-256-Digest: Etak8QtimXg8FZxzVMnfKJuLRnzM2T5+gUfWyilQWbY=
 
 Name: META-INF/Errors_fr.properties
-SHA-256-Digest: YvDTw7MjiW3zLn9epvz9Nlyu/d2u6a1o3nap3x+tzag=
+SHA-256-Digest: 5DjM+4Jm2aDynPcQOFdEXF5XgrKl9IHmtZnU9tXXme4=
 
 Name: com/manheim/simulcast/messaging/messages/VEHOPTMessage.class
-SHA-256-Digest: kpsPjFO4C4bpK1oNgR+y/c/gvfVmzZLsaeciX2lQ5uQ=
+SHA-256-Digest: uuTmSivdB54xmEKufFh5Bcm+rgjqiyRSrnaX1MqBap8=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightRedOff.jpg
-SHA-256-Digest: mkDmtpkdpW+1aQ9iDrgdYdHn+niwTxAPjfQXmbWm5CI=
+SHA-256-Digest: a0Opf0skZ8Mi7Ne4PUBiWgN+yOlJN8yFATP964SG4hU=
 
 Name: com/manheim/simulcast/core/PurchasedVehicleSummary.class
-SHA-256-Digest: 3d+w+IOO4zUxSZcQvtSISYootfHUf8DobtYbILhEWDc=
+SHA-256-Digest: GQoiJ4HV8kL5WaCF4lOJQRxapHF5NQdKp544IFKmkF4=
 
 Name: com/manheim/simulcast/messaging/messages/INVOICEMessage.class
-SHA-256-Digest: RIkl4K+eRDlETe8mCd9iXbdXbDMpUCG2+kOhXmspqUo=
+SHA-256-Digest: sQS+9zNnLmWepeVrVdQ07uLX6DYXacbTXbZryy22PN8=
 
 Name: com/manheim/simulcast/swing/SimulcastClientCurrencyLabel.class
-SHA-256-Digest: PeDktL7kYCKyH+Nw6heX3K1K6wdWuyw5d/+JVEOJIEw=
+SHA-256-Digest: LaTGUBpvFt7PdMXchgMupg07yuRSW44NPCg/SZriE8c=
 
 Name: com/manheim/simulcast/messaging/json/JsonMessageSerializer$Trans
  formationRule.class
-SHA-256-Digest: rPR2VwFs0Lqzul+xYWZF6dfMBx3W1NCd9PUZJpRb2Es=
+SHA-256-Digest: IvVD7H9VsGWoGKzcexewhdCWozQUUSOnR+Z+pIpiOdA=
 
 Name: com/manheim/simulcast/swing/SimulcastKeyListener.class
-SHA-256-Digest: PiBFObO8aneIJ55qgLB14vt55YBaQPVBedV63Mlq2/E=
+SHA-256-Digest: m2vMZ9Db2pwJ7wt1ju+NGczQzKc1CUj6IFHO0R2sDk4=
 
 Name: com/manheim/simulcast/messaging/messages/APPROVESALMessage.class
-SHA-256-Digest: 4aWSHxDIGvjBYiqOdfc/e192LDevi4eSnvrIEXqDT+g=
+SHA-256-Digest: nyZ8vQ+gVr6LeYLvwPcnv1EJSsZgDa/FxoDkySLD+jc=
 
 Name: com/manheim/simulcast/utilities/JDBCUtils.class
-SHA-256-Digest: +HkiUPfvySrq0TCYC8CJmyyUa/p8xNpXqMT+ibcMvgQ=
+SHA-256-Digest: h9+UzLECOb63gYhHoJGZKfXrrWCf/6blwa9J9SoL4Xg=
 
 Name: com/manheim/simulcast/core/impl/BuyPermissionImpl.class
-SHA-256-Digest: d37JKHE71mkiha3QvpdHbXNDEjSYHMi9WdlG8XNfa60=
+SHA-256-Digest: EeUEmc7EqHoKYb2m8NbQVxRrJdqxgS/1tSTPwJsfWTQ=
 
 Name: com/manheim/simulcast/block/commands/EVENTCommand.class
-SHA-256-Digest: wU4rYGnaR54YgRywwxYPJ0BonhTVUAtOajoOZ6cIazg=
+SHA-256-Digest: g6BjiXeOkD8gtPt99t7rmvwPlzXRcdZFUps6ugyjVKk=
 
 Name: com/manheim/simulcast/messaging/json/JsonMessageSerializer$Strin
  gToIntTransformationRule.class
-SHA-256-Digest: ebZ25GqaTxkCiVzCzLjHZSmzIrz0Q3C8p1Zyl6j8mFc=
+SHA-256-Digest: 3t8/vtX6vgaU7EObtc2n0VqT1ARTgkDrD2H4H1cEcGE=
 
 Name: com/manheim/simulcast/swing/StackLayout.class
-SHA-256-Digest: deENVN9HjyYlkmkhDUPOEF1pqVJChwjMIjz0WTzydfs=
+SHA-256-Digest: pA9o5ZGK+0TvtPB3MY7RFLUZWZEZbIORqiInf0DOEQY=
 
 Name: com/manheim/simulcast/core/impl/BlockMessageProcessor.class
-SHA-256-Digest: CmAoYRIN1L2779+3j3M30zS/R+RyZlu03qNyFv/oKn0=
+SHA-256-Digest: Lf3WSFI5HuQbpNKQAfG1aCXXjyUzLX3Br3dlLZ0+lW0=
 
 Name: com/manheim/simulcast/utilities/SystemConfig.class
-SHA-256-Digest: xZAc1AjVM/K8QctGY/KSPZ4znrHKo8a+o3wRTugJzdU=
+SHA-256-Digest: kZGlOcJMipNr6tkhusovmf3Gz6q89qqIFe7AvhOiSTs=
 
 Name: com/manheim/simulcast/swing/JTransparentLabelImage.class
-SHA-256-Digest: Ym/WMhO1fuPTtzntHsHMrfgYWsMAZYCJZmrHX447CGw=
+SHA-256-Digest: K5MEqzPDzHvRvQFdF+qaocfHXEHO8GUF0BC8WmULEpc=
 
 Name: com/manheim/simulcast/core/BuyPermission.class
-SHA-256-Digest: Sb2vaPrYZwqQEtTffnNWTi4Dtg8vX7UFmzfXTK4DOAg=
+SHA-256-Digest: a7Y2gIl2s+J5+mkmlEzDQ09XpPvkvNn44gTdFyxGemM=
 
 Name: com/manheim/simulcast/swing/SimulcastButtonGroupFactory.class
-SHA-256-Digest: /45kKnNgr/IneAXoJGhGeHB8Kk8m4sfWUNi4yZ5Xk6U=
+SHA-256-Digest: IcTF2Iftf0xe+wV68PNq2GR59O/+HuGxMozMFlAMbnI=
 
 Name: com/manheim/simulcast/core/Consignor.class
-SHA-256-Digest: jqr8s806iDJyb0B0Y5GgMJxpW376K55dywHBw9e5j6c=
+SHA-256-Digest: yMlTkyrqpBB4XT5FGbo6Rw5Xunq5d7D83R6HTexlRLo=
 
 Name: com/manheim/simulcast/text/FacilityFormat.class
-SHA-256-Digest: LFYoWuYxsszSV1O5LNHKRLQWe2VvvbPRYR9Hld/aWO4=
+SHA-256-Digest: a3x8ShbZW+k9U1t7aXljEk08Ew+DzCxHElqq+Rlw0e0=
 
 Name: com/manheim/simulcast/messaging/CommandCollection.class
-SHA-256-Digest: U4ZlR11iwnk7KDN8jNraXTLWzACS8W+AFyfZK37Ct3U=
+SHA-256-Digest: GVWV3OeN91mStsow4iGEai7WxIBQJoKelvJEXYIzVRs=
 
 Name: com/manheim/simulcast/core/domain/model/property/PropertyValue.c
  lass
-SHA-256-Digest: +ZCfDa2snMlbjt4NEQSW4Iw87+AmWeWtoGrU21zrucc=
+SHA-256-Digest: MNaqWIhKg6YgJmynowFiNqHZDP6e/UjoN4iZ6RTpIog=
 
 Name: com/manheim/simulcast/utilities/Average.class
-SHA-256-Digest: jYkPLVtGAJfevqHPoOOpxTLMjITAQy6I1pCo1YwIDE0=
+SHA-256-Digest: 933t4VqsmO/D//RexOqTjRPgjUVr4Xwufwua7b2ufrQ=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/vehicleInfoPanelMod
  ified.jpg
-SHA-256-Digest: wRzhZR6Ur8nP7+V+EjucZ4TANPOyN5X/b/RICIwbWn0=
+SHA-256-Digest: b3Mj4fXPvfoPGEaHh9Eiknh+x1UyxoJYTlLBdWDnEn4=
 
 Name: com/manheim/simulcast/utilities/Notifier.class
-SHA-256-Digest: muQZMBpG73wBzjBNc1BIdrI+50X2uMWMvGur3NKibvU=
+SHA-256-Digest: WXJG2ddqHqdg6rgV6lfYI2lNjcxEhsSSPa9/ibslEUY=
 
 Name: com/manheim/simulcast/messaging/messages/NOSALEMessage.class
-SHA-256-Digest: D2c2q10ZyXykP9nlK8QLxr/iWNtBFOUlXaSLIaqq3YE=
+SHA-256-Digest: OVct9AfdSG3LCnpgR5JHhy+z/OPoVywtXxNNVKq+IvY=
 
 Name: com/manheim/simulcast/biddisplay/ApplicationResources.properties
-SHA-256-Digest: KmrCKDETnmo43qTmjIEaXSystsXmzEjhgn2ZtB+Olzk=
+SHA-256-Digest: AuHRNE/ICWeFa8ZChO3bOr9mXCufXdY79deZPMoukj4=
 
 Name: com/manheim/simulcast/utilities/NetUtils.class
-SHA-256-Digest: RPinJ5lSQta72syvPC5mu9jvAQRKv6vPoLcilF3+R9c=
+SHA-256-Digest: uRaOeBhK+7WdnFM9VWl0bK64BQGZ8VBZoREQiZzIlbA=
 
 Name: com/manheim/simulcast/swing/SwingTimer$1.class
-SHA-256-Digest: uIaNyedP5mapP7lW5hD9/frCLZcMOYKDk3RonkgZ76s=
+SHA-256-Digest: IdKT2ryYM0NJeN1vWbfaMTMsqUFl5nSJ3YZningGkyM=
 
 Name: com/manheim/simulcast/core/domain/model/feature/FeatureContext$B
  uilder.class
-SHA-256-Digest: Zkm7LwQlTNUAEgn3KRhI6BP6+zezW225L4CWohTrqOA=
+SHA-256-Digest: q+uGraJ6CyBJ5Tah8w/IoxF1F8e/Eu7GJkaThTo117k=
 
 Name: com/manheim/simulcast/swing/ParamApplet.class
-SHA-256-Digest: 42Sr1jMD90Qw7H2ZmQfIZVBd+HKGQ5fqj3UdUn9axzE=
+SHA-256-Digest: LMG9qx4mm9txJLlJdnAFI8edMYyC+n4cseewcoAil7E=
 
 Name: com/manheim/simulcast/core/AuctionSale.class
-SHA-256-Digest: ePOvb+twtmU1u5JJezKGf8ZmS5vgb3GKCc4Q0S5GG/k=
+SHA-256-Digest: AdrQeshXWChGr6+AZ268zMjmb7fnQWqLRMATTuMPeDo=
 
 Name: com/manheim/simulcast/core/ProxyWatchRow.class
-SHA-256-Digest: ztRpybEQr0NDckr+Cpi92STUqLnqH3TZj58DBspBPQs=
+SHA-256-Digest: 7VgX4fj5vdFzM6H9TKqrERC/W4WMREVHZWNp8hKcSl4=
 
 Name: com/manheim/simulcast/block/IntegratedClientFrame.class
-SHA-256-Digest: GpQqCCLwoIMG+bTQ9mQlt11TbHvrpEomN48hMIgO/EM=
+SHA-256-Digest: /UenxDnxT54cX6JKeqWxORapFYA6q9ozPGBwlD73DpY=
 
 Name: com/manheim/simulcast/core/MAVehicleLink.class
-SHA-256-Digest: rBUHxEdeTt7CERBoJt3njkBojYEM/yv0GB+zc+OWMFw=
+SHA-256-Digest: cD7zuLcj2o7GoI5cmvSgJ04IfIbUBFwGxU59qN1LXdA=
 
 Name: com/manheim/simulcast/swing/media/VideoConsumer.class
-SHA-256-Digest: FRT4z6FtCimW84GXzr08bkS8VLrJFphU0pTgUp5lUkc=
+SHA-256-Digest: xa5KsSrno79sFBjx3yuSrGfngfkNutOlzlEx7CAGGSs=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/bidDisplayBackgroun
  d.jpg
-SHA-256-Digest: WXYD0ck3ARbzuB3eh9B14Rf6bvRx8h0Uyx1V3FPYbqc=
+SHA-256-Digest: WsJ+EQJuyiqvskJowoUr7aVGG8iSH4fk2KNhD9LZNEY=
 
 Name: com/manheim/simulcast/biddisplay/standard/fr_CA/highBidPanel.gif
-SHA-256-Digest: KL+MbGnOu8XM/J+Rd0SGlSV9asRecYa+wqWvTh1DzDY=
+SHA-256-Digest: M+zv3DjNEFcLHlmF2ZCB48ri+hvOkAYtDwTbwKQ0RXQ=
 
 Name: com/manheim/simulcast/core/ControlOptions.class
-SHA-256-Digest: HczpWB6PGlqgFyuirjShahSc9m1At3+TJ22Ig0nav70=
+SHA-256-Digest: wYUYmo6zZ1JS4PdPrgLwSrrGocpfeUED8XSr5nECx9s=
 
 Name: com/manheim/simulcast/swing/XORCaret.class
-SHA-256-Digest: ISYAK/THveGPJtFgmevOpYrhGXIpQ2e0MO75TnMMD2Q=
+SHA-256-Digest: 9w2Ehttv4xxGM6O8BnF2jszWfx7W1S9vZYFz8gIDtZs=
 
 Name: com/manheim/simulcast/messaging/messages/CHGDEALERMessage.class
-SHA-256-Digest: lurwC4A9JI4lFbfgBDGZhTmKwYPtGhlXDITSV3IP684=
+SHA-256-Digest: QkylYfBrS/LjHCb3YVra6xk1M7XBN0QG/rJ34oY+U2w=
 
 Name: com/manheim/simulcast/client/transport/SimulcastClientWebSocket.
  class
-SHA-256-Digest: arebOWXrvkVdyHbrNfFOIUeyBdz8lA4hGHqdgJzGtoc=
+SHA-256-Digest: UtIYlTdzeGPXmbMb38PLeG7+hNdUtTGF285wHS3TGC0=
 
 Name: com/manheim/simulcast/core/event/LaneModelEventAdapter.class
-SHA-256-Digest: o6120QaCbJaN+4E3qvxuN6tgq2X7U6iVQnpr0AEI1Do=
+SHA-256-Digest: mWd6Okl/qpKMfT6lKm0BtK3EdhP0t9EbxDFx2B0BVbE=
 
 Name: com/manheim/simulcast/core/AbstractKey.class
-SHA-256-Digest: HYuJoVZVGYNIG8U6/Mk3BJtQq8CP+WShmQ2iEOoUCRA=
+SHA-256-Digest: 5S3/u0NUgI87q0wMjulAcFvCC3oI9Hg4ZwthfeKPnWA=
 
 Name: com/manheim/simulcast/biddisplay/DefaultFlashingStrategy$1.class
-SHA-256-Digest: NV5dPZo/cKDXCuCLUlhWPuf/BwhvCJXEQYwL8q53jfc=
+SHA-256-Digest: OJHbsEQxh/mN7cYpsmy0myAt5YRzm/mgh+MwEO99UjI=
 
 Name: com/manheim/simulcast/core/ProxyUpdates.class
-SHA-256-Digest: C3DsRJvdfAqXCWXXUJ0O98V+z74tBfLcax2/mQFOHl0=
+SHA-256-Digest: KOmdOYucfvI0CcKXL5QEw/mqxSr0olwwZQMFmhNax6I=
 
 Name: com/manheim/simulcast/core/VehicleGroup.class
-SHA-256-Digest: qvCzYrZ54CXUeGLQSS8C4bsY7/PhkHryU7qtA38aoYs=
+SHA-256-Digest: jvf/BtLeZYykxgZ+701EZ5VL0i2IpRSNG+B+EqkSqzw=
 
 Name: com/manheim/simulcast/block/BlockSetup.class
-SHA-256-Digest: rUrNq+aRn7Yc6mkgZeuvwzn0kR67PMXEbRvTeoZ0B38=
+SHA-256-Digest: WIoRXwqA/7gFltEvgz3lyQyxSXXFfDIq3tXZlEw+S1k=
 
 Name: com/manheim/simulcast/biddisplay/VehicleInformationPanel$Announc
  ementData.class
-SHA-256-Digest: D6p/GzbxOIv3TNDN9TtTB65c3d70KU9TkZQmYI4h/6c=
+SHA-256-Digest: sLj1t/Ox0AJNIIfpfzCuL5ZWeLAJ5BFnmF7FALadlb4=
 
 Name: com/manheim/simulcast/utilities/Constants.class
-SHA-256-Digest: Ql2pApzItFKZdf5A+e2Oh+/Nn5yoQ8CbqTZ3EeS57k8=
+SHA-256-Digest: Td9WDZ2Wmx0FrAUEPBKo4pmoTadTDvp+RASzx6fp/nI=
 
 Name: com/manheim/simulcast/core/BidderRegistration.class
-SHA-256-Digest: m7oa6AVnAzOnSUlH/s/KhocCltqAb0aBM2giuQi2Et8=
+SHA-256-Digest: jGAWcyILbNx7V1tf7o23iBheP69F15PuecsFc6lWMZs=
 
 Name: META-INF/DateFormats.properties
-SHA-256-Digest: 9HAJn614NAE5ffbJKJFsNeqGYi17uJCPPwhrIrftDsE=
+SHA-256-Digest: yOI+A+jnQnG3FGG6qu36Z2iqgxXUtBaGk7H3aPeRgDY=
 
 Name: com/manheim/simulcast/messaging/address/NodeAddress.class
-SHA-256-Digest: LSAt9SG5c3fhudlZBQqH+tk2xz278nvodpa//q+WusY=
+SHA-256-Digest: drH9fEmbP205M0WR2YmWKLtkJOs3AKBZYRgF1967FTQ=
 
 Name: com/manheim/simulcast/swing/SimulcastClientTextField.class
-SHA-256-Digest: Dt4JRoUWB8iRudo60hA4CZAHIb0aeyz+ppCkSAI3epk=
+SHA-256-Digest: 2COpj+iKyxL/wOkKwzEih6hVId50jBxuCJjpb8L5ulo=
 
 Name: com/manheim/simulcast/biddisplay/VehicleInformationPanel$TitleSt
  atus.class
-SHA-256-Digest: Hfv9mXsMKxuXwyBsz1ujh5jllUuBuKBaJY7wNUh9KQQ=
+SHA-256-Digest: fscwr3/djvB5Gc/jtviRtx6mvZ0jEyxM5rNPUMGwgI4=
 
 Name: com/manheim/simulcast/core/ProxyBids$2.class
-SHA-256-Digest: U6U3iDwkcDXH1/iTBJBROc24KQjT9xUujdRmx2EMrvY=
+SHA-256-Digest: pcxE0A16SKUDR30nNTsVsXiQRG+itIQy/u4lC8cvWeM=
 
 Name: com/manheim/simulcast/cache/ConcurrentCache$TreeNode.class
-SHA-256-Digest: bkEfBuN6Ef7+rUs8JbEaNKPl835CLQRaJIJiWuzkdtM=
+SHA-256-Digest: bl9XHHYUt1I6YeteRb8l16/pmR5uDnsAYtyMRSLmzCc=
 
 Name: com/manheim/simulcast/core/RegistrationMap.class
-SHA-256-Digest: Xxsgrh0miUByMghnsB5w6lBsV62JoXANEhVhPrIsbuQ=
+SHA-256-Digest: lFO5oXI18REYCujgkwHc9cpAluE975+ost9unlrTd40=
 
 Name: com/manheim/simulcast/core/SummaryTotal.class
-SHA-256-Digest: ZVAeaVfoNZLE9UwgcNpwzKX+ejfMrjqt0zU4iSZNDRc=
+SHA-256-Digest: PxC1gyNQu1QGYbu5TKU6avTPuItr6acJTGZjoOY9m+Q=
 
 Name: com/manheim/simulcast/core/Buyer.class
-SHA-256-Digest: TIjdk6/4OIXAppn9Yw/f2egVsq4/Juildk53tfjBzhc=
+SHA-256-Digest: jL/uzcXheO7WJq1dj2xTl+5BiPiemzb1X2/Y1NeHOcE=
 
 Name: com/manheim/simulcast/core/MandatoryDisclosureData.class
-SHA-256-Digest: aewS25vGnpyJNoXyhVXdh2nEGNpWdydfE0rreBAlvIM=
+SHA-256-Digest: uIFtmvcP+LlW2l5zMOqeKmO4WOEbF13gGtmjfiLq5K4=
 
 Name: com/manheim/simulcast/biddisplay/BidDisplayClient.class
-SHA-256-Digest: keBu45MsQqItsA8lVnD68rvN8s5mT7nbq4BiNrqarAk=
+SHA-256-Digest: mYTtJdSenEgFCGyRoYPvHMQ9wUGqXn9laQwsvtmhlbc=
 
 Name: com/manheim/simulcast/client/ServerSupport.class
-SHA-256-Digest: VfW9e5HtUtKReyXpCpgpDZCYBJ4hT7uBrFXMPoPZPiY=
+SHA-256-Digest: QZ8nMYNY2HkpHVySAlJQvoQqOL06xeOLxPjccD3zSdA=
 
 Name: com/manheim/simulcast/messaging/CommandException.class
-SHA-256-Digest: gYAXQH64UsTxs/oKQCxyBoosbWCcvOq5wt1tUY7zpB8=
+SHA-256-Digest: 9bryyMvicflszdoYBEBDwuSBIWPRsQYwMLfAcMo+0Ow=
 
 Name: com/manheim/simulcast/utilities/ResourceUtils.class
-SHA-256-Digest: R4Q1riFnMgbqNcnpReZR2BD61R0siprmjFihbCP7aN4=
+SHA-256-Digest: L8Cay77K2Vl9gNcQARt1ErXq+3bN5zK01hTVzyf+ykE=
 
 Name: com/manheim/simulcast/utilities/Property.class
-SHA-256-Digest: xrHBzzsH5EFF1hJDtDujkzNpc/mrbGCG5EJ3W2eJJAw=
+SHA-256-Digest: V0dYH/gtd9LKVWVZ4FFBzio2EXqUhw+yJSAh2AsSRko=
 
 Name: com/manheim/simulcast/core/VehicleGroupKey.class
-SHA-256-Digest: 8MH8JhLkT84wlS09FCDiIJpLGlQvqxLLeYFr0X5jHYY=
+SHA-256-Digest: tvqs5T1XvhYoWM8zxgt3LObpN3/ZIxhbEyW0yXSytgs=
 
 Name: com/manheim/simulcast/block/NetSupplementalClient.class
-SHA-256-Digest: pJLwcznew60HpNH+YaiG6ehnGKtXO4np4qRTGJJc5dI=
+SHA-256-Digest: 0VlWYERCH8UzTh4vnysj8kmBy+diJyFbgtwj2DEFNeg=
 
 Name: com/manheim/simulcast/cache/ConcurrentCache.class
-SHA-256-Digest: idG5/C/SUtWhXmVu7LRkkR171E4LlVt0lzKVjuHCCEc=
+SHA-256-Digest: VUToavPs1VxnK9d0r/dIPRfS+uApi5ew2FCK1XKvEIw=
 
 Name: com/manheim/simulcast/swing/DestructableHelper.class
-SHA-256-Digest: 0bxVBGS8SdM8a9MNDH481MntX+WmICPYJGoQKqCqdtc=
+SHA-256-Digest: 9wDZ2cMG1WHJSpfXxb7br1uA23xhYQCX4D5bOkfQ/q0=
 
 Name: com/manheim/simulcast/core/event/BlockClerkListener.class
-SHA-256-Digest: pNBCwexlL0LHOAlmGTZyjVD5QrpxC361oGP6pvYdDUU=
+SHA-256-Digest: jYTD9kDIMj78l7rw4EDkwtwKrKGaMOttUuT2qW4XlbA=
 
 Name: com/manheim/simulcast/core/ProxyBid.class
-SHA-256-Digest: kbeNvgyx7mlJ7xsCUwzIHMNovAINnJpEsG3OwPt5HL4=
+SHA-256-Digest: VetaKxHhPv7mC2yY8ItSJWAXbbA2iIv/fFZB814zieQ=
 
 Name: com/manheim/simulcast/messaging/messages/STARTRUNMessage.class
-SHA-256-Digest: iqhuenmxWaI7Au9UeFrJqHaLG1MzYQrwHEB9Ax8pK8M=
+SHA-256-Digest: UrqcgcKR9QnjIoQdUQJcYlr8Ag27jbJC5U6LkiRqosI=
 
 Name: com/manheim/simulcast/messaging/json/JsonMessageSerializer$DateT
  oStringTransformationRule.class
-SHA-256-Digest: Ff7EDN/J0P1zyw13SCGOLx0TojqCz6vu58hBJivuxvU=
+SHA-256-Digest: uD3xKpby1Jx/q1oRitvRa/xEZO9KeAOX5LH5FX6mpQA=
 
 Name: META-INF/DateFormats_fr_CA.properties
-SHA-256-Digest: kMj49jXHa1pycGcP67+wsn+iGxPXTJ5Y6T0Kv0Y6+88=
+SHA-256-Digest: 5an9JCXl5wRV9+ANZIIoWdYm36loNlmpNQ+xpBHrrCU=
 
 Name: com/manheim/simulcast/utilities/ClassLoaderResolver$CallerResolv
  er.class
-SHA-256-Digest: vGdcbA8qMxvYCrBkfXSc+nbQeqQ0fGkTlJpQ/QDHuI8=
+SHA-256-Digest: WeX3ca5GbGzdczQSBeUsaGbhYY1+ExQ+Wn+J72fcqh8=
 
 Name: com/manheim/simulcast/core/comparator/SaleDateComparator.class
-SHA-256-Digest: N+Gl1QwM640UIlT7cnN+MLoulN0tV8hjMuopdvMOQLg=
+SHA-256-Digest: /lOJHCjW9wdVOMz+pceNI5qzy2an2RHGKlTSbJXU1/g=
 
 Name: com/manheim/simulcast/client/Client$QueueProcessor.class
-SHA-256-Digest: J0ncgRrj6etfJ0KrcdwThdwSJwd+0QOK0BXDpgJQIgo=
+SHA-256-Digest: d3Cn8kfTmTBsWwCTQbuoRCNpW4HEYgd629e5578o7wY=
 
 Name: com/manheim/simulcast/core/domain/model/property/CompositeProper
  ties.class
-SHA-256-Digest: 5VFJebgMSHUy/yPRR5eMuSc33Bke1gz6+rXn4HM/aro=
+SHA-256-Digest: Pnn7HZSZrQqdFr4XqrQCai33je9gKw7lbXzC1rCv2HQ=
 
 Name: com/manheim/simulcast/messaging/messages/EVENTMessage.class
-SHA-256-Digest: 3UlzJGam3Qy6n0e65wxTb9oqIs7hYjqn1QbxxITdx1g=
+SHA-256-Digest: Ipe2VMYjSkMuB8MoB2kkCRhW2g2ShOSu/7R06nSHMjU=
 
 Name: com/manheim/simulcast/cache/CachingSupplier.class
-SHA-256-Digest: xzHWZicB7XvpnOkAzUT+GKqHT/ZENho1hklIxxgRgYs=
+SHA-256-Digest: QS1hfKzRal1wjBZHuUg9g1Cit6tgaI0DZpNG+ob0b/g=
 
 Name: com/manheim/simulcast/client/ConnectionException.class
-SHA-256-Digest: 3g9kyjesdHMtyAX3nNZgVn0ItV1tuBaBj6dlkoy7488=
+SHA-256-Digest: uEMT6/VKLFic/06JAUoyl+oJWLCbgmF+IO/NlzQbCs8=
 
 Name: com/manheim/simulcast/core/impl/NoSellPermission.class
-SHA-256-Digest: bNLxyFMpi1zlE/eCoKiOavBc15P/h5kyMtlL0hStFsw=
+SHA-256-Digest: O/GY12EA96vROl5THVD7BIb0ksMv8BDv5t0ZhZ2n9Rk=
 
 Name: com/manheim/simulcast/messaging/messages/LOGOFFRESPMessage.class
-SHA-256-Digest: ejK86dyFOtN+nEMrmTOxqDu1XvUTDhIoxHrJvqv6Ams=
+SHA-256-Digest: 8tBZKtsncTKnS/fL64zSi0+bHwAbIMVFBetjAz4D1+8=
 
 Name: com/manheim/simulcast/utilities/ClassLoaderResolver.class
-SHA-256-Digest: oNKf6NjEfH2YiT3aLbIu2thWtFV5CCypKDyZmEol80U=
+SHA-256-Digest: TW0t9X+HgkIZDDKSBmJDKaborpLU34c0pKkAPv2mpg0=
 
 Name: com/manheim/simulcast/core/domain/model/feature/FeatureIdentifie
  r.class
-SHA-256-Digest: vbOZ7IF5n3bPXMXL2+hZMMFvxFM7WfBtHZk0ITG1BSw=
+SHA-256-Digest: CHDAM3oKnmUbutS20+OYiaKlJjHs24Fb+cxXmLVftdU=
 
 Name: com/manheim/simulcast/core/SaleDefaults.class
-SHA-256-Digest: 5vF/1lBJ69lso6fdpmKyvtebK7avvPVenu+LB4L8foA=
+SHA-256-Digest: 4pl2sGpV1Yv7Nm4YlpFw7PJ7m1MzVZMVQAjrgPR21Wg=
 
 Name: com/manheim/simulcast/biddisplay/169/BidDisplayClientPanel.prope
  rties
-SHA-256-Digest: 984AhDXils5htMZ0MAd9yX3+tBB9E2hScwwp1YwU3EA=
+SHA-256-Digest: H37UrG/s2TuoGKRuWOgmbwi5c1I9EJVvZP5Q3N+rIPM=
 
 Name: com/manheim/simulcast/swing/SwingTask.class
-SHA-256-Digest: 9GaoqG0IsWqTUjoU9Sd7SOzckFIK8eODjnRc4wFYBrE=
+SHA-256-Digest: gzihjivg5cDyP4hcfAURKZCz9QXZtmDwx+1V66Pdv1Q=
 
 Name: com/manheim/simulcast/messaging/json/JsonMessageDeserializer$Int
  ToStringTransformationRule.class
-SHA-256-Digest: DuSPohaAJaaet9/pq7XpLRb2WToTICe52cnNj8o3w6s=
+SHA-256-Digest: peU+knv5p1tc7j/d2tCr1oJUPUqEDvdow3GcY+oyqnY=
 
 Name: com/manheim/simulcast/core/USDealerMap.class
-SHA-256-Digest: FyBS6KFwpDqK6Yk7Nwsz6mveAi8XRjKKT9CPISAe484=
+SHA-256-Digest: TGiXUOQgA2bwi4xrWTUBljx4xfWFKMGktYOAZZuBwEU=
 
 Name: com/manheim/simulcast/core/AuctionConsignor.class
-SHA-256-Digest: XxoJF6+Jgr7VHzv2gfIWdYXOCMUYYeBAjUXwJkA+QUc=
+SHA-256-Digest: kAv0UuWQVH0u07phqSD/cJ0HLgLkZv/Yw9k9cnoY3hs=
 
 Name: com/manheim/simulcast/messaging/messages/UNDOALLMessage.class
-SHA-256-Digest: gFo1Z4MKpPpwwY1F62HkBukBK8hMqDsAR6jdjVHj6g4=
+SHA-256-Digest: zl5miVbsnDOMk9vTJN9985KK+gGtO0kgFUk2gtLOJ+k=
 
 Name: com/manheim/simulcast/core/Invoice.class
-SHA-256-Digest: 0uLHkr2RAN+oLjJtCKMRB1kUbdUIDR1NEhHYYb9LgKQ=
+SHA-256-Digest: yjYZ1/uuHRN7197dFyneJdYymQZEjtAPud5YphTfupU=
 
 Name: META-INF/DateFormats_en_CA.properties
-SHA-256-Digest: 1mrkT/sOOnLRPKmxE+C4/7BFfemzHXzMb/wI5lrHWcw=
+SHA-256-Digest: kPfWU+Mcp/S1cZA+l2A1ic45I4sX1+rjSzCSLF9ascE=
 
 Name: com/manheim/simulcast/core/VehicleOption.class
-SHA-256-Digest: 8JrLcthWh8IBTImqW7hczGL48d37gVJUjuGrGthCNZE=
+SHA-256-Digest: wBw5ahLwT/ERH3ThzoXhUd29Z/ywIhLICvBo2eb6rOM=
 
 Name: com/manheim/simulcast/messaging/messages/PROTOINFOMessage.class
-SHA-256-Digest: FIYW3gVjA9TTdsnYNR9/GGYM7FkuXJqLzjFfXiwCmF8=
+SHA-256-Digest: luXIy9qSj7wdMU+JxwrVmAlmv1QdzzpyQgbhOGVjC/k=
 
 Name: com/manheim/simulcast/biddisplay/standard/fr_CA/lightBidReceived
  On3-new.gif
-SHA-256-Digest: qrGJxw6nd9OoimiE6PIjD53HHF/UcvTJV4EdXeRz8d0=
+SHA-256-Digest: AXRvNAv4z18GRBTvXjxEJKwvhVtPIhMn6icRXulD6XU=
 
 Name: com/manheim/simulcast/swing/SimulcastButton.class
-SHA-256-Digest: Bv1QA3dfVcil9J3CBzwZ3KOvZ8vVsuXOocMVibP9kXg=
+SHA-256-Digest: Fet/qC5ojxavbQCWW/jPZWNQcG93jUnMV27iB0t4Pp0=
 
 Name: com/manheim/simulcast/core/ProxyBids$3.class
-SHA-256-Digest: K1JO74jXXbtceg2/5o/DlIx0L9csrYM9CkgYSjNzJ68=
+SHA-256-Digest: IRrV6e4sreagfAj5HaGdA18jxZEwLd0KMXrMxEYRMj4=
 
 Name: com/manheim/simulcast/swing/BoundedNumericTextField.class
-SHA-256-Digest: 5zoNPM8kOigLgjTX0JGVNA0gUId2/Li4UNFOcDRsyfM=
+SHA-256-Digest: 6VKH6lO3Hw4T7TI5vO5wjG231bwP6VdqM7wdjxxjOHE=
 
 Name: com/manheim/simulcast/messaging/Messenger.class
-SHA-256-Digest: VUcbmEq9Egp4m95lDHmJdsKK6n6xuz7Xj7Z6Evs/NSU=
+SHA-256-Digest: FJi+agdLm2tEpsJOSQq0DExvCQeDohnXJ/3C8fwBKdA=
 
 Name: com/manheim/simulcast/core/ToggleDeloreanClientLogEntry.class
-SHA-256-Digest: ynERCGYe20IviZTB9UvoJFjUNEGhgLIElfvVLfE5dO4=
+SHA-256-Digest: QEn79/Pgu/DdDTqfHGXCAt8fY6GOq+cjkK83uNjW3LQ=
 
 Name: com/manheim/simulcast/core/LaneModel.class
-SHA-256-Digest: ckclJB1O0TV0AUstPpueeyIeYEMxpB6LnQnfPmdAvik=
+SHA-256-Digest: 6bKPv49IX63hHy8MeABCN4+X+jwYcQg2QNwYerL2aG4=
 
 Name: com/manheim/simulcast/messaging/messages/LNEUPDMessage.class
-SHA-256-Digest: g0CDwlckXrI+HWZpvjoJrHpL8sLJG5pHHfG9phv+9r4=
+SHA-256-Digest: 40cigedDYUbfhXGz9iAiZK9neFkw26N+WCk1Q4A0EGI=
 
 Name: com/manheim/simulcast/client/LaneServerSupport.class
-SHA-256-Digest: jGobR7SJAYh4iMoWSdezdcviDbNNHEga820cIbRoJqc=
+SHA-256-Digest: 3upjC2Ry7nYl5mAtqnHlFKZxsYt8mYmWy9YgAC8VvAE=
 
 Name: com/manheim/simulcast/messaging/messages/INTERESTEDMessage.class
-SHA-256-Digest: wzv5Uxo1N90yL4BTfmEf13lLb/WEuLx0y7hfvKT8RT8=
+SHA-256-Digest: ArbicU3+Ot6J5Bmw+/KURgVhfLTwbnRqc5ryneOXnKg=
 
 Name: com/manheim/simulcast/core/Sale.class
-SHA-256-Digest: 0c7EDxWCVo9gJCDqC0hRz4vNot2G6LPPCi2nZIibKq4=
+SHA-256-Digest: fOdk/GzsvGIX6xbnKzBpNZFFbq3cx67pG5aC9JxORZU=
 
 Name: com/manheim/simulcast/messaging/SimulcastRegistry.class
-SHA-256-Digest: EyITWSOb/jcw/foMjtVlLk95nDj9mGQ2/WtrPmIQC0Y=
+SHA-256-Digest: k+2fDG6uorh2dDJJu1jOec6gjwcwUl08/WhGgADrMTI=
 
 Name: com/manheim/simulcast/core/domain/model/feature/FeatureContext$1
  .class
-SHA-256-Digest: id3fQBhl8CofDG7NWJNObzosy6l3XOSVQ0JXVuCqf8E=
+SHA-256-Digest: sGxtOLWraCaGUV/bDJy+ajMiYeu+4XF5SbBgcRWHOrs=
 
 Name: com/manheim/simulcast/biddisplay/169/BidDisplayClientPanel_fr_CA
  .properties
-SHA-256-Digest: r6EU0BBIJEqZso5pQR21uLCP9PPs9u82bBmZlO8TK1c=
+SHA-256-Digest: i9fIETO/jz6JyiTsCO1N3aw/2fHCaETnsdBZ+aYo8no=
 
 Name: com/manheim/simulcast/biddisplay/FlashComponent.class
-SHA-256-Digest: W+5TEQq+tE+PFod79vv5v89X/9ZFUdnQGPBYvKjrciQ=
+SHA-256-Digest: GAnWP5nVbCl7kqrg35qSZGhOj4ooFlS2UArH+v8qFSM=
 
 Name: com/manheim/simulcast/swing/SimulcastClientLabel.class
-SHA-256-Digest: CJ06AkjhkDDH5E9vY8IEwAnL9DGuyoikQNnsrP3JGMc=
+SHA-256-Digest: 0Xef5KKicj6uVWGJ3S0d8wrCC7553/v2nB+aTLjAXpA=
 
 Name: com/manheim/simulcast/core/SaleKey.class
-SHA-256-Digest: FhkKgkQP/+SOyJmvrXyJHn0RFa8FX2wsyQITq4USxsc=
+SHA-256-Digest: FS2jiaSRPDWNTp7W7T0KJPQCt1gfDfX3e/CCf2Geb2M=
 
 Name: com/manheim/simulcast/swing/GUIs.class
-SHA-256-Digest: eMAJ7oVciKitcL/Yv4JvzUCAZnlPdB1NuXNWrMgopik=
+SHA-256-Digest: Qj6mcX8tbKVlJlrqAAzcuQQdN2G4WxP2Ecbm+IDJbew=
 
 Name: com/manheim/simulcast/core/impl/SimulcastAuditEvent.class
-SHA-256-Digest: GuP213rOK0ZKB5PTgGGI/hhhFphr4gJhfbIgIdCL5ZM=
+SHA-256-Digest: hLVjzYESZXhwm3q1nsIio3YF2EdkPhv734rbIycUE0c=
 
 Name: com/manheim/simulcast/core/util/BlowfishCipher.class
-SHA-256-Digest: uGHgpxOh73ExOugypTridng+U8UgIYsnWLxktyrnEGU=
+SHA-256-Digest: zHZJLJjIJOSEKkU+7lvHCLVDChGWQTo46RR4YVIJsT4=
 
 Name: com/manheim/simulcast/block/NetSupplementalClientFrame.class
-SHA-256-Digest: nt3rGB2W2rfsu7zeP0Uxpdb7Sb8YMkeA6HEB6jzdp3A=
+SHA-256-Digest: jguY6aRHCGnIfVcGJIGxFmaT569l9P5Gd0NqDTpKhqc=
 
 Name: com/manheim/simulcast/utilities/ClientTypeEnum.class
-SHA-256-Digest: 2AQkM3lWuyIIiEbhVDlUQqjYdx/XV+xYv1gtP+e8Zks=
+SHA-256-Digest: r5f8zH9diKEfXMrrbowFjLyIBxgdQtKBpSzNfo8AGs8=
 
 Name: com/manheim/simulcast/messaging/messages/SERVERINFOMessage.class
-SHA-256-Digest: 46aUakNeu5d666+5XkRgb3C7lfchuX++iU9RyMdcFTk=
+SHA-256-Digest: XaMKDJZFOYG/gu5yGS5mGo2dayjVPqpVt5b0gMHMxu8=
 
 Name: com/manheim/simulcast/swing/media/NullAudioPlayer.class
-SHA-256-Digest: bOvUNxE/VVR6NubPwLjmvu/obP2QPleaEzwDPB7LGVw=
+SHA-256-Digest: fCXG998ZOOvuoFkNTyAnKIav3pioFhQUd+lcUDFTjyA=
 
 Name: com/manheim/simulcast/messaging/MessageRegistry.class
-SHA-256-Digest: FsnOYATv5McD9cOGopoBnFQrlHyFj5XBWQ1N3veqO1E=
+SHA-256-Digest: OFeAPT3Vgqaue8vvQqZpm2CG4bgBiLZR25P5Vwhskvk=
 
 Name: com/manheim/simulcast/biddisplay/OnlineBidAcceptedFlashingStrate
  gy$1.class
-SHA-256-Digest: GU9sJZLnQohl+1smUE1v82Lvrr9oFwkm/0zVi/bVBNM=
+SHA-256-Digest: Ygkact/PCxf7NGQJr274Q+d+og4FM9IYactHup8U32M=
 
 Name: com/manheim/simulcast/client/transport/SocketTransport.class
-SHA-256-Digest: 2I8cMWgmKr/O+ku+wFJuXjEowKNmJKDMmBHlSAdzaXY=
+SHA-256-Digest: auU7z+5YZ0DRuB911rfi0xXqt66vR7Ue+ZDicqUYsB0=
 
 Name: com/manheim/simulcast/messaging/messages/CURRUNMessage.class
-SHA-256-Digest: ykQyzGuGxkUKF6cTwNVwR9DOhq84hNQQrQE68bndVL0=
+SHA-256-Digest: V7hBiF9y+YKmHqcIMCPPWzP4F/MUTNP/wRjJDEcDcLI=
 
 Name: com/manheim/simulcast/messaging/messages/CLIENTINFOMessage.class
-SHA-256-Digest: LdPT4+gZAU/q10519Q+IQja+sfbxMM/Nco0SFQkEg5g=
+SHA-256-Digest: E56XyEM18PDAIO+yHxp+ViWg3Y2TMaD9HCydP7U4Dyw=
 
 Name: com/manheim/simulcast/core/domain/impl/property/RepNumber.class
-SHA-256-Digest: Hc7ClqFzd0tE0Zowuap8zpnNi4GmjjKBZkIwdu6GiYM=
+SHA-256-Digest: sqb2K7UWRImD+Cqs66/M9jhg6D8hdfeByEKey7pezoo=
 
 Name: com/manheim/simulcast/constants/UserAgentConstants.class
-SHA-256-Digest: wzxFMlamXS8XaAjEG7tfL1Ml9WYdd0kDm9H/IHr5gCg=
+SHA-256-Digest: MJrr3gCp9yVKiaBV1umY+SmhDyK2cOhBj8cGDUB5vCY=
 
 Name: com/manheim/simulcast/biddisplay/standard/fr_CA/internetBidPanel
  .gif
-SHA-256-Digest: NhL9sSJkRKpQ4ZQVH11GfvQY5v+2UIV6A3eY3Hl/J2s=
+SHA-256-Digest: ldO7C5E6QSoZafJi+9+UTbQ78aX+ckI8a3935ynOGrg=
 
 Name: com/manheim/simulcast/swing/FlashingJLabel.class
-SHA-256-Digest: VC420dEcmi6Ul82WhWBNzCtD9yXT54MR+JbEovfl254=
+SHA-256-Digest: Wbt0GjE6+tDXUXpxJlqsngIX0LidMr5MFQ/+DiJrZ+I=
 
 Name: com/manheim/simulcast/core/LaneKey.class
-SHA-256-Digest: oIPx7FA2RhwGqleCuyvzmwD/SbyGI8lv2q0gr1cOSM0=
+SHA-256-Digest: O/ikUaWZLuFXVfUIfwZQF+cZJmErf8wby3bl5gR62CQ=
 
 Name: com/manheim/simulcast/core/RunEntry.class
-SHA-256-Digest: XNp5b8uUjvS9snp2dt6IQ/4S42MU4vn4WYrFXe1U3Sw=
+SHA-256-Digest: zMXRidbqunUoJkQiJeI/5NYB4OogqlGxPIpuVVVXyFk=
 
 Name: com/manheim/simulcast/swing/AntiAliasingUtils.class
-SHA-256-Digest: 6/UbOcZyFtehGXtl6yBC07FYwTv5bh2IzsHnoYtueSU=
+SHA-256-Digest: UffeizvebnfwCFyHTjsCcRdLPATHSr1NNMP1p1rPtVo=
 
 Name: com/manheim/simulcast/core/AbstractBidderRegistration.class
-SHA-256-Digest: 5jcGJ/pcl7vbm2VA6L76Di3AsHVKGGeRIhWh+NNvbd8=
+SHA-256-Digest: H7hxn48qeDS8Wm6oV5CWg++XCJjAMl6hZTvRnOq+f/k=
 
 Name: com/manheim/simulcast/messaging/messages/SOLDMessage.class
-SHA-256-Digest: +7o3vyHOB43jq65zxwf1Bc3qP4wmx/JK0qxrYPgWvPY=
+SHA-256-Digest: 1SFim9Miawbkf6U0jS5knoX63s/Q0NpFfRoBcqyRbdQ=
 
 Name: com/manheim/simulcast/core/domain/model/feature/FeatureBehavior.
  class
-SHA-256-Digest: ReBq12BNZ6VhGhmUjBAJM6vkBor6C2oVO/thUR4ZOTQ=
+SHA-256-Digest: iRAKMq3uzr6C8NuBjZR8ETnszL/3G1P0J4Lg6oFo87Y=
 
 Name: com/manheim/simulcast/core/PurchasePreference.class
-SHA-256-Digest: MGH4CnQZehvPIUatw4ovHIjLvkF20Ycf0JT/L+FYcbc=
+SHA-256-Digest: mB95kJRYayi7tSeTCN/VEWO8yyGBGSM6SVArK/TUJtw=
 
 Name: com/manheim/simulcast/swing/BaseSimulcastClientPanel.class
-SHA-256-Digest: S/COh3eSoYU+QmdJ09hmTSzl386Li4M51dJXr3bWT38=
+SHA-256-Digest: WlSy8JWbOyA6KB4Z3c7zmyl8cG1L9k4gy8c6ia1Uvek=
 
 Name: com/manheim/simulcast/biddisplay/169/VehicleInformationPanel.pro
  perties
-SHA-256-Digest: 1yCiHU/lV/kJ5SdHVxPbwqaQtl+OGtdY1Rdwhd/i32Y=
+SHA-256-Digest: p7n4IXYkSXkN3kj8U3Zrlu5U0zKc5faQGtrbRXuq6w4=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/internetBidPanel.gi
  f
-SHA-256-Digest: f6km/j0jJdXEgXOyB0MewNjyJuY2HqVWKxeN9lft+1Y=
+SHA-256-Digest: DoFaJTNyaaOowy88UNyHEe5Ik8Q5XKXvyyWyWPC4dwE=
 
 Name: com/manheim/simulcast/messaging/json/JsonMessageSerializer$1.cla
  ss
-SHA-256-Digest: Jhfl73MCy36nXmk7tN8VQP82CDUJOXMhq7zG3fdzdiA=
+SHA-256-Digest: 1aPZTYna/2RRVk5buClMYtuyciImUUNhO5vErcmzSRw=
 
 Name: com/manheim/simulcast/core/SequenceKey.class
-SHA-256-Digest: WKXCQbfKnS/rMWZjkyHGo8TWvSKvJPJpVuEdf9Ee0tg=
+SHA-256-Digest: fsV3ai0+mWy7JgmR/xXd6ObTCGMMNLHRs4H30IJu6jU=
 
 Name: com/manheim/simulcast/messaging/json/AttributeSetter.class
-SHA-256-Digest: CA9qCUyCLo0+nIeeJNOedmRrK8BdPHyyC63lm9Sj+uE=
+SHA-256-Digest: KiXhThxkDfUy1jgf0MhQOa73+UDXtad2tA6umfIrkr0=
 
 Name: com/manheim/simulcast/cache/ConcurrentCache$Node.class
-SHA-256-Digest: ePiK7QORZPZ1cLMGkTLV6rjaRPMrkJt6GGLZGB98dqM=
+SHA-256-Digest: qu58doVxjs7+mFx6pv3iAIPAuHl1FlRG+PavH4vj13U=
 
 Name: com/manheim/simulcast/core/Account.class
-SHA-256-Digest: 6tWauTjRdp0riKSdveNFB9OZE8N3JtaABR1x/vOFg20=
+SHA-256-Digest: VkYByJPw1i66/hX4EqR5/excZpyrQJIzvJOk2/GmlY4=
 
 Name: com/manheim/simulcast/core/util/QuicCipher.class
-SHA-256-Digest: CG0Fwvioe0EoRo6wS5QK+oHPY28zVmjEGY+G4dqWZHI=
+SHA-256-Digest: babUwdkCjdlbuDr4yt4ZACqYPbcB7ALGoLRzd0UTXxc=
 
 Name: com/manheim/simulcast/swing/image/ImageLoader$LRUMap.class
-SHA-256-Digest: O7jgmbRsgLHu23lq41k2fGFdwjt22k8G4DVu9gG0H9U=
+SHA-256-Digest: ip0kzauntKuNgx40hbtK9lUxkqV426ruO8dam9qhGew=
 
 Name: com/manheim/simulcast/messaging/Attribute.class
-SHA-256-Digest: z5RPXR26he0pYxHH+iWGJD9yF/YJ/fNizaSpYsLgVdI=
+SHA-256-Digest: Xxbsyx+pQs/p3vEdVa6l3TvMSqynlyjpJGy8+eYLLn0=
 
 Name: com/manheim/simulcast/core/HeavyEquipmentInfo.class
-SHA-256-Digest: 3k64XHJ4xZTeZK1q5h1Ru8abVY/W1AMGn5zsBMN5C6M=
+SHA-256-Digest: DtAnHE6k+DfyHrKsk3+YDFhP4gN88DvleD+WnFKh56k=
 
 Name: com/manheim/simulcast/block/commands/STARTRUNCommand.class
-SHA-256-Digest: 3iKbkI3i+0RYhnjQobDNyCXztVce3Pw3TgHZcWZGXH4=
+SHA-256-Digest: W2YTDY6L4TkowRz//jI5GShc2PbexKF0ggfhH26wtok=
 
 Name: com/manheim/simulcast/client/ClientEvents.class
-SHA-256-Digest: ibfdeXqqg9m8labigFkbNxCuur/BdFM6JL+8v6Sec0g=
+SHA-256-Digest: XcGCV/eAyj34djH50de3A0XA0pL7qCFl7AiYfyymCys=
 
 Name: com/manheim/simulcast/core/filter/VehicleGroupFilter.class
-SHA-256-Digest: R13ua3Au2SzplImn0nrayphOrxaSokeuK4FE6U3u7Wc=
+SHA-256-Digest: P5t2Uf13b6cvRagVZ6h9Wl9pI6ginfk/v+FUgIciSKc=
 
 Name: com/manheim/simulcast/swing/image/ResourceTracker.class
-SHA-256-Digest: 50Dzx9KLtdikYdEalvwom/hMan/wPyCypcb7rfPTS4c=
+SHA-256-Digest: L+r9rnDvr+dCee+vENgFpPk1vrKTV+OV5vnBarZmwFs=
 
 Name: com/manheim/simulcast/block/SupplementalClientFrame.class
-SHA-256-Digest: GsqZpvkSidLPEJR/3340B5NzH0iu4yJ/aNAkyOJkVTw=
+SHA-256-Digest: oEa4dNmam2Og1pkvyoYVsp8F3PBHVmNSAVKyE9Rw8Ao=
 
 Name: com/manheim/simulcast/biddisplay/standard/fr_CA/lightBidReceived
  Off-new.gif
-SHA-256-Digest: cIB9QqFnF5dDoBOrDttxpNuZdyiS6vFmdlRu53OYvLo=
+SHA-256-Digest: 6GPt0tLzEUEJZJhqobO5aiAzsWkwLNLvL+b+O9HLy38=
 
 Name: com/manheim/simulcast/core/ProxyBids$1.class
-SHA-256-Digest: ou+tH21mWWUHdAJgKPcspbMJ+o8QXJb1tOrCbSdyg0c=
+SHA-256-Digest: i/022FNa5URLPm573G8OHC6kY63SVdA/Trz4byLV4Fk=
 
 Name: com/manheim/simulcast/biddisplay/43/BidDisplayClientPanel_fr_CA.
  properties
-SHA-256-Digest: uNvFwZrGniUzUbI290qhMrW6M+o5PmZN/u3rZXQbil4=
+SHA-256-Digest: jTGLicrvRM1QmEFIXUWWbpssIHQdR+iVWHYIOaT4gQk=
 
 Name: com/manheim/simulcast/core/BusinessObject.class
-SHA-256-Digest: CzGNnIjiEEcH1tv8DVrtphUQe9OYGOvHpPbevheebEo=
+SHA-256-Digest: uIRHfPiWjwZmUJywzLDtlzN7OLIJtXiavxNFu7GuQgQ=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/manheimSimulcastLog
  o.jpg
-SHA-256-Digest: 2bYCnhJSNivdBzS0S058a+JMF+xKkUyc+2pEvx5xGFo=
+SHA-256-Digest: Q6zGRdnT+ouVwpYFwX9KxxzJGJPN49rX4JJK6tB01Gk=
 
 Name: com/manheim/simulcast/cache/TransformedLoadingCache.class
-SHA-256-Digest: Hys8aaq/Ex6MtShT8VXYDYMw0e0JLUUyFBakDRq/sdo=
+SHA-256-Digest: Z0AasD0r5DwdShYImd6NwknLT5fAdJ38zi34wNGEzNI=
 
 Name: com/manheim/simulcast/swing/BoundedTextField.class
-SHA-256-Digest: /YCliVDxP387QY5L4QM0VPL2ro+0KaGRbDOUcq0R9xg=
+SHA-256-Digest: LFhch7e4R18Fd57fjvMPky+Y6GzLkr1aNRiDMWyJuYo=
 
 Name: com/manheim/simulcast/core/DealerInfo.class
-SHA-256-Digest: 3PYwWnnxFuq+wckmofU1E0UgHupsD6lP/WSnUBIN1vE=
+SHA-256-Digest: cfYkFEH7CGSlnVgqmKLoIfZMpeAqI3R8TXIjda+tJm4=
 
 Name: com/manheim/simulcast/biddisplay/standard/en/highBidPanel.gif
-SHA-256-Digest: M/YsLMuUUC5X9fgcz5N2feeg2zbWY+SUQd5cdjOlLG8=
+SHA-256-Digest: bwSOi1EJkoF3hjgnkCZzPXeyejI1x1pbchfFBsv0MrM=
 
 Name: com/manheim/simulcast/utilities/Bootstrapper.class
-SHA-256-Digest: 6f2kJpj6uNBfLfznL2Dxt09ogjDkDD6XdYYZV5mRp40=
+SHA-256-Digest: m8S7OIRFaPQhcZmttk0QReiccSeZK4oI4WDWeP2RWJk=
 
 Name: com/manheim/simulcast/biddisplay/FlashingStrategy.class
-SHA-256-Digest: FOhbwyKUA7FzWbo68ZgCyS0toyVTUOqbBAn/uCkNAw0=
+SHA-256-Digest: ah4rRsNP7ztAzqzc3qc78SWC0n/OvQRGUql6K3ee4kw=
 
 Name: com/manheim/simulcast/utilities/AverageSet.class
-SHA-256-Digest: X7935FIGbruzOPWRO3NaFw42eqEahKf3k4M+NGtqCDA=
+SHA-256-Digest: xxt7XxaNyqVlPcU1IE6QLywv+hfW+QowyZJJ2x3fp7Q=
 
 Name: META-INF/oidmaps/addresses.properties
-SHA-256-Digest: UPLL8/G6Y9uWCxqKt2BI/Tnc+9RtrVImpafxJ+KeT0g=
+SHA-256-Digest: ERg8fWFuOIKizEuu3DFl9xKPc6tptBdSZcxLyJGQOp0=
 
 Name: com/manheim/simulcast/swing/SwingDispatcher.class
-SHA-256-Digest: I6oS441SPt82rVY6OK8ZhUd4U9BrRHq/LfoK6vWOQmw=
+SHA-256-Digest: 6+ObIB0w/UAqStYLWfGrl9KBxqxMVhJDfkzYEUpks2I=
 
 Name: com/manheim/simulcast/client/HttpClient.class
-SHA-256-Digest: xpiF/kdP/1YFBJ//3uiHPX4j68RXwiHxWJ9CHwnYO54=
+SHA-256-Digest: sIloupJUDSExgAFqx2uGM3IMhRtyLIV2+2JBfiet4hg=
 
 Name: com/manheim/simulcast/swing/Formatted.class
-SHA-256-Digest: LFsgZoWFXm2NZfOKWsnm3MLBNxB6AeYVt3m2bv4MPtA=
+SHA-256-Digest: Pgs0cn5P3mIEjpHG6MjkIdDmRO/odUfy6Kkd0W2cEzg=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightOrangeOff.jpg
-SHA-256-Digest: 0BiCW/PmkHdodG/X8fAD3ePLHhGib8A3MKVs8PoLlFc=
+SHA-256-Digest: wmnRmtRd/a2ko4ZwMHwzck0Y19eBTRneqH3AcaktGsw=
 
 Name: com/manheim/simulcast/messaging/messages/SALESTATMessage.class
-SHA-256-Digest: fnQKFwzxLIsfksFlMDmyySh9UtIV/MsyJcg1FIgNJ5A=
+SHA-256-Digest: j738Y87UPtzOJL4mT5p8OshYTBDeD7V+1QQQe+e4i6E=
 
 Name: com/manheim/simulcast/client/ClientAdapter.class
-SHA-256-Digest: t3qkZSb9vyN+kFz4X8KR7eVI3TRMGaITeLlo2IJGqDg=
+SHA-256-Digest: 0LosQqdFPp2OWz9hkmpMmCyRXpzqUGLrSrm1eZHDsok=
 
 Name: com/manheim/simulcast/core/filter/USSaleFilter.class
-SHA-256-Digest: kuRm2Hmt2YW7EvvgOZ/z6TjaqrmY6V6bHasuJ1ShD3s=
+SHA-256-Digest: Zd+nCEjZSYdiiBJMfr6NTaswxhWUfU70RYPbVAv4sAM=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightPinkOn.jpg
-SHA-256-Digest: XVzr2lu9T/rjyqPZJ9p2iCzETL5Xd9FYuhpWaPnFBUc=
+SHA-256-Digest: z8NG/1p989hUSg30ru/ckR0tLPzYrM96owpYJ4MDkF0=
 
 Name: com/manheim/simulcast/swing/UIActionFactory.class
-SHA-256-Digest: 0jEbWAsZQEIbSBtJuIxCzV2QCYlGF2CGmoziX97qoN8=
+SHA-256-Digest: Ob65yzW55ct/FMN5zZs81VHPgF52APHmniK+pS8x0Fo=
 
 Name: com/manheim/simulcast/biddisplay/BidDisplayPanel.class
-SHA-256-Digest: evnoBdlQET0dWT2iBe6/vgrh0+RuD8Nozo5Z4XcLhcc=
+SHA-256-Digest: HfzXq8OYYPiXEYHsZj6Rt+MOrgFBDchrO0CaHLmnTJE=
 
 Name: com/manheim/simulcast/core/BidderInfo.class
-SHA-256-Digest: wcX0zI22d/xyeq9BKB6idm1Of6LNnMtDfWKOvrCRceE=
+SHA-256-Digest: A1b6O8t4dFzMV5lGxKSHdi2EhbsBNGxodqwZ35DlCug=
 
 Name: com/manheim/simulcast/block/BlockProperties.class
-SHA-256-Digest: v9TgpeDoLWz60rRlokHpAZ+DhZO3Gg5Wb6CzWSOucFY=
+SHA-256-Digest: 6SIdWspX+mU2o6RRC+dY/ziMdNyP0Ch8+B6UfB+6kFs=
 
 Name: com/manheim/simulcast/swing/BoundedNumericDocument.class
-SHA-256-Digest: dEu2HP0GoIs8znHqNHl0mGASAceo4wXpCmMurBNaMtU=
+SHA-256-Digest: bKzw5CkFFbQ9rseMxNRFXCQU3OzzD8dkj0OKcPf6bHY=
 
 Name: com/manheim/simulcast/messaging/MessagingException.class
-SHA-256-Digest: i9bgkfZzfJPtOazGA/b3mhpcXYApDM2Mj0Zmfz30CsU=
+SHA-256-Digest: o2JMThZ1S1jNkTqnkXFY3RRJUPrnXlE/OxUvCJFiH3Q=
 
 Name: com/manheim/simulcast/biddisplay/standard/lightYellowOn.jpg
-SHA-256-Digest: AfSUZXxH2c8XWw7eLyCtzwiyjDV30s0uzRcSle2oifE=
+SHA-256-Digest: 6wTGUnp0ahf7Hh+kvB826j0EBUgmPY8CNybiqv/K/VI=
 
