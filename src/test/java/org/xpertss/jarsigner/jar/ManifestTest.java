@@ -67,10 +67,6 @@ class ManifestTest {
       MessageDigest md = MessageDigest.getInstance("SHA-256");
       byte[] digest = manifest.getMain().digest(md);
       assertEquals("KUQaWc0H7aS83+OjigPzkJT/fPgyZp7Zb4k9cvLoVOc=", Base64.getEncoder().encodeToString(digest));
-
-
-      //Kds7VEe/DjHhdchwF3rRwRQUrwwHyMm92Nmi0dCZSZc=
-
    }
 
    @Test
@@ -162,7 +158,15 @@ class ManifestTest {
       assertNull(ex.getCause());
    }
 
-
+   @Test
+   public void testContinueManifest() throws Exception
+   {
+      CorruptManifestException ex = assertThrows(CorruptManifestException.class, () -> {
+         Manifest.parse(load("CONTINUE.MF"));
+      });
+      assertEquals("invalid continuation", ex.getMessage());
+      assertNull(ex.getCause());
+   }
 
 
 

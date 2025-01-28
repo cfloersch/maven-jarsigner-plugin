@@ -1,17 +1,12 @@
 package org.xpertss.jarsigner.jar;
 
 
-import org.xpertss.jarsigner.TSASigner;
+import org.xpertss.jarsigner.TsaSigner;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.security.MessageDigest;
 import java.security.Signature;
-import java.util.Base64;
-import java.util.Locale;
 import java.util.Map;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
 import java.util.stream.Stream;
 
 
@@ -101,7 +96,7 @@ public class SignatureFile {
 
 
 
-   public SignatureBlock generateBlock(Signature signature, TSASigner tsaSigner)
+   public SignatureBlock generateBlock(Signature signature, TsaSigner tsaSigner)
    {
       // TODO Needs Signature and TSASigner.. Generates PKCS#7 signature block
 
@@ -148,24 +143,6 @@ public class SignatureFile {
       throw new RuntimeException("Unknown signature algorithm - " + sigalg);
    }
 
-   private static String encodeName(String sigfile)
-   {
-      if (sigfile.length() > 8) {
-         sigfile = sigfile.substring(0, 8).toUpperCase(Locale.ENGLISH);
-      } else {
-         sigfile = sigfile.toUpperCase(Locale.ENGLISH);
-      }
 
-      StringBuilder tmpSigFile = new StringBuilder(sigfile.length());
-      for (int j = 0; j < sigfile.length(); j++) {
-         char c = sigfile.charAt(j);
-         if (!((c>= 'A' && c<= 'Z') || (c>= '0' && c<= '9') || (c == '-') || (c == '_'))) {
-            // convert illegal characters from the alias to be _'s
-            c = '_';
-         }
-         tmpSigFile.append(c);
-      }
-      return tmpSigFile.toString();
-   }
 
 }

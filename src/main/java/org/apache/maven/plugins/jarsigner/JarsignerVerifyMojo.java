@@ -28,9 +28,9 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.xpertss.jarsigner.JarSignerUtil;
 import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
+import org.xpertss.jarsigner.jar.ArchiveUtils;
 
 /**
  * Checks the signatures of a project artifact and attachments using jarsigner.
@@ -84,7 +84,7 @@ public class JarsignerVerifyMojo extends AbstractJarsignerMojo {
             // check archive if signed
             boolean archiveSigned;
             try {
-                archiveSigned = JarSignerUtil.isArchiveSigned(archive);
+                archiveSigned = ArchiveUtils.isArchiveSigned(archive);
             } catch (IOException e) {
                 throw new MojoExecutionException(
                         "Failed to check if archive " + archive + " is signed: " + e.getMessage(), e);

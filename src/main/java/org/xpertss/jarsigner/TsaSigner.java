@@ -11,17 +11,27 @@ import java.net.URI;
 import java.security.cert.Certificate;
 import java.util.Objects;
 
-public class TSASigner {
+public class TsaSigner {
 
     private final URI uri;
 
-    private TSASigner(Builder builder)
+    private String tsaPolicyId;
+    private String tsaDigestAlgorithm;
+
+
+    private TsaSigner(Builder builder)
     {
         this.uri = builder.uri;
     }
 
 
-    public void sign()
+    public URI getUri()
+    {
+        return uri;
+    }
+
+
+    public void stamp(byte[] digest)
     {
         // TODO get timestamp..
     }
@@ -59,7 +69,7 @@ public class TSASigner {
             return this;
         }
 
-        public TSASigner build()
+        public TsaSigner build()
         {
             return null;    // TODO
         }

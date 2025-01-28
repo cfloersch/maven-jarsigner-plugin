@@ -249,8 +249,6 @@ public class IdentityBuilder {
 
          PrivateKey privateKey = priKeyEntry.getPrivateKey();
 
-         // TODO Validate that the public key cert is the cert associated with the private key
-
          CertPath finalCp = cp;
          return new Identity() {
             @Override

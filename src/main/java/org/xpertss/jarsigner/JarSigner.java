@@ -49,22 +49,18 @@ public class JarSigner {
     private final Signature signature;
     private final String signerName;
 
-    private final URI tsa;
-    private final String tsaPolicyId;
-    private final String tsaDigestAlgorithm;
+    private final TsaSigner tsa;
 
 
     private JarSigner(Builder builder)
     {
-        // https://github.com/AdoptOpenJDK/openjdk-jdk11/blob/master/src/jdk.jartool/share/classes/jdk/security/jarsigner/JarSigner.java#L503
+        this.privateKey = builder.privateKey;
+        this.certPath = builder.certPath;
+
         this.tsa = builder.tsa;
         this.digest = builder.digest;
         this.signature = builder.signature;
-        this.certPath = builder.certPath;
-        this.privateKey = builder.privateKey;
         this.signerName = builder.signerName;
-        this.tsaPolicyId = builder.tsaPolicyId;
-        this.tsaDigestAlgorithm = builder.tsaDigestAlgorithm;
     }
 
     public String getDigestAlgorithm()
@@ -84,7 +80,7 @@ public class JarSigner {
 
     public URI getTsa()
     {
-        return tsa;
+        return tsa.getUri();
     }
 
 
@@ -106,11 +102,9 @@ public class JarSigner {
 
         private MessageDigest digest;
         private Signature signature;
-        private String signerName;
+        private String signerName = "SIGNER";
 
-        private URI tsa;
-        private String tsaPolicyId;
-        private String tsaDigestAlgorithm;
+        private TsaSigner tsa;
 
         public Builder(Identity identity)
         {
@@ -123,30 +117,11 @@ public class JarSigner {
         {
             this.privateKey = Objects.requireNonNull(privateKey, "privateKey");
             this.certPath = Objects.requireNonNull(certPath, "certPath");
-
-            // Sun Impl validates the certPath.isEmpty() == false
-            // Sun Impl validates that the certPath.get(0).getPublicKey().getAlgorithm() == privateKey.getAlgorithm()
-            // Sun impl verifies the certPath contains X509 certs
-
         }
 
         public Builder digestAlgorithm(String algorithm)
             throws NoSuchAlgorithmException
         {
-            /*
-              Apparently, the signature file (*.SF) includes hash of the manifest file/manifest
-              header and one line for each file in the JAR with filename, digestAlgName, and
-              digest. It does not actually contain a signature.
-
-              The entire SF file is then run through a Signature alg, the resulting signature
-              written to a file with a .DSA or .RSA or .EC extension. This signature block file
-              also includes the certificate chain of the key used to generate the signature. I
-              suspect that the signature itself identifies the full algorithm (to include the
-              digest used).
-
-              So we can use a simple digest for the SF file contents and then sign that whole
-              SF with a better alg like SHA-256 as an example.
-             */
             digest = MessageDigest.getInstance(algorithm);
             return this;
         }
@@ -158,23 +133,25 @@ public class JarSigner {
             return this;
         }
 
-        // TODO I would love to know what the difference is between Signature (which includes a digest alg)
-        // and the explicit digestAlgorithm defined above? In what world are they different?
+
         public Builder signatureAlgorithm(String algorithm)
-            throws NoSuchAlgorithmException
+            throws NoSuchAlgorithmException, IllegalArgumentException
         {
             signature = Signature.getInstance(algorithm);
+            
             return this;
         }
 
         public Builder signatureAlgorithm(String algorithm, Provider provider)
-            throws NoSuchAlgorithmException
+            throws NoSuchAlgorithmException, IllegalArgumentException
         {
             signature = Signature.getInstance(algorithm, provider);
             return this;
         }
 
-        public Builder tsa(URI uri)
+
+
+        public Builder tsa(TsaSigner tsa)
         {
             /*
                If -tsa http://example.tsa.url appears on the command line when signing
@@ -189,49 +166,9 @@ public class JarSigner {
                the time stamp token returned by the TSA is stored with the signature
                in the signature block file.
              */
-            this.tsa = uri;
+            this.tsa = tsa;
             return this;
         }
-
-        /**
-         * The digest algorithm to use for the timestamping request.
-         * <p/>
-         * The default value is the same as the result of {@link #getDigestAlgorithm()}
-         *
-         * @param tsaDigestAlgorithm
-         * @return
-         */
-        public Builder tsaDigestAlgorithm(String tsaDigestAlgorithm)
-        {
-            // jarsinger supports a tsacert alias. Not sure what it does or if we should also include it
-            // apparently the tsacert alias looks up a certifiate in the Keystore with the given alias. It
-            // then extracts the Subject Information Access to obtain the tsa URL. It makes no sense to
-            // define both tsa and tsacert. It's really one or the other.
-            this.tsaDigestAlgorithm = tsaDigestAlgorithm;
-            return this;
-        }
-
-        /**
-         * TSAPolicyID for Timestamping Authority. No default value.
-         *
-         * @param tsaPolicyId
-         * @return
-         */
-        public Builder tsaPolicyId(String tsaPolicyId)
-        {
-            /*
-               Specifies the object identifier (OID) that identifies the policy ID to be
-               sent to the TSA server. If this option is not specified, no policy ID is
-               sent and the TSA server will choose a default policy ID.
-
-               Object identifiers are defined by X.696, which is an ITU Telecommunication
-               Standardization Sector (ITU-T) standard. These identifiers are typically
-               period-separated sets of non-negative digits like 1.2.3.4, for example.
-             */
-            this.tsaPolicyId = tsaPolicyId;
-            return this;
-        }
-
 
 
 
@@ -248,7 +185,8 @@ public class JarSigner {
          *      a size bigger than 8, or it contains characters not from the
          *      set "a-zA-Z0-9_-".
          */
-        public Builder signerName(String name) {
+        public Builder signerName(String name)
+        {
             if (name.isEmpty() || name.length() > 8) {
                 throw new IllegalArgumentException("Name too long");
             }
@@ -272,28 +210,34 @@ public class JarSigner {
 
 
         public JarSigner build()
+           throws NoSuchAlgorithmException
         {
-            return null;
-        }
-
-        private Signature deriveDefaultSignature()
-        {
-            /*
-               If the signer's public and private keys are DSA keys, then jarsigner signs
-               the JAR file with the SHA1withDSA algorithm. If the signer's keys are RSA
-               keys, then jarsigner attempts to sign the JAR file with the SHA256withRSA
-               algorithm. If the signer's keys are EC keys, then jarsigner signs the JAR
-               file with the SHA256withECDSA algorithm.
-             */
-            if("RSA".equalsIgnoreCase(privateKey.getAlgorithm())) {
-
-            } else if("EC".equalsIgnoreCase(privateKey.getAlgorithm())) {
-
-            } else if("DSA".equalsIgnoreCase(privateKey.getAlgorithm())) {
-
+            if(digest == null) {
+                digest = MessageDigest.getInstance("SHA-256");
             }
-            throw new IllegalArgumentException("Cannot derive ambiguous signature");
+            if(signature == null) {
+                String keyalg = privateKey.getAlgorithm();
+                String sigalg = defaultSignatureForKey(keyalg);
+                signature = Signature.getInstance(sigalg);
+            }
+            return new JarSigner(this);
         }
+
+
     }
 
+
+
+    private static String defaultSignatureForKey(String keyAlgorithm)
+    {
+        switch(keyAlgorithm.toUpperCase(Locale.ENGLISH)) {
+            case "RSA":
+                return "SHA256withRSA";
+            case "EC":
+                return "SHA256withECDSA";
+            case "DSA":
+                return "SHA256withDSA";
+        }
+        throw new IllegalArgumentException("Cannot derive ambiguous signature");
+    }
 }

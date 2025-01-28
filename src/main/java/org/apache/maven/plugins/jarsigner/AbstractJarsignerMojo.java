@@ -16,12 +16,12 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
-import org.xpertss.jarsigner.JarSignerUtil;
 import org.apache.maven.shared.utils.ReaderFactory;
 import org.apache.maven.shared.utils.StringUtils;
 import org.apache.maven.shared.utils.io.FileUtils;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcherException;
+import org.xpertss.jarsigner.jar.ArchiveUtils;
 
 /**
  * Maven Jarsigner Plugin base class.
@@ -445,7 +445,7 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
      */
     private static boolean isZipFile(final Artifact artifact)
     {
-        return artifact != null && artifact.getFile() != null && JarSignerUtil.isZipFile(artifact.getFile());
+        return artifact != null && artifact.getFile() != null && ArchiveUtils.isZipFile(artifact.getFile());
     }
 
     /**

@@ -6,9 +6,14 @@
  */
 package org.xpertss.jarsigner.jar;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,19 +21,134 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.jar.Attributes;
 import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import static java.lang.String.*;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class ArchiveUtils {
 
    private static final String META_INF = "META-INF/";
    private static final String SIG_PREFIX = META_INF + "SIG-";
 
+
+
+   /**
+    * Removes any existing signatures from the specified JAR file. We will stream from the input JAR directly to the
+    * output JAR to retain as much metadata from the original JAR as possible.
+    *
+    * @param jarFile The JAR file to unsign, must not be <code>null</code>.
+    * @throws IOException when error occurs during processing the file
+    */
+   public static void unsignArchive(Path jarFile)
+      throws IOException
+   {
+
+      String filename = jarFile.getFileName().toString();
+      Path unsignedPath = jarFile.toAbsolutePath().resolveSibling(filename + ".unsigned");
+
+      try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(Files.newInputStream(jarFile)));
+           ZipOutputStream zos =
+              new ZipOutputStream(new java.io.BufferedOutputStream(Files.newOutputStream(unsignedPath, StandardOpenOption.CREATE_NEW)))) {
+         for (ZipEntry ze = zis.getNextEntry(); ze != null; ze = zis.getNextEntry()) {
+            if (isBlockOrSF(ze.getName())) {
+               continue;
+            }
+
+            zos.putNextEntry(new ZipEntry(ze.getName()));
+
+            if (isManifest(ze.getName())) {
+
+               // build a new manifest while removing all digest entries
+               // see https://jira.codehaus.org/browse/MSHARED-314
+               java.util.jar.Manifest oldManifest = new java.util.jar.Manifest(zis);
+               java.util.jar.Manifest newManifest = buildUnsignedManifest(oldManifest);
+               newManifest.write(zos);
+
+               continue;
+            }
+
+            IOUtils.copy(zis, zos);
+         }
+      }
+      Files.move(unsignedPath, jarFile, REPLACE_EXISTING);
+   }
+
+   /**
+    * Build a new manifest from the given one, removing any signing information inside it.
+    *
+    * This is done by removing any attributes containing some digest information.
+    * If an entry has then no more attributes, then it will not be written in the result manifest.
+    *
+    * @param manifest manifest to clean
+    * @return the build manifest with no digest attributes
+    * @since 1.3
+    */
+   // TODO Rewrite this to use my manifest classes
+   protected static java.util.jar.Manifest buildUnsignedManifest(java.util.jar.Manifest manifest)
+   {
+      java.util.jar.Manifest result = new java.util.jar.Manifest(manifest);
+      result.getEntries().clear();
+
+      for (Map.Entry<String, Attributes> manifestEntry : manifest.getEntries().entrySet()) {
+         Attributes oldAttributes = manifestEntry.getValue();
+         Attributes newAttributes = new Attributes();
+
+         for (Map.Entry<Object, Object> attributesEntry : oldAttributes.entrySet()) {
+            String attributeKey = String.valueOf(attributesEntry.getKey());
+            if (!attributeKey.endsWith("-Digest")) {
+               // can add this attribute
+               newAttributes.put(attributesEntry.getKey(), attributesEntry.getValue());
+            }
+         }
+
+         if (!newAttributes.isEmpty()) {
+            // can add this entry
+            result.getEntries().put(manifestEntry.getKey(), newAttributes);
+         }
+      }
+
+      return result;
+   }
+
+
+   /**
+    * Scans an archive for existing signatures.
+    *
+    * @param jarFile The archive to scan, must not be <code>null</code>.
+    * @return <code>true</code>, if the archive contains at least one signature file; <code>false</code>, if the
+    *         archive does not contain any signature files.
+    * @throws IOException if scanning <code>jarFile</code> fails.
+    */
+   public static boolean isArchiveSigned(final Path jarFile)
+      throws IOException
+   {
+      if (jarFile == null) throw new NullPointerException("jarFile");
+
+      try (ZipInputStream in = new ZipInputStream(new BufferedInputStream(Files.newInputStream(jarFile)))) {
+         boolean signed = false;
+
+         for (ZipEntry ze = in.getNextEntry(); ze != null; ze = in.getNextEntry()) {
+            if (isBlockOrSF(ze.getName())) {
+               signed = true;
+               break;
+            }
+         }
+
+         return signed;
+      }
+   }
 
 
    public static boolean isBlockOrSF(String name)
@@ -62,6 +182,12 @@ public class ArchiveUtils {
    }
 
 
+   public static boolean isManifest(String name)
+   {
+      return name.equalsIgnoreCase(JarFile.MANIFEST_NAME);
+   }
+
+
    public static boolean isMetaInfBased(String name)
    {
       String ucName = name.toUpperCase(Locale.ENGLISH);
@@ -70,6 +196,26 @@ public class ArchiveUtils {
 
 
 
+
+   /**
+    * Checks whether the specified file is a JAR file. For our purposes, a ZIP file is a ZIP stream with at least one
+    * entry.
+    *
+    * @param file The file to check, must not be <code>null</code>.
+    * @return <code>true</code> if the file looks like a ZIP file, <code>false</code> otherwise.
+    */
+   public static boolean isZipFile(final File file)
+   {
+      boolean result = false;
+
+      try (ZipInputStream zis = new ZipInputStream(Files.newInputStream(file.toPath()))) {
+         result = zis.getNextEntry() != null;
+      } catch (Exception e) {
+         // ignore, will fail below
+      }
+
+      return result;
+   }
 
 
    public static Map<String,String> parseAttributes(byte[] rawdata)
@@ -84,6 +230,8 @@ public class ArchiveUtils {
          while((line = br.readLine()) != null) {
             if(line.isEmpty()) break;
             if(line.startsWith(" ")) {
+               if(previous == null)
+                  throw new CorruptManifestException("invalid continuation");
                String append = line.trim();
                attributes.computeIfPresent(previous,
                               (key, oldValue) ->

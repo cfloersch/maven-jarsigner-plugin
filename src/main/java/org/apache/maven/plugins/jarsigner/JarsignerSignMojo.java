@@ -23,16 +23,8 @@ import javax.inject.Named;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.UnrecoverableEntryException;
-import java.security.cert.CertPathValidatorException;
-import java.security.cert.CertificateException;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -50,9 +42,9 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.shared.utils.StringUtils;
 import org.xpertss.jarsigner.Identity;
 import org.xpertss.jarsigner.IdentityBuilder;
-import org.xpertss.jarsigner.JarSignerUtil;
 import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
+import org.xpertss.jarsigner.jar.ArchiveUtils;
 
 /**
  * Signs a project artifact and attachments using jarsigner.
@@ -210,7 +202,7 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
     {
         if (removeExistingSignatures) {
             try {
-                JarSignerUtil.unsignArchive(archive);
+                ArchiveUtils.unsignArchive(archive);
             } catch (IOException e) {
                 throw new MojoExecutionException("Failed to unsign archive " + archive + ": " + e.getMessage(), e);
             }
@@ -268,11 +260,11 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
 
         try {
             IdentityBuilder builder = new IdentityBuilder();
-            builder.strict(strict).trustStore(JarSignerUtil.toPath(truststore))
-               .certificatePath(JarSignerUtil.toPath(certchain))
+            builder.strict(strict).trustStore(toPath(truststore))
+               .certificatePath(toPath(certchain))
                .alias(alias).keyPass(create(keypass));
             if(keystore != null) {
-                builder.keyStore(JarSignerUtil.toPath(keystore.getPath()))
+                builder.keyStore(toPath(keystore.getPath()))
                    .storePass(create(keystore.getStorePass()));
                 if(StringUtils.isEmpty(keystore.getProvider())) {
                     builder.storeType(keystore.getStoreType());
@@ -415,4 +407,10 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
         if(StringUtils.isEmpty(passwd)) return null;
         return new KeyStore.PasswordProtection(passwd.toCharArray());
     }
+
+    Path toPath(File file)
+    {
+        return (file != null) ? file.toPath() : null;
+    }
+
 }
