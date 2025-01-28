@@ -60,7 +60,7 @@ public class ArchiveUtils {
 
       try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(Files.newInputStream(jarFile)));
            ZipOutputStream zos =
-              new ZipOutputStream(new java.io.BufferedOutputStream(Files.newOutputStream(unsignedPath, StandardOpenOption.CREATE_NEW)))) {
+              new ZipOutputStream(new BufferedOutputStream(Files.newOutputStream(unsignedPath, StandardOpenOption.CREATE_NEW)))) {
          for (ZipEntry ze = zis.getNextEntry(); ze != null; ze = zis.getNextEntry()) {
             if (isBlockOrSF(ze.getName())) {
                continue;
@@ -79,7 +79,7 @@ public class ArchiveUtils {
                continue;
             }
 
-            IOUtils.copy(zis, zos);
+            IOUtils.copy(zis, zos); // TODO try and get rid of this
          }
       }
       Files.move(unsignedPath, jarFile, REPLACE_EXISTING);
@@ -105,6 +105,7 @@ public class ArchiveUtils {
          Attributes oldAttributes = manifestEntry.getValue();
          Attributes newAttributes = new Attributes();
 
+         // NOTE: Name: sfgdfgfd  is not considered an attribute here
          for (Map.Entry<Object, Object> attributesEntry : oldAttributes.entrySet()) {
             String attributeKey = String.valueOf(attributesEntry.getKey());
             if (!attributeKey.endsWith("-Digest")) {
@@ -114,6 +115,7 @@ public class ArchiveUtils {
          }
 
          if (!newAttributes.isEmpty()) {
+            // is empty if Name is all that remains for the entry
             // can add this entry
             result.getEntries().put(manifestEntry.getKey(), newAttributes);
          }
@@ -265,7 +267,7 @@ public class ArchiveUtils {
    
    public static byte[] encodeAttributes(Map<String,String> attributes)
    {
-      try(BufferedOutputStream out = new BufferedOutputStream(8192)) {
+      try(PrintOutputStream out = new PrintOutputStream(8192)) {
          attributes.forEach((key, value) -> {
             String line = format("%s: %s", key, value);
             if(line.length() > 70) {
@@ -287,7 +289,7 @@ public class ArchiveUtils {
     * Simple ByteArrayOutputStream that throws no errors, supports Charsets,
     * and newlines, unlike PrintStream.
     */
-   private static class BufferedOutputStream implements Closeable  {
+   private static class PrintOutputStream implements Closeable  {
 
       private static final byte[] NEWLINE = { (byte) 0x0D, (byte) 0x0A };
 
@@ -297,17 +299,17 @@ public class ArchiveUtils {
 
       private Charset cs;
 
-      private BufferedOutputStream(int size)
+      private PrintOutputStream(int size)
       {
          this(size, StandardCharsets.UTF_8);
       }
 
-      private BufferedOutputStream(Charset cs)
+      private PrintOutputStream(Charset cs)
       {
          this(1024, cs);
       }
 
-      private BufferedOutputStream(int size, Charset cs)
+      private PrintOutputStream(int size, Charset cs)
       {
          if(size < 0) throw new IllegalArgumentException("Negative initial size: " + size);
          this.origSize = size;
