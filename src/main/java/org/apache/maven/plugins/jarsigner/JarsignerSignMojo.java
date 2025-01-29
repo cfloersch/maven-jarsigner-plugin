@@ -22,7 +22,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.security.KeyStore;
 import java.time.Duration;
@@ -44,7 +43,8 @@ import org.xpertss.jarsigner.Identity;
 import org.xpertss.jarsigner.IdentityBuilder;
 import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
-import org.xpertss.jarsigner.jar.ArchiveUtils;
+import org.xpertss.jarsigner.JarSigner;
+import org.xpertss.jarsigner.TsaSigner;
 
 /**
  * Signs a project artifact and attachments using jarsigner.
@@ -122,11 +122,12 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
 
 
     /**
-     * Indicates whether existing signatures should be removed from the processed JAR files prior
-     * to signing them. If enabled, the resulting JAR will appear as being signed only once.
+     * Indicates whether existing signatures should be removed from the processed JAR files
+     * prior to signing them. If enabled, the resulting JAR will appear as being signed only
+     * once.
      */
-    @Parameter(property = "jarsigner.removeExistingSignatures", defaultValue = "false")
-    private boolean removeExistingSignatures;
+    @Parameter(property = "jarsigner.clean", defaultValue = "false")
+    private boolean clean;
 
 
 
@@ -134,7 +135,7 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
 
 
 
-
+    // TODO Do I need any of the following??
 
 
     /**
@@ -171,14 +172,12 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
     /** Current WaitStrategy, to allow for sleeping after a signing failure. */
     private WaitStrategy waitStrategy = this::defaultWaitStrategy;
 
-    private TsaSelector tsaSelector;
-
     /** Exponent limit for exponential wait after failure function. 2^20 = 1048576 sec ~= 12 days. */
     private static final int MAX_WAIT_EXPONENT_ATTEMPT = 20;
 
 
 
-    private Identity identity;
+    private JarSigner signer;
 
     @Inject
     public JarsignerSignMojo(@Named("mng-4384") SecDispatcher securityDispatcher)
@@ -200,13 +199,15 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
     protected void preProcessArchive(final Path archive)
         throws MojoExecutionException
     {
-        if (removeExistingSignatures) {
+        /*
+        if (clean) {
             try {
                 ArchiveUtils.unsignArchive(archive);
             } catch (IOException e) {
                 throw new MojoExecutionException("Failed to unsign archive " + archive + ": " + e.getMessage(), e);
             }
         }
+        */
     }
 
     @Override
@@ -237,32 +238,15 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
 
 
 
-        if(tsa == null) {
-            tsaSelector = new TsaSelector();
-        } else {
-            // Why is tsa not null?
-            int count = tsa.validCount();
-            if (count == 0) {
-                getLog().warn(getMessage("warnUsageTsaUriAndTsaCertMissing"));
-            } else if (count > 1) {
-                getLog().warn(getMessage("warnUsageTsaUriAndTsaCertSimultaneous"));
-            }
-            if (false && maxTries == 1) {
-                // TODO If there are multiple TSA then we need a retry
-                getLog().warn(getMessage("warnUsageMultiTsaWithoutRetry", 0));
-            }
-            tsaSelector = new TsaSelector();    // TODO
-            //tsaSelector = new TsaSelector(tsa, tsacert, tsapolicyid, tsadigestalg);
-        }
-
 
         System.out.println("Keystore: " + keystore);
 
         try {
             IdentityBuilder builder = new IdentityBuilder();
-            builder.strict(strict).trustStore(toPath(truststore))
-               .certificatePath(toPath(certchain))
-               .alias(alias).keyPass(create(keypass));
+            builder.strict(strict)
+                    .trustStore(toPath(truststore))
+                    .certificatePath(toPath(certchain))
+                    .alias(alias).keyPass(create(keypass));
             if(keystore != null) {
                 builder.keyStore(toPath(keystore.getPath()))
                    .storePass(create(keystore.getStorePass()));
@@ -272,9 +256,50 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
                     builder.storeType(keystore.getStoreType(), keystore.getProvider());
                 }
             }
-            // TODO Impl TSA
-            this.identity = builder.build();
+            Identity identity = builder.build();
             getLog().debug("Loaded identity: " + identity);
+
+            TsaSigner tsaSigner = null;
+            if(tsa != null) {
+                int count = tsa.validCount();
+                if (count == 0) {
+                    getLog().warn(getMessage("warnUsageTsaUriAndTsaCertMissing"));
+                } else {
+                    if (count > 1) {
+                        getLog().warn(getMessage("warnUsageTsaUriAndTsaCertSimultaneous"));
+                    }
+                }
+                tsaSigner = tsa.build();
+                getLog().debug("Loaded timestamp authority: " + tsaSigner);
+            }
+
+            JarSigner.Builder signerBuilder = new JarSigner.Builder(identity);
+            if(digest != null) {
+                if (StringUtils.isEmpty(digest.getProvider())) {
+                    signerBuilder.digestAlgorithm(digest.getAlgorithm(), digest.getProvider());
+                } else {
+                    signerBuilder.digestAlgorithm(digest.getAlgorithm());
+                }
+            }
+            if(signature != null) {
+                if (StringUtils.isEmpty(signature.getProvider())) {
+                    signerBuilder.signatureAlgorithm(signature.getAlgorithm(), signature.getProvider());
+                } else {
+                    signerBuilder.signatureAlgorithm(signature.getAlgorithm());
+                }
+            }
+            if(!StringUtils.isEmpty(sigfile)) {
+                signerBuilder.signerName(sigfile);
+            } else {
+                String alias = identity.getName();
+                // TODO clean up alias to avoid exception
+                signerBuilder.signerName(alias);
+            }
+
+            // It is signature and message digest in the builder that are not thread-safe
+            // so we will need a way to init new instances per build if we want parallel
+            // execution
+            signer = signerBuilder.tsa(tsaSigner).clean(clean).build();
 
         } catch(Exception e) {
             throw new MojoExecutionException(e);

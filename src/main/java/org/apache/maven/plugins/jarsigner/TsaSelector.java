@@ -54,6 +54,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 class TsaSelector {
 
+    // TODO Do I need this anymore?
+
     /** The current TsaServer in use (if any). One per thread */
     private final ThreadLocal<TsaServer> currentTsaServer = new ThreadLocal<>();
 

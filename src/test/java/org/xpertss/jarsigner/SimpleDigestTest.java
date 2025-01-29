@@ -73,9 +73,8 @@ public class SimpleDigestTest {
    public void testEncodingVsLoaded() throws Exception
    {
       Map<String, String> attributes = new LinkedHashMap<>();
-      attributes.put("Name", "com/manheim/simulcast/cache/Cache.class");
       attributes.put("SHA-256-Digest","y81kVgzNYH1L8b58IFVOQMS/Se1Jd1ihwd9All/O0xk=");
-      byte[] encoded = ArchiveUtils.encodeAttributes(attributes);
+      byte[] encoded = ArchiveUtils.encodeAttributes("com/manheim/simulcast/cache/Cache.class", attributes);
 
       byte[] manifest = loadContent();
       int endOfHeader = findHeaderEnd(manifest, 0);
@@ -90,9 +89,8 @@ public class SimpleDigestTest {
    public void testMultiLineEncoding()
    {
       Map<String, String> attributes = new LinkedHashMap<>();
-      attributes.put("Name", "com/manheim/simulcast/biddisplay/DefaultFlashingStrategy$LaneModelEventHandler.class");
       attributes.put("SHA-256-Digest","3qbfZ3CnHmSK1smtxKx2KI+3qOyfTvm7loN2WdG3qYU=");
-      byte[] encoded = ArchiveUtils.encodeAttributes(attributes);
+      byte[] encoded = ArchiveUtils.encodeAttributes("com/manheim/simulcast/biddisplay/DefaultFlashingStrategy$LaneModelEventHandler.class", attributes);
       assertEquals(encoded[70], (byte) 0x0D);   // zero based
       assertEquals(encoded[71], (byte) 0x0A);
       assertEquals(encoded[72], (byte) 0x20);

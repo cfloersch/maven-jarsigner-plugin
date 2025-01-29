@@ -50,7 +50,7 @@ class ManifestTest {
    {
       Manifest manifest = Manifest.parse(manifestFileStream());
       Section section = manifest.getSection("com/manheim/simulcast/cache/Cache.class");
-      assertEquals(2, section.size());
+      assertEquals(1, section.size());
       String[] digests = section.getDigests();
       assertEquals(1, digests.length);
       assertEquals("SHA-256", digests[0]);
@@ -93,10 +93,11 @@ class ManifestTest {
    @Test
    public void testEmptyManifest() throws Exception
    {
-      Manifest manifest = Manifest.parse(new ByteArrayInputStream(DATA));
-      assertEquals("1.0", manifest.getMain().getAttribute(Manifest.MANIFEST_VERSION));
-      assertEquals(2, manifest.getMain().size());
-      assertEquals(0, manifest.size());
+      CorruptManifestException ex = assertThrows(CorruptManifestException.class, () -> {
+         Manifest.parse(new ByteArrayInputStream(DATA));
+      });
+      assertEquals("missing headers", ex.getMessage());
+      assertNull(ex.getCause());
    }
 
    @Test
@@ -164,12 +165,29 @@ class ManifestTest {
       CorruptManifestException ex = assertThrows(CorruptManifestException.class, () -> {
          Manifest.parse(load("CONTINUE.MF"));
       });
-      assertEquals("invalid continuation", ex.getMessage());
+      assertEquals("invalid continuation found", ex.getMessage());
       assertNull(ex.getCause());
    }
 
+   @Test
+   public void testNameManifest() throws Exception
+   {
+      CorruptManifestException ex = assertThrows(CorruptManifestException.class, () -> {
+         Manifest.parse(load("INVALID_NAME.MF"));
+      });
+      assertEquals("invalid attribute name", ex.getMessage());
+      assertNull(ex.getCause());
+   }
 
-
+   @Test
+   public void testVersionManifest() throws Exception
+   {
+      CorruptManifestException ex = assertThrows(CorruptManifestException.class, () -> {
+         Manifest.parse(load("VERSION.MF"));
+      });
+      assertEquals("missing version", ex.getMessage());
+      assertNull(ex.getCause());
+   }
    
    private static InputStream manifestFileStream() throws Exception
    {

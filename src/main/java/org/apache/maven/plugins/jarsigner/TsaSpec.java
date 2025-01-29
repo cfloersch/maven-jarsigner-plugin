@@ -1,7 +1,11 @@
 package org.apache.maven.plugins.jarsigner;
 
-import org.apache.maven.plugins.annotations.Parameter;
 import org.codehaus.plexus.util.StringUtils;
+import org.xpertss.jarsigner.TsaSigner;
+
+import java.net.URI;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 
 public class TsaSpec {
 
@@ -59,6 +63,21 @@ public class TsaSpec {
         if(StringUtils.isNotEmpty(cert)) count++;
         return count;
     }
+
+
+    public TsaSigner build()
+       throws CertificateException
+    {
+        if(cert != null) {
+            // preferred path
+        } else if(uri != null) {
+
+        }
+        return null;
+    }
+
+
+
 
     @Override
     public String toString()

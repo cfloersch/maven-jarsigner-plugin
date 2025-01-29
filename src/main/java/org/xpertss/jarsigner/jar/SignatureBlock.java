@@ -26,15 +26,17 @@ public class SignatureBlock {
    }
 
 
-
    public String getMetaName()
    {
       return "META-INF/" + name + "." + algorithm;
    }
 
 
-   public void write(OutputStream out)
+   public void writeTo(OutputStream out)
       throws IOException
    {
+      out.write(signature);
+      out.flush();
    }
+
 }

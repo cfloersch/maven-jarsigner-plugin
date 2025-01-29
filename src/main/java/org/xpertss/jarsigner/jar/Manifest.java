@@ -134,23 +134,46 @@ public final class Manifest {
       return main;
    }
 
+   /**
+    * Returns the named section. This wil create a new section and return
+    * it, if the section does not currently exist in the manifest.
+    *
+    * @param name The name of the section
+    */
    public Section getSection(String name)
    {
+      Section section = sections.get(name);
+      if(section == null) {
+         section = Section.create(name);
+         sections.put(section.getName(), section);
+         modified = true;
+      }
       return sections.get(name);
    }
 
+   /**
+    * Returns {@code true} if the named section is currently exists
+    * in this manifest.
+    *
+    * @param name The name of the section
+    */
+   public boolean exists(String name)
+   {
+      return sections.containsKey(name);
+   }
+
+   /**
+    * Returns a Stream over the sections currently in this manifest
+    */
    public Stream<Section> sections()
    {
       return sections.values().stream();
    }
 
 
-   public void addSection(Section section)
-   {
-      sections.put(section.getName(), section);
-      modified = true;
-   }
-
+   /**
+    * Returns the number of sections currently in this manifest
+    */
    public int size()
    {
       return sections.size();
@@ -163,7 +186,7 @@ public final class Manifest {
     */
    public boolean isModified()
    {
-      return modified || sections.values().stream().anyMatch(Section::isModified);
+      return modified || main.isModified() || sections.values().stream().anyMatch(Section::isModified);
    }
 
 
@@ -195,11 +218,19 @@ public final class Manifest {
       out.flush();
    }
 
-
    /**
     * Read the given input stream and parse the contents into a Manifest object.
     */
    public static Manifest parse(InputStream in)
+      throws IOException
+   {
+      return parse(in, false);
+   }
+
+   /**
+    * Read the given input stream and parse the contents into a Manifest object.
+    */
+   public static Manifest parse(InputStream in, boolean clean)
       throws IOException
    {
       Map<String,Section> sections = new LinkedHashMap<>();
@@ -210,10 +241,15 @@ public final class Manifest {
          main = Main.parse(mainBytes);
          while(main != null) {
             byte[] sectionBytes = findNextSection(bin);
+            if(sectionBytes.length == 0) break;
             Section section = Section.parse(sectionBytes);
-            if(section == null) break;
-            if(sections.put(section.getName(), section) != null) {
-               throw new CorruptManifestException("duplicate section found");
+            if(section != null) {
+               if (clean) section.clean();
+               if (section.size() > 0) {
+                  if(sections.put(section.getName(), section) != null) {
+                     throw new CorruptManifestException("duplicate section found");
+                  }
+               }
             }
          }
       }

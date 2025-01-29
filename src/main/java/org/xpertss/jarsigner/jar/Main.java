@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -20,12 +22,14 @@ public final class Main {
 
    private final Map<String,String> attributes;
    private byte[] rawbytes;
+   private boolean modified = false;
 
 
    private Main(Map<String,String> attributes)
    {
       // TODO Validate this preserves order
       this.attributes = Collections.unmodifiableMap(attributes);
+      this.modified = true;
    }
 
    private Main(byte[] rawbytes, Map<String,String> attributes)
@@ -59,6 +63,10 @@ public final class Main {
       return attributes.size();
    }
 
+   public boolean isModified()
+   {
+      return modified;
+   }
 
    /**
     * Given a MessageDigest this will encode the main section if needed and compute the
@@ -84,7 +92,7 @@ public final class Main {
     */
    public byte[] getEncoded()
    {
-      if(rawbytes == null) rawbytes = ArchiveUtils.encodeAttributes(attributes);
+      if(rawbytes == null) rawbytes = ArchiveUtils.encodeAttributes(null, attributes);
       return rawbytes;
    }
 
@@ -126,9 +134,15 @@ public final class Main {
       throws IOException
    {
       Map<String,String> attributes = ArchiveUtils.parseAttributes(rawbytes);
-      return (attributes.isEmpty()) ? null : new Main(rawbytes, attributes);
+      if(attributes.keySet().stream().noneMatch(HEADERS::contains)) {
+         if(attributes.isEmpty())
+            throw new CorruptManifestException("missing headers");
+         throw new CorruptManifestException("missing version");
+      }
+      return new Main(rawbytes, attributes);
    }
 
+   private static final Set<String> HEADERS = Stream.of(Manifest.SIGNATURE_VERSION, Manifest.MANIFEST_VERSION).collect(Collectors.toSet());
 
 
 

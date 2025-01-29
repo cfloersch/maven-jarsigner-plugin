@@ -6,15 +6,11 @@
  */
 package org.xpertss.jarsigner.jar;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
-import java.util.Enumeration;
-import java.util.LinkedHashSet;
-import java.util.NavigableSet;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.jar.JarFile;
+import java.util.*;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -62,6 +58,11 @@ public class JavaArchive {
       return signatures.stream();
    }
 
+   public int signatureCount()
+   {
+      return signatures.size();
+   }
+
    /**
     * Returns a stream over the non-signature file entries in this archive.
     */
@@ -70,24 +71,49 @@ public class JavaArchive {
       return entries.stream();
    }
 
+   public int entryCount()
+   {
+      return entries.size();
+   }
+
+
+   /**
+    * Returns the InputStream for a given zip entry.
+    *
+    * @throws IOException If an I/O error occurs.
+    */
    public InputStream getInputStream(ZipEntry e)
       throws IOException
    {
-      return source.getInputStream(e);
+      return new BufferedInputStream(source.getInputStream(e));
    }
 
 
 
    public SignatureFile generateSignatureFile(String signame, MessageDigest md)
+      throws IOException
    {
-      // Loop through non-signature entries creating SignatureFile sections, updating manifest as necessary
-         // If manifest is missing an entry add it
-         // If manifest has wrong digest, update it
-         // If manifest has digests of different DigestAlg, add new digest
-      // Finally create signature Main
-      return null;
+      Base64.Encoder encoder = Base64.getEncoder();
+      String digestName = String.format("%s-Digest", md.getAlgorithm());
+      Map<String,Section> sections = new LinkedHashMap<>();
+      for(ZipEntry ze : entries) {
+         Section section = getManifest().getSection(ze.getName());
+         String current = section.getAttribute(digestName);
+         try(InputStream in = getInputStream(ze)) {
+            byte[] digest = ArchiveUtils.readDigest(md, in);
+            String actual = encoder.encodeToString(digest);
+            if(current == null || !current.equals(actual)) {
+               section.setAttribute(digestName, actual);
+            }
+         }
+         Section sigsec = section.digest(md);
+         sections.put(sigsec.getName(), sigsec);
+      }
+      String mainDigest = encoder.encodeToString(getManifest().getMain().digest(md));
+      String manifestDigest = encoder.encodeToString(getManifest().digest(md));
+      Main main = Main.createSignature(manifestDigest, mainDigest, md.getAlgorithm());
+      return new SignatureFile(signame, main, sections);
    }
-
 
 
 
@@ -95,16 +121,44 @@ public class JavaArchive {
    public static JavaArchive from(ZipFile source)
       throws IOException
    {
+      return from(source, false);
+   }
+
+   /*
+        NOTE: When parsing the manifest there are corruptions we skip over that would
+        ultimately result in any existing signature files being invalid. We do not
+        track those lenient parsing issues and as such do not reflect it in the modified
+        state. We assume that when we generate the new signature file that will result in
+        at least some of those being fixed and thus isModified will be true. But there is
+        no guarantee of that.
+
+        Examples of corruptions we ignore
+          Sections that start off with a continuation rather than a Name
+          Sections that order their attributes in such a way as Name is not first
+          Attributes with no value
+          Duplicate Attributes in a section
+          Duplicate sections within a manifest
+    */
+   public static JavaArchive from(ZipFile source, boolean clean)
+      throws IOException
+   {
       Set<ZipEntry> signatures = new TreeSet<>((first, second) -> first.getName().compareTo(second.getName()));
       Set<ZipEntry> entries = new LinkedHashSet<>();
       Manifest manifest = null;
+      boolean corrupt = false;
 
       for(Enumeration<? extends ZipEntry> files = source.entries(); files.hasMoreElements(); ) {
          ZipEntry entry = files.nextElement();
          String name = entry.getName();
          if(ArchiveUtils.isArchiveSpecial(name)) {
-            if(JarFile.MANIFEST_NAME.equalsIgnoreCase(name)) {
-               manifest = Manifest.parse(source.getInputStream(entry));
+            if(ArchiveUtils.isManifest(name)) {
+               try {
+                  manifest = Manifest.parse(source.getInputStream(entry), clean);
+               } catch(CorruptManifestException cme) {
+                  // TODO Do I just want to let this fail or continue on?
+                  manifest = new Manifest();
+                  corrupt = true;
+               }
             } else if(ArchiveUtils.isBlockOrSF(name)) {
                signatures.add(entry);
             } else {
@@ -114,6 +168,7 @@ public class JavaArchive {
             entries.add(entry);
          }
       }
+      if(corrupt) signatures.clear();
       return new JavaArchive(source, entries, signatures, manifest);
    }
 

@@ -2,10 +2,16 @@ package org.xpertss.jarsigner.jar;
 
 
 import org.xpertss.jarsigner.TsaSigner;
+import org.xpertss.jarsigner.pkcs.ContentInfo;
+import org.xpertss.jarsigner.pkcs.PKCS7;
+import org.xpertss.jarsigner.pkcs.PKCS9Attributes;
+import org.xpertss.jarsigner.pkcs.SignerInfo;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.Signature;
+import java.security.SignatureException;
+import java.security.cert.CertPath;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -96,13 +102,25 @@ public class SignatureFile {
 
 
 
-   public SignatureBlock generateBlock(Signature signature, TsaSigner tsaSigner)
+
+   public SignatureBlock generateBlock(Signature signature, CertPath certPath, TsaSigner tsaSigner)
+      throws SignatureException
    {
-      // TODO Needs Signature and TSASigner.. Generates PKCS#7 signature block
+      signature.update(main.getEncoded());
+      for(Section section : sections.values()) {
+         signature.update(section.getEncoded());
+      }
+      byte[] sigbytes = signature.sign();
+      PKCS9Attributes unauth = (tsaSigner != null) ? tsaSigner.stamp(sigbytes) : null;
+      SignerInfo signerInfo = SignerInfo.create(certPath, sigbytes, signature.getAlgorithm(), unauth);
 
+      // by default we do not include the SignatureFile in the ContentInfo of the signature block
+      ContentInfo contentInfo = ContentInfo.empty();
 
-      return new SignatureBlock(name, algorithmFor(signature.getAlgorithm()), null);
+      PKCS7 pkcs7 = new PKCS7(certPath, contentInfo, signerInfo);
+      return new SignatureBlock(name, algorithmFor(signature.getAlgorithm()), pkcs7.getEncoded());
    }
+
 
 
    // get .DSA (or .DSA, .EC) file name
@@ -120,9 +138,14 @@ public class SignatureFile {
    }
 
 
-   public void write(OutputStream out)
+   public void writeTo(OutputStream out)
       throws IOException
    {
+      out.write(main.getEncoded());
+      for(Section section : sections.values()) {
+         out.write(section.getEncoded());
+      }
+      out.flush();
    }
 
 

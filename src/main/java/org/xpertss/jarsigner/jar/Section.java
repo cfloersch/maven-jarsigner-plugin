@@ -8,6 +8,8 @@ package org.xpertss.jarsigner.jar;
 
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -16,18 +18,31 @@ import java.util.stream.Stream;
 public final class Section {
 
    private byte[] rawbytes;
+   private boolean modified;
 
    private final Map<String,String> attributes;
+   private final String name;
 
 
    private Section(String name)
    {
+      ArchiveUtils.validateAttributeName(name);
       this.attributes = new LinkedHashMap<>();
-      this.attributes.put("Name", Objects.requireNonNull(name, "name"));
+      this.name = Objects.requireNonNull(name, "name");
+      this.modified = true;
    }
 
-   private Section(byte[] rawbytes, Map<String,String> attributes)
+   private Section(String name, Map<String,String> attributes)
    {
+      ArchiveUtils.validateAttributeName(name);
+      this.name = Objects.requireNonNull(name, "name");
+      this.attributes = attributes;
+      this.modified = true;
+   }
+
+   private Section(byte[] rawbytes, String name, Map<String,String> attributes)
+   {
+      this.name = Objects.requireNonNull(name, "name");
       this.rawbytes = rawbytes;
       this.attributes = attributes;
    }
@@ -38,8 +53,9 @@ public final class Section {
     */
    public String getName()
    {
-      return attributes.get("Name");
+      return name;
    }
+
 
    /**
     * Return the attribute value associated with the given attribute name.
@@ -63,12 +79,24 @@ public final class Section {
     * Set an attribute with the given name. This mutation will mark the
     * section as modified, which will ultimately invalidate any existing
     * signature.
+    * <p/>
+    * Throws IllegalArgumentException if you supply an attribute named
+    * {@code Name}.
     */
    public void setAttribute(String attrName, String value)
    {
-      // TODO Should I prevent modification of Name???
+      if("Name".equalsIgnoreCase(attrName))
+         throw new IllegalArgumentException("Attribute Name is reserved");
       attributes.put(attrName, value);
+      modified = true;
       rawbytes = null;
+   }
+
+   public void clean()
+   {
+      attributes.keySet().removeIf(s -> s.endsWith("-Digest"));
+      rawbytes = null;
+      modified = true;
    }
 
    /**
@@ -87,7 +115,7 @@ public final class Section {
     */
    public boolean isModified()
    {
-      return rawbytes == null;
+      return modified;
    }
 
 
@@ -103,6 +131,22 @@ public final class Section {
                   .toArray(String[]::new);
    }
 
+   /**
+    * Create a signature file section from this manifest section, digesting
+    * the current bytes and adding that attribute to the returned section.
+    *
+    * @param md The message digest to use in creating signature digest
+    */
+   public Section digest(MessageDigest md)
+   {
+      String digestName = String.format("%s-Digest", md.getAlgorithm());
+
+      md.reset();
+      md.update(getEncoded());
+      Map<String,String> attributes = new LinkedHashMap<>();
+      attributes.put(digestName, Base64.getEncoder().encodeToString(md.digest()));
+      return new Section(name, attributes);
+   }
 
    /**
     * Returns the raw bytes used to construct this section from a given manifest
@@ -113,7 +157,7 @@ public final class Section {
     */
    public byte[] getEncoded()
    {
-      if(rawbytes == null) rawbytes = ArchiveUtils.encodeAttributes(attributes);
+      if(rawbytes == null) rawbytes = ArchiveUtils.encodeAttributes(name, attributes);
       return rawbytes;
    }
 
@@ -136,7 +180,8 @@ public final class Section {
       throws IOException
    {
       Map<String,String> attributes = ArchiveUtils.parseAttributes(rawbytes);
-      return (attributes.isEmpty()) ? null : new Section(rawbytes, attributes);
+      String name = attributes.remove("Name");
+      return (attributes.isEmpty()) ? null : new Section(rawbytes, name, attributes);
    }
 
 

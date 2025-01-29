@@ -7,21 +7,29 @@
 package org.xpertss.jarsigner;
 
 
+import org.xpertss.jarsigner.pkcs.PKCS9Attribute;
+import org.xpertss.jarsigner.pkcs.PKCS9Attributes;
+
 import java.net.URI;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.util.Objects;
 
-public class TsaSigner {
+public final class TsaSigner {
 
     private final URI uri;
 
-    private String tsaPolicyId;
-    private String tsaDigestAlgorithm;
+    private String policyId;
+    private MessageDigest digestAlgorithm;
 
 
     private TsaSigner(Builder builder)
     {
         this.uri = builder.uri;
+        this.policyId = builder.policyId;
+        this.digestAlgorithm = builder.digestAlg;
     }
 
 
@@ -31,16 +39,31 @@ public class TsaSigner {
     }
 
 
-    public void stamp(byte[] digest)
+    public PKCS9Attributes stamp(byte[] signature)
     {
+        // Create HttpTimestamper
+        byte[] tsToken = null;
+
         // TODO get timestamp..
+        // https://github.com/JetBrains/jdk8u_jdk/blob/master/src/share/classes/sun/security/pkcs/PKCS7.java#L872
+        // HttpTimestamper tsa = new HttpTimestamper(tsaURI);
+        //https://github.com/JetBrains/jdk8u_jdk/blob/master/src/share/classes/sun/security/timestamp/HttpTimestamper.java#L50
+
+        return new PKCS9Attributes(new PKCS9Attribute(PKCS9Attribute.SIGNATURE_TIMESTAMP_TOKEN_STR, tsToken));
     }
+
+    @Override
+    public String toString()
+    {
+        return "TsaSigner"; // TODO
+    }
+
 
 
     public static class Builder {
 
         private URI uri;
-        private String digestAlg;
+        private MessageDigest digestAlg;
         private String policyId;
 
         private Builder(URI uri)
@@ -49,17 +72,18 @@ public class TsaSigner {
         }
 
         // Do I need this from parsing the cert
-        private Builder(URI uri, String digestAlg)
+        private Builder(URI uri, String policyId)
         {
             this.uri = Objects.requireNonNull(uri, "uri");
-            this.digestAlg = digestAlg;
+            this.policyId = policyId;
         }
 
 
 
         public Builder digestAlgorithm(String digestAlg)
+            throws NoSuchAlgorithmException
         {
-            this.digestAlg = digestAlg;
+            this.digestAlg = MessageDigest.getInstance(digestAlg);
             return this;
         }
 
@@ -69,9 +93,14 @@ public class TsaSigner {
             return this;
         }
 
+
+
+
         public TsaSigner build()
+            throws NoSuchAlgorithmException
         {
-            return null;    // TODO
+            if(digestAlg == null) digestAlg = MessageDigest.getInstance("SHA-256");
+            return new TsaSigner(this);
         }
 
 
@@ -143,9 +172,17 @@ public class TsaSigner {
         ]
          */
         public static Builder of(Certificate cert)
+            throws CertificateException
         {
-            // TODO Extract uri
-            return null;
+            throw new CertificateException("Subject Information Access extension not found");
+            // TODO Throw exception if certificate is not for
+            //  keyUsage (non-repudiation || digitalSignature)
+            //  extKeyUsage (timestamping)
+
+
+            // TODO Extract uri and policyId if present
+            // https://code.googlesource.com/edge/openjdk/+/refs/heads/master/jdk/src/share/classes/sun/security/tools/jarsigner/TimestampedSigner.java#155
+            //return null;
         }
 
         public static Builder of(URI uri)
