@@ -296,6 +296,7 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
                 signerBuilder.signerName(alias);
             }
 
+            // TODO
             // It is signature and message digest in the builder that are not thread-safe
             // so we will need a way to init new instances per build if we want parallel
             // execution
