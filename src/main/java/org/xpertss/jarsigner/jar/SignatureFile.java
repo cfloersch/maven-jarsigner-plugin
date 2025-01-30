@@ -2,10 +2,10 @@ package org.xpertss.jarsigner.jar;
 
 
 import org.xpertss.jarsigner.TsaSigner;
-import org.xpertss.jarsigner.pkcs.ContentInfo;
-import org.xpertss.jarsigner.pkcs.PKCS7;
-import org.xpertss.jarsigner.pkcs.PKCS9Attributes;
-import org.xpertss.jarsigner.pkcs.SignerInfo;
+import org.xpertss.crypto.pkcs.ContentInfo;
+import org.xpertss.crypto.pkcs.PKCS7;
+import org.xpertss.crypto.pkcs.PKCS9Attributes;
+import org.xpertss.crypto.pkcs.SignerInfo;
 
 import java.io.IOException;
 import java.io.OutputStream;

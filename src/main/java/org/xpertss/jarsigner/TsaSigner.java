@@ -7,22 +7,17 @@
 package org.xpertss.jarsigner;
 
 
-import org.xpertss.jarsigner.pkcs.PKCS9Attribute;
-import org.xpertss.jarsigner.pkcs.PKCS9Attributes;
+import org.xpertss.crypto.pkcs.PKCS9Attribute;
+import org.xpertss.crypto.pkcs.PKCS9Attributes;
 
 import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateParsingException;
-import java.security.cert.X509Certificate;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 // Sun Timestamper Impl
 // https://github.com/JetBrains/jdk8u_jdk/tree/master/src/share/classes/sun/security/timestamp
+// https://www.ietf.org/rfc/rfc5035.txt
 public final class TsaSigner {
 
     private final URI uri;
@@ -129,144 +124,10 @@ public final class TsaSigner {
 
 
 
-        
-        /*
-            http://timestamp.digicert.com
-            http://timestamp.comodoca.com
-            http://timestamp.globalsign.com
-            http://tsa.starfieldtech.com
-            http://timestamp.entrust.net/TSS/RFC3161sha2TS
-            http://sha256timestamp.ws.symantec.com/sha256/timestamp
-            http://tsa.swisssign.net
-            http://timestamp.acs.microsoft.com
-
-
-        https://www.freetsa.org/index_en.php
-
-        Owner: ST=Bayern, C=DE, L=Wuerzburg, EMAILADDRESS=busilezas@gmail.com, CN=www.freetsa.org, OID.2.5.4.13=This certificate digitally signs documents and time stamp requests made using the freetsa.org online services, OU=TSA, O=Free TSA
-        Issuer: C=DE, ST=Bayern, L=Wuerzburg, EMAILADDRESS=busilezas@gmail.com, CN=www.freetsa.org, OU=Root CA, O=Free TSA
-        Serial number: c1e986160da8e982
-        Valid from: Sat Mar 12 20:57:39 EST 2016 until: Tue Mar 10 21:57:39 EDT 2026
-        Certificate fingerprints:
-                 MD5:  CB:2C:A4:D3:6F:8A:45:C2:F6:B7:76:1A:01:F5:FC:44
-                 SHA1: 91:6D:A3:D8:60:EC:CA:82:E3:4B:C5:9D:17:93:E7:E9:68:87:5F:14
-                 SHA256: 46:94:BE:23:C3:A5:30:04:44:4B:17:05:BF:E5:A7:F5:0A:6D:2A:16:38:19:4F:23:C0:F3:89:B6:8B:D7:8A:75
-                 Signature algorithm name: SHA512withRSA
-                 Version: 3
-
-        Extensions:
-
-        #1: ObjectId: 2.5.29.14 Criticality=false
-        SubjectKeyIdentifier [
-          KeyIdentifier: [6E:76:0B:7B:4E:4F:9C:E1:60:CA:6D:2C:E9:27:A2:A2:94:B3:77:37]
-        ]
-
-        #2: ObjectId: 2.5.29.35 Criticality=false
-        AuthorityKeyIdentifier [
-          KeyIdentifier: [FA:55:0D:8C:34:66:51:43:4C:F7:E7:B3:A7:6C:95:AF:7A:E6:A4:97]
-        ]
-
-        #3: ObjectId: 2.5.29.31 Criticality=false
-        CRLDistributionPoints [
-          DistributionPoint:  [URIName: http://www.freetsa.org/crl/root_ca.crl]
-        ]
-
-        #4: ObjectId: 2.5.29.32 Criticality=false
-        CertificatePolicies [
-          CertificatePolicyId: [0.0]
-          PolicyQualifierInfo: [Certification Practice Statement]
-          PolicyQualifierInfo: [Certification Practice Statement]
-          PolicyQualifierInfo: [User Notice]
-        ]
-
-        #5: ObjectId: 2.5.29.37 Criticality=true
-        ExtendedKeyUsages [
-          timeStamping
-        ]
-
-        #6: ObjectId: 2.5.29.15 Criticality=false
-        KeyUsage [
-          DigitalSignature
-          Non_repudiation
-        ]
-
-        #7: ObjectId: 1.3.6.1.5.5.7.1.1 Criticality=false
-        AuthorityInfoAccess [
-          Certificate Authority Issuer
-            URIName: http://www.freetsa.org/tsa.crt
-          On-line Certificate Status Protocol
-            URIName: http://www.freetsa.org:2560
-        ]
-
-        #8: ObjectId: 2.5.29.19 Criticality=false
-        BasicConstraints:[
-          CA:false
-          PathLen: undefined
-        ]
-         */
-        public static Builder of(Certificate cert)
-            throws CertificateException
-        {
-            if (cert instanceof X509Certificate) {
-                X509Certificate xcert = (X509Certificate)cert;
-                if(!isSignatureOrNonRepudiation(xcert)
-                        || !isAnyOrTimestamping(xcert)) {
-                    throw new CertificateException("TSA Certificate not a timestamping certificate");
-                }
-
-                xcert.getExtensionValue("2.5.29.32");               // Cert Policies
-                xcert.getExtensionValue("1.3.6.1.5.5.7.1.1");       // AuthorityInfoAccess
-                xcert.getExtensionValue("1.3.6.1.5.5.5.7.1.11");    // SubjectInfoAccess (Gemini)
-
-
-                xcert.getExtensionValue("1.3.6.1.5.5.7.1.11");      // SubjectInfoAccess (Sun)
-            }
-
-            // SubjectInfoAccess        1.3.6.1.5.5.7.1.11
-            // id-ad-timeStamping       1.3.6.1.5.5.7.48.3
-
-            throw new CertificateException("Subject Information Access extension not found");
-            // TODO Throw exception if certificate is not for
-            //  keyUsage (non-repudiation || digitalSignature)
-            //  extKeyUsage (timestamping)
-
-
-            // TODO Extract uri and policyId if present
-            // https://code.googlesource.com/edge/openjdk/+/refs/heads/master/jdk/src/share/classes/sun/security/tools/jarsigner/TimestampedSigner.java#155
-            //return null;
-        }
 
         public static Builder of(URI uri)
         {
             return new Builder(uri);
-        }
-
-
-        private static boolean isSignatureOrNonRepudiation(X509Certificate xcert)
-        {
-            boolean[] keyUsage = xcert.getKeyUsage();
-            if (keyUsage != null) {
-                keyUsage = Arrays.copyOf(keyUsage, 9);
-                return keyUsage[0] || keyUsage[1];
-            }
-            return true;
-        }
-
-        // https://datatracker.ietf.org/doc/draft-ietf-cose-cbor-encoded-cert/06/
-        private static boolean isAnyOrTimestamping(X509Certificate userCert)
-        {
-            try {
-                List<String> xKeyUsage = userCert.getExtendedKeyUsage();
-                if (xKeyUsage != null) {
-                    if (!xKeyUsage.contains("2.5.29.37.0") // anyExtendedKeyUsage
-                            && !xKeyUsage.contains("1.3.6.1.5.5.7.3.8")) {  // timestamping
-                        return false;
-                    }
-                }
-            } catch (CertificateParsingException e) {
-                return false;
-            }
-            return true;
         }
 
 

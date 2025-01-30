@@ -26,6 +26,7 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
    </properties>
 
+   <!-- TODO Get rid of Inject/Guice Maybe SharedUtils -->
    <dependencies>
       <dependency>
          <groupId>org.apache.maven</groupId>
