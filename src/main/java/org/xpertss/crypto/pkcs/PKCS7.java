@@ -10,6 +10,10 @@ import java.security.cert.CertPath;
  * <p/>
  * For signedData, {@code crls}, {@code attributes} and PKCS#6 Extended Certificates
  * are not supported.
+ *
+ * https://www.itu.int/ITU-T/formal-language/itu-t/x/x420/1999/PKCS7.html
+ * https://signify.readthedocs.io/en/latest/pkcs7.html
+ * https://www.rfc-editor.org/rfc/rfc2315.html
  */
 public class PKCS7 {
 

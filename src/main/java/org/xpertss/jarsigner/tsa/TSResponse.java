@@ -68,10 +68,6 @@ import java.io.IOException;
  *         -- eContent within SignedData is TSTInfo
  *
  * </pre>
- *
- * @since 1.5
- * @author Vincent Ryan
- * @see Timestamper
  */
 public class TSResponse {
 

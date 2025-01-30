@@ -31,10 +31,6 @@ import java.security.cert.X509Extension;
  *     TSAPolicyId ::= OBJECT IDENTIFIER
  *
  * </pre>
- *
- * @since 1.5
- * @author Vincent Ryan
- * @see Timestamper
  */
 public class TSRequest {
 
