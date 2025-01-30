@@ -15,8 +15,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateParsingException;
+import java.security.cert.X509Certificate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
+// Sun Timestamper Impl
+// https://github.com/JetBrains/jdk8u_jdk/tree/master/src/share/classes/sun/security/timestamp
 public final class TsaSigner {
 
     private final URI uri;
@@ -125,6 +131,16 @@ public final class TsaSigner {
 
         
         /*
+            http://timestamp.digicert.com
+            http://timestamp.comodoca.com
+            http://timestamp.globalsign.com
+            http://tsa.starfieldtech.com
+            http://timestamp.entrust.net/TSS/RFC3161sha2TS
+            http://sha256timestamp.ws.symantec.com/sha256/timestamp
+            http://tsa.swisssign.net
+            http://timestamp.acs.microsoft.com
+
+
         https://www.freetsa.org/index_en.php
 
         Owner: ST=Bayern, C=DE, L=Wuerzburg, EMAILADDRESS=busilezas@gmail.com, CN=www.freetsa.org, OID.2.5.4.13=This certificate digitally signs documents and time stamp requests made using the freetsa.org online services, OU=TSA, O=Free TSA
@@ -191,6 +207,24 @@ public final class TsaSigner {
         public static Builder of(Certificate cert)
             throws CertificateException
         {
+            if (cert instanceof X509Certificate) {
+                X509Certificate xcert = (X509Certificate)cert;
+                if(!isSignatureOrNonRepudiation(xcert)
+                        || !isAnyOrTimestamping(xcert)) {
+                    throw new CertificateException("TSA Certificate not a timestamping certificate");
+                }
+
+                xcert.getExtensionValue("2.5.29.32");               // Cert Policies
+                xcert.getExtensionValue("1.3.6.1.5.5.7.1.1");       // AuthorityInfoAccess
+                xcert.getExtensionValue("1.3.6.1.5.5.5.7.1.11");    // SubjectInfoAccess (Gemini)
+
+
+                xcert.getExtensionValue("1.3.6.1.5.5.7.1.11");      // SubjectInfoAccess (Sun)
+            }
+
+            // SubjectInfoAccess        1.3.6.1.5.5.7.1.11
+            // id-ad-timeStamping       1.3.6.1.5.5.7.48.3
+
             throw new CertificateException("Subject Information Access extension not found");
             // TODO Throw exception if certificate is not for
             //  keyUsage (non-repudiation || digitalSignature)
@@ -206,6 +240,35 @@ public final class TsaSigner {
         {
             return new Builder(uri);
         }
+
+
+        private static boolean isSignatureOrNonRepudiation(X509Certificate xcert)
+        {
+            boolean[] keyUsage = xcert.getKeyUsage();
+            if (keyUsage != null) {
+                keyUsage = Arrays.copyOf(keyUsage, 9);
+                return keyUsage[0] || keyUsage[1];
+            }
+            return true;
+        }
+
+        // https://datatracker.ietf.org/doc/draft-ietf-cose-cbor-encoded-cert/06/
+        private static boolean isAnyOrTimestamping(X509Certificate userCert)
+        {
+            try {
+                List<String> xKeyUsage = userCert.getExtendedKeyUsage();
+                if (xKeyUsage != null) {
+                    if (!xKeyUsage.contains("2.5.29.37.0") // anyExtendedKeyUsage
+                            && !xKeyUsage.contains("1.3.6.1.5.5.7.3.8")) {  // timestamping
+                        return false;
+                    }
+                }
+            } catch (CertificateParsingException e) {
+                return false;
+            }
+            return true;
+        }
+
 
     }
 
