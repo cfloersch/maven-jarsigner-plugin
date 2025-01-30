@@ -3,27 +3,35 @@ package org.apache.maven.plugins.jarsigner;
 import org.codehaus.plexus.util.StringUtils;
 import org.xpertss.jarsigner.TsaSigner;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
+import java.nio.file.Files;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 
 public class TsaSpec {
 
-    private String cert;
-    private String uri;
+    private File cert;
+    private String uri;     // TODO Can I make this type URI??
     private String policyId;
     private String digestAlg;
 
 
-    public String getCert()
+    public File getCert()
     {
         return cert;
     }
 
-    public void setCert(String cert)
+    public void setCert(File cert)
     {
         this.cert = cert;
     }
+
 
     public String getUri()
     {
@@ -35,6 +43,7 @@ public class TsaSpec {
         this.uri = uri;
     }
 
+
     public String getPolicyId()
     {
         return policyId;
@@ -44,6 +53,7 @@ public class TsaSpec {
     {
         this.policyId = policyId;
     }
+
 
     public String getDigestAlg()
     {
@@ -60,20 +70,28 @@ public class TsaSpec {
     {
         int count = 0;
         if(StringUtils.isNotEmpty(uri)) count++;
-        if(StringUtils.isNotEmpty(cert)) count++;
+        if(cert != null) count++;
         return count;
     }
 
 
     public TsaSigner build()
-       throws CertificateException
+        throws IOException, CertificateException,
+                NoSuchProviderException, NoSuchAlgorithmException
     {
+        TsaSigner.Builder builder = null;
         if(cert != null) {
-            // preferred path
+            CertificateFactory certFactory = CertificateFactory.getInstance("X509");
+            try(InputStream in = Files.newInputStream(cert.toPath())) {
+                Certificate xcert = certFactory.generateCertificate(in);
+                builder = TsaSigner.Builder.of(xcert).digestAlgorithm(digestAlg);
+                if(StringUtils.isNotEmpty(policyId)) builder.policyId(policyId);
+            }
         } else if(uri != null) {
-
+            builder = TsaSigner.Builder.of(URI.create(uri))
+                            .digestAlgorithm(digestAlg).policyId(policyId);
         }
-        return null;
+        return (builder != null) ? builder.build() : null;
     }
 
 
@@ -85,7 +103,7 @@ public class TsaSpec {
         StringBuilder builder = new StringBuilder();
         if(StringUtils.isNotEmpty(uri))
             builder.append(String.format("uri=%s", uri));
-        if(StringUtils.isNotEmpty(cert)) {
+        if(cert != null) {
             if(builder.length() > 0) builder.append(", ");
             builder.append(String.format("cert=%s", cert));
         }

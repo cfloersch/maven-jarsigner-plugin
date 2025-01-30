@@ -68,7 +68,7 @@ public final class TsaSigner {
 
         private Builder(URI uri)
         {
-            this.uri = Objects.requireNonNull(uri, "uri");
+            this(uri, null);
         }
 
         // Do I need this from parsing the cert
