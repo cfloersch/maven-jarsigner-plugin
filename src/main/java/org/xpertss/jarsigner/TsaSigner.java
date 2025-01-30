@@ -83,6 +83,8 @@ public final class TsaSigner {
         public Builder digestAlgorithm(String digestAlg)
             throws NoSuchAlgorithmException
         {
+            // TODO Will need to make this just digestAlg so that we can
+            // ensure a nwe instance of MessageDigest for each thread.
             this.digestAlg = MessageDigest.getInstance(digestAlg);
             return this;
         }

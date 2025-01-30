@@ -129,8 +129,6 @@ public final class JarSigner {
 
 
 
-    // TODO Maybe use Path instead of ZipFile?
-
     /**
      * Sign the given Java Archive utilizing the specified output Path as the
      * temporary signed archive file.

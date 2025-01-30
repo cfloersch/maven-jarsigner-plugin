@@ -27,7 +27,6 @@ public final class Main {
 
    private Main(Map<String,String> attributes)
    {
-      // TODO Validate this preserves order
       this.attributes = Collections.unmodifiableMap(attributes);
       this.modified = true;
    }

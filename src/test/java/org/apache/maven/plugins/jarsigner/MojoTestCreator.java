@@ -30,9 +30,7 @@ import java.util.regex.Pattern;
 
 import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.plugins.jarsigner.JarsignerSignMojo.WaitStrategy;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.toolchain.ToolchainManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
@@ -49,9 +47,7 @@ public class MojoTestCreator<T extends AbstractJarsignerMojo> {
     private final Class<T> clazz;
     private final MavenProject project;
     private final Path projectDir;
-    private ToolchainManager toolchainManager;
     private SecDispatcher securityDispatcher;
-    private WaitStrategy waitStrategy;
     private Log log;
     //private List<Field> fields;
 
@@ -65,16 +61,8 @@ public class MojoTestCreator<T extends AbstractJarsignerMojo> {
         securityDispatcher = str -> str; // Simple SecDispatcher that only returns parameter
     }
 
-    public void setToolchainManager(ToolchainManager toolchainManager) {
-        this.toolchainManager = toolchainManager;
-    }
-
     public void setSecDispatcher(SecDispatcher securityDispatcher) {
         this.securityDispatcher = securityDispatcher;
-    }
-
-    public void setWaitStrategy(WaitStrategy waitStrategy) {
-        this.waitStrategy = waitStrategy;
     }
 
     public void setLog(Log log) {
@@ -94,12 +82,6 @@ public class MojoTestCreator<T extends AbstractJarsignerMojo> {
 
         setAttribute(mojo, "project", project);
         setAttribute(mojo, "securityDispatcher", securityDispatcher);
-        if (toolchainManager != null) {
-            setAttribute(mojo, "toolchainManager", toolchainManager);
-        }
-        if (waitStrategy != null) {
-            ((JarsignerSignMojo) mojo).setWaitStrategy(waitStrategy);
-        }
         if (log != null) {
             mojo.setLog(log);
         }
