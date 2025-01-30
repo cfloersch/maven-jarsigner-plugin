@@ -75,6 +75,8 @@ public class JarsignerVerifyMojo extends AbstractJarsignerMojo {
 
 
 
+
+
     @Override
     protected void preProcessArchive(Path archive) throws MojoExecutionException {
         super.preProcessArchive(archive);
@@ -96,6 +98,11 @@ public class JarsignerVerifyMojo extends AbstractJarsignerMojo {
                 throw new MojoExecutionException(getMessage("archiveNotSigned", archive));
             }
         }
+    }
+
+    @Override
+    protected void processArchive(Path archive) throws MojoExecutionException {
+
     }
 
     protected void executeJarSigner()

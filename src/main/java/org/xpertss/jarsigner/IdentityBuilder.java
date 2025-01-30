@@ -151,7 +151,7 @@ public class IdentityBuilder {
    public IdentityBuilder storeType(String storeType, String providerName)
       throws NoSuchProviderException
    {
-      if((this.provider = Security.getProvider(providerName)) == null) {
+      if(providerName != null && (this.provider = Security.getProvider(providerName)) == null) {
          throw new NoSuchProviderException(String.format("No Provider %s found", providerName));
       }
       this.storeType = storeType;

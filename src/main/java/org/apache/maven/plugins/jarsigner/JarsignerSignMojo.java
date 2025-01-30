@@ -22,9 +22,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.security.KeyStore;
-import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -32,6 +33,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
+import java.util.zip.ZipFile;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -41,10 +43,10 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.shared.utils.StringUtils;
 import org.xpertss.jarsigner.Identity;
 import org.xpertss.jarsigner.IdentityBuilder;
-import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
 import org.xpertss.jarsigner.JarSigner;
 import org.xpertss.jarsigner.TsaSigner;
+import org.xpertss.jarsigner.jar.ArchiveUtils;
 
 /**
  * Signs a project artifact and attachments using jarsigner.
@@ -69,6 +71,7 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
     /**
      * Trusted certificates store. Must be a JKS KeyStore
      */
+    @Parameter
     private File truststore;
 
 
@@ -117,7 +120,7 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
      * POJO to optionally specify time stamping authority details
      */
     @Parameter
-    private TsaSpec tsa;    // TODO Figure out how to do an array of (maybe)
+    private TsaSpec tsa;
 
 
 
@@ -135,32 +138,12 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
 
 
 
-    // TODO Do I need any of the following??
-
-
     /**
-     * How many times to try to sign a jar (assuming each previous attempt is a failure). This option
-     * may be desirable if any network operations are used during signing, for example using a Time
-     * Stamp Authority or network based PKCS11 HSM solution for storing code signing keys.
-     * <p/>
-     * The default value of 1 indicates that no retries should be made.
-     */
-    @Parameter(property = "jarsigner.maxTries", defaultValue = "1")
-    private int maxTries;
-
-    /**
-     * Maximum delay, in seconds, to wait after a failed attempt before re-trying. The delay after a
-     * failed attempt follows an exponential backoff strategy, with increasing delay times.
-     */
-    @Parameter(property = "jarsigner.maxRetryDelaySeconds", defaultValue = "0")
-    private int maxRetryDelaySeconds;
-
-    /**
-     * Maximum number of parallel threads to use when signing jar files. Increases performance when
-     * signing multiple jar files, especially when network operations are used during signing, for
-     * example when using a Time Stamp Authority or network based PKCS11 HSM solution for storing
-     * code signing keys. Note: the logging from the signing process will be interleaved, and harder
-     * to read, when using many threads.
+     * Maximum number of parallel threads to use when signing jar files. Increases performance
+     * when signing multiple jar files, especially when network operations are used during
+     * signing, for example when using a Time Stamp Authority or network based PKCS11 HSM
+     * solution for storing code signing keys. Note: the logging from the signing process
+     * will be interleaved, and harder to read, when using many threads.
      */
     @Parameter(property = "jarsigner.threadCount", defaultValue = "1")
     private int threadCount;
@@ -169,15 +152,9 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
 
 
 
-    /** Current WaitStrategy, to allow for sleeping after a signing failure. */
-    private WaitStrategy waitStrategy = this::defaultWaitStrategy;
-
-    /** Exponent limit for exponential wait after failure function. 2^20 = 1048576 sec ~= 12 days. */
-    private static final int MAX_WAIT_EXPONENT_ATTEMPT = 20;
 
 
-
-    private JarSigner signer;
+    private JarSigner.Builder signerBuilder;
 
     @Inject
     public JarsignerSignMojo(@Named("mng-4384") SecDispatcher securityDispatcher)
@@ -195,20 +172,6 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
 
 
 
-    @Override
-    protected void preProcessArchive(final Path archive)
-        throws MojoExecutionException
-    {
-        /*
-        if (clean) {
-            try {
-                ArchiveUtils.unsignArchive(archive);
-            } catch (IOException e) {
-                throw new MojoExecutionException("Failed to unsign archive " + archive + ": " + e.getMessage(), e);
-            }
-        }
-        */
-    }
 
     @Override
     protected void configure()
@@ -216,30 +179,12 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
     {
         super.configure();
 
-        System.out.println("Digest: " + digest);
-        System.out.println("Signature: " + signature);
-        System.out.println("Tsa: " + tsa);
-
-
-        if (maxTries < 1) {
-            getLog().warn(getMessage("invalidMaxTries", maxTries));
-            maxTries = 1;
-        }
-
-        if (maxRetryDelaySeconds < 0) {
-            getLog().warn(getMessage("invalidMaxRetryDelaySeconds", maxRetryDelaySeconds));
-            maxRetryDelaySeconds = 0;
-        }
-
         if (threadCount < 1) {
             getLog().warn(getMessage("invalidThreadCount", threadCount));
             threadCount = 1;
         }
 
-
-
-
-        System.out.println("Keystore: " + keystore);
+        getLog().debug("Keystore: " + keystore);
 
         try {
             IdentityBuilder builder = new IdentityBuilder();
@@ -249,12 +194,8 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
                     .alias(alias).keyPass(create(keypass));
             if(keystore != null) {
                 builder.keyStore(toPath(keystore.getPath()))
-                   .storePass(create(keystore.getStorePass()));
-                if(StringUtils.isEmpty(keystore.getProvider())) {
-                    builder.storeType(keystore.getStoreType());
-                } else {
-                    builder.storeType(keystore.getStoreType(), keystore.getProvider());
-                }
+                   .storePass(create(keystore.getStorePass()))
+                   .storeType(keystore.getStoreType(), keystore.getProvider());
             }
             Identity identity = builder.build();
             getLog().debug("Loaded identity: " + identity);
@@ -264,43 +205,23 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
                 int count = tsa.validCount();
                 if (count == 0) {
                     getLog().warn(getMessage("warnUsageTsaUriAndTsaCertMissing"));
-                } else {
-                    if (count > 1) {
-                        getLog().warn(getMessage("warnUsageTsaUriAndTsaCertSimultaneous"));
-                    }
+                } else if (count > 1) {
+                    getLog().warn(getMessage("warnUsageTsaUriAndTsaCertSimultaneous"));
                 }
                 tsaSigner = tsa.build();
                 getLog().debug("Loaded timestamp authority: " + tsaSigner);
             }
 
-            JarSigner.Builder signerBuilder = new JarSigner.Builder(identity);
-            if(digest != null) {
-                if (StringUtils.isEmpty(digest.getProvider())) {
-                    signerBuilder.digestAlgorithm(digest.getAlgorithm(), digest.getProvider());
-                } else {
-                    signerBuilder.digestAlgorithm(digest.getAlgorithm());
-                }
+            if(StringUtils.isEmpty(sigfile)) {
+                sigfile = ArchiveUtils.cleanSigFileName(identity.getName());
             }
-            if(signature != null) {
-                if (StringUtils.isEmpty(signature.getProvider())) {
-                    signerBuilder.signatureAlgorithm(signature.getAlgorithm(), signature.getProvider());
-                } else {
-                    signerBuilder.signatureAlgorithm(signature.getAlgorithm());
-                }
-            }
-            if(!StringUtils.isEmpty(sigfile)) {
-                signerBuilder.signerName(sigfile);
-            } else {
-                String alias = identity.getName();
-                // TODO clean up alias to avoid exception
-                signerBuilder.signerName(alias);
-            }
+            if(digest == null) digest = new AlgorithmSpec();
+            if(signature == null) signature = new AlgorithmSpec();
 
-            // TODO
-            // It is signature and message digest in the builder that are not thread-safe
-            // so we will need a way to init new instances per build if we want parallel
-            // execution
-            signer = signerBuilder.tsa(tsaSigner).clean(clean).build();
+            signerBuilder = new JarSigner.Builder(identity)
+                                    .digestAlgorithm(digest.getAlgorithm(), digest.getProvider())
+                                    .signatureAlgorithm(signature.getAlgorithm(), signature.getProvider())
+                                    .signerName(sigfile).tsa(tsaSigner).clean(clean);
 
         } catch(Exception e) {
             throw new MojoExecutionException(e);
@@ -310,12 +231,9 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
     }
 
 
+
     /**
      * {@inheritDoc} Processing of files may be parallelized for increased performance.
-     *
-     * TODO Move this parallelization into AbstractJarsignerMojo and make it final
-     * Can verify be done in parallel? Answer is yes unless the goal is to dump the
-     * signing info to the log.
      */
     @Override
     protected void processArchives(List<Path> archives) throws MojoExecutionException {
@@ -344,94 +262,31 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * Will retry signing up to maxTries times if it fails.
-     *
-     * @throws MojoExecutionException if all signing attempts fail
-     */
-    protected void executeJarSigner()
-            throws JavaToolException, MojoExecutionException {
-
-        for (int attempt = 0; attempt < maxTries; attempt++) {
-            // Attempt the signing process
-
-            /*
-            JavaToolResult result = jarSigner.execute(request);
-            int resultCode = result.getExitCode();
-            if (resultCode == 0) {
-                return;
+    @Override
+    protected void processArchive(Path archive)
+        throws MojoExecutionException
+    {
+        if(archive == null) throw new NullPointerException("archive");
+        getLog().info(getMessage("processing", archive));
+        try {
+            Path output = archive.resolveSibling(archive.getFileName() + ".sig");
+            try(ZipFile zipFile = new ZipFile(archive.toFile())) {
+                JarSigner signer = signerBuilder.build();
+                signer.sign(zipFile, output);
             }
-            tsaSelector.registerFailure(); // Could be TSA server problem or something unrelated to TSA
-
-
-            if (attempt < maxTries - 1) { // If not last attempt
-                waitStrategy.waitAfterFailure(attempt, Duration.ofSeconds(maxRetryDelaySeconds));
-                updateJarSignerRequestWithTsa((JarSignerSignRequest) request, tsaSelector.getServer());
-            } else {
-                // Last attempt failed, use this failure as resulting failure
-                throw new MojoExecutionException(
-                        getMessage("failure", getCommandlineInfo(result.getCommandline()), resultCode));
-            }
-
-             */
+            Files.move(output, archive, StandardCopyOption.REPLACE_EXISTING);
+        } catch(Exception e) {
+            throw new MojoExecutionException(e);
         }
     }
 
-
-
-    /** Set current WaitStrategy. Package private for testing. */
-    void setWaitStrategy(WaitStrategy waitStrategy) {
-        this.waitStrategy = waitStrategy;
-    }
-
-    /** Wait/sleep after a signing failure before the next re-try should happen. */
-    @FunctionalInterface
-    interface WaitStrategy {
-        /**
-         * Will be called after a signing failure, if a re-try is about to happen. May as a side effect sleep current
-         * thread for some time.
-         *
-         * @param attempt the attempt number (0 is the first)
-         * @param maxRetryDelay the maximum duration to sleep (may be zero)
-         * @throws MojoExecutionException if the sleep was interrupted
-         */
-        void waitAfterFailure(int attempt, Duration maxRetryDelay) throws MojoExecutionException;
-    }
-
-    private void defaultWaitStrategy(int attempt, Duration maxRetryDelay) throws MojoExecutionException {
-        waitAfterFailure(attempt, maxRetryDelay, Thread::sleep);
-    }
-
-    /** Thread.sleep(long millis) interface to make testing easier */
-    @FunctionalInterface
-    interface Sleeper {
-        void sleep(long millis) throws InterruptedException;
-    }
-
-    /** Package private for testing */
-    void waitAfterFailure(int attempt, Duration maxRetryDelay, Sleeper sleeper) throws MojoExecutionException {
-        // Use attempt as exponent in the exponential function, but limit it to avoid too big values.
-        int exponentAttempt = Math.min(attempt, MAX_WAIT_EXPONENT_ATTEMPT);
-        long delayMillis = (long) (Duration.ofSeconds(1).toMillis() * Math.pow(2, exponentAttempt));
-        delayMillis = Math.min(delayMillis, maxRetryDelay.toMillis());
-        if (delayMillis > 0) {
-            getLog().info("Sleeping after failed attempt for " + (delayMillis / 1000) + " seconds...");
-            try {
-                sleeper.sleep(delayMillis);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new MojoExecutionException("Thread interrupted while waiting after failure", e);
-            }
-        }
-    }
 
 
     KeyStore.PasswordProtection create(String passwd)
+        throws MojoExecutionException
     {
         if(StringUtils.isEmpty(passwd)) return null;
-        return new KeyStore.PasswordProtection(passwd.toCharArray());
+        return new KeyStore.PasswordProtection(decrypt(passwd).toCharArray());
     }
 
     Path toPath(File file)

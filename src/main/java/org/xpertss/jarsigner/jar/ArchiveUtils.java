@@ -293,6 +293,27 @@ public class ArchiveUtils {
       }
    }
 
+   /**
+    * Transforms the given input name, trimming it to 8 characters in
+    * length, and replacing unsupported characters with underscores.
+    *
+    * @param sigfile The input name to clean
+    */
+   public static String cleanSigFileName(String sigfile)
+   {
+      if(sigfile.length() > 8) sigfile = sigfile.substring(0, 8);
+      StringBuilder tmpSigFile = new StringBuilder(sigfile.length());
+      for (int j = 0; j < sigfile.length(); j++) {
+         char c = sigfile.charAt(j);
+         if (!((c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') ||
+                 (c == '-') || (c == '_'))) {
+            // convert illegal characters from the alias to be _'s
+            c = '_';
+         }
+         tmpSigFile.append(c);
+      }
+      return tmpSigFile.toString();
+   }
 
 
    private static void print(PrintOutputStream out, String key, String value)

@@ -156,6 +156,7 @@ public class JavaArchive {
                   manifest = Manifest.parse(source.getInputStream(entry), clean);
                } catch(CorruptManifestException cme) {
                   // TODO Do I just want to let this fail or continue on?
+                  // I'd certainly like to log that we did it
                   manifest = new Manifest();
                   corrupt = true;
                }

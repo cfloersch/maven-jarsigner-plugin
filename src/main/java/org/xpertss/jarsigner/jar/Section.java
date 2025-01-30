@@ -26,7 +26,6 @@ public final class Section {
 
    private Section(String name)
    {
-      ArchiveUtils.validateAttributeName(name);
       this.attributes = new LinkedHashMap<>();
       this.name = Objects.requireNonNull(name, "name");
       this.modified = true;
@@ -34,7 +33,6 @@ public final class Section {
 
    private Section(String name, Map<String,String> attributes)
    {
-      ArchiveUtils.validateAttributeName(name);
       this.name = Objects.requireNonNull(name, "name");
       this.attributes = attributes;
       this.modified = true;

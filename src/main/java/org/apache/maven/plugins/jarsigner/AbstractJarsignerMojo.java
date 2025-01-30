@@ -15,8 +15,8 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.settings.Proxy;
 import org.apache.maven.settings.Settings;
-import org.apache.maven.shared.utils.ReaderFactory;
 import org.apache.maven.shared.utils.StringUtils;
 import org.apache.maven.shared.utils.io.FileUtils;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
@@ -36,16 +36,11 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     private boolean skip;
 
 
-
-
-
     /**
      * POJO containing Security Provider configuration
      */
     @Parameter
     private ProviderSpec[] providers;
-
-
 
 
 
@@ -58,16 +53,17 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     private File archiveDirectory;
 
     /**
-     * The Ant-like inclusion patterns used to select JAR files to process. The patterns must be
-     * relative to the directory given by the parameter {@link #archiveDirectory}. By default, the
-     * pattern <code>&#42;&#42;/&#42;.?ar</code> is used.
+     * The Ant-like inclusion patterns used to select JAR files to process. The patterns
+     * must be relative to the directory given by the parameter {@link #archiveDirectory}.
+     * By default, the pattern <code>&#42;&#42;/&#42;.?ar</code> is used.
      */
     @Parameter
     private String[] includes = {"**/*.?ar"};
 
     /**
-     * The Ant-like exclusion patterns used to exclude JAR files from processing. The patterns must be
-     * relative to the directory given by the parameter {@link #archiveDirectory}.
+     * The Ant-like exclusion patterns used to exclude JAR files from processing. The
+     * patterns must be relative to the directory given by the parameter {@link
+     * #archiveDirectory}.
      */
     @Parameter
     private String[] excludes = {};
@@ -87,24 +83,25 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     private boolean processMainArtifact;
 
     /**
-     * Controls processing of project attachments. If enabled, attached artifacts that are no JAR/ZIP
-     * files will be automatically excluded from processing.
+     * Controls processing of project attachments. If enabled, attached artifacts that
+     * are no JAR/ZIP files will be automatically excluded from processing.
      */
     @Parameter(property = "jarsigner.processAttachedArtifacts", defaultValue = "true")
     private boolean processAttachedArtifacts;
 
 
     /**
-     * A set of artifact classifiers describing the project attachments that should be processed. This
-     * parameter is only relevant if {@link #processAttachedArtifacts} is <code>true</code>. If empty,
-     * all attachments are included.
+     * A set of artifact classifiers describing the project attachments that should be
+     * processed. This parameter is only relevant if {@link #processAttachedArtifacts} is
+     * <code>true</code>. If empty, all attachments are included.
      */
     @Parameter
     private String[] includeClassifiers;
 
     /**
-     * A set of artifact classifiers describing the project attachments that should not be processed. This parameter is
-     * only relevant if {@link #processAttachedArtifacts} is <code>true</code>. If empty, no attachments are excluded.
+     * A set of artifact classifiers describing the project attachments that should not be
+     * processed. This parameter is only relevant if {@link #processAttachedArtifacts} is
+     * <code>true</code>. If empty, no attachments are excluded.
      */
     @Parameter
     private String[] excludeClassifiers;
@@ -231,6 +228,37 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
        throws MojoExecutionException
     {
         // Default implementation does nothing
+
+
+        // Adds proxy information.
+        // TODO What is proper way to do this
+        //  (works for network Signature services like AWS and TSA Impls)
+        if (this.settings != null && this.settings.getActiveProxy() != null) {
+            Proxy proxy = settings.getActiveProxy();
+            if (StringUtils.isNotEmpty(proxy.getHost())) {
+                /*
+                "-J-Dhttp.proxyHost=" + proxy.getHost();
+                "-J-Dhttps.proxyHost=" + proxy.getHost();
+                "-J-Dftp.proxyHost=" + proxy.getHost();
+                 */
+            }
+            if (proxy.getPort() > 0) {
+                /*
+                "-J-Dhttp.proxyPort=" + proxy.getPort();
+                "-J-Dhttps.proxyPort=" + proxy.getPort();
+                "-J-Dftp.proxyPort=" + proxy.getPort();
+                 */
+            }
+
+            if (StringUtils.isNotEmpty(proxy.getNonProxyHosts())) {
+                /*
+                "-J-Dhttp.nonProxyHosts=\"" + proxy.getNonProxyHosts() + "\"";
+                "-J-Dftp.nonProxyHosts=\"" + proxy.getNonProxyHosts() + "\"");
+                 */
+            }
+        }
+
+
     }
 
 
@@ -245,7 +273,7 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     {
         if (this.archive != null) {
             // Only process this, but nothing more
-            return Arrays.asList(this.archive.toPath());
+            return Collections.singletonList(this.archive.toPath());
         }
 
         List<Path> archives = new ArrayList<>();
@@ -333,79 +361,12 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
      * @throws NullPointerException if {@code archive} is {@code null}
      * @throws MojoExecutionException if processing {@code archive} fails
      */
-    protected final void processArchive(final Path archive) throws MojoExecutionException {
-        if (archive == null) {
-            throw new NullPointerException("archive");
-        }
-
-        preProcessArchive(archive);
-
-        getLog().info(getMessage("processing", archive));
-
-        // TODO was used to setup JarSigner
-
-        // Preserves 'file.encoding' the plugin is executed with.
-        final List<String> additionalArguments = new ArrayList<>();
-
-        boolean fileEncodingSeen = false;
-
-        if (!fileEncodingSeen) {
-            additionalArguments.add("-J-Dfile.encoding=" + ReaderFactory.FILE_ENCODING);
-        }
-
-
-
-        // Adds proxy information. TODO Operate on these more directly in TSA Impl
-        if (this.settings != null
-                && this.settings.getActiveProxy() != null
-                && StringUtils.isNotEmpty(this.settings.getActiveProxy().getHost())) {
-            additionalArguments.add(
-                    "-J-Dhttp.proxyHost=" + this.settings.getActiveProxy().getHost());
-            additionalArguments.add(
-                    "-J-Dhttps.proxyHost=" + this.settings.getActiveProxy().getHost());
-            additionalArguments.add(
-                    "-J-Dftp.proxyHost=" + this.settings.getActiveProxy().getHost());
-
-            if (this.settings.getActiveProxy().getPort() > 0) {
-                additionalArguments.add(
-                        "-J-Dhttp.proxyPort=" + this.settings.getActiveProxy().getPort());
-                additionalArguments.add(
-                        "-J-Dhttps.proxyPort=" + this.settings.getActiveProxy().getPort());
-                additionalArguments.add(
-                        "-J-Dftp.proxyPort=" + this.settings.getActiveProxy().getPort());
-            }
-
-            if (StringUtils.isNotEmpty(this.settings.getActiveProxy().getNonProxyHosts())) {
-                additionalArguments.add("-J-Dhttp.nonProxyHosts=\""
-                        + this.settings.getActiveProxy().getNonProxyHosts() + "\"");
-
-                additionalArguments.add("-J-Dftp.nonProxyHosts=\""
-                        + this.settings.getActiveProxy().getNonProxyHosts() + "\"");
-            }
-        }
-
-
-
-        // TODO Special handling for passwords through the Maven Security Dispatcher
-        // What does this really do and do I really need it?
-        //request.setStorepass(decrypt(storepass));
-
-        /*
-        try {
-            // TODO Actually sign jar
-            //executeJarSigner(jarSigner, request);
-        } catch (JavaToolException e) {
-            throw new MojoExecutionException(getMessage("commandLineException", e.getMessage()), e);
-        }
-
-         */
-    }
+    protected abstract void processArchive(final Path archive) throws MojoExecutionException;
 
 
 
 
     
-    // TODO Where does it get encrypted??
     protected String decrypt(String encoded) throws MojoExecutionException {
         try {
             return securityDispatcher.decrypt(encoded);

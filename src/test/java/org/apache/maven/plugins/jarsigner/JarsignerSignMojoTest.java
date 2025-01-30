@@ -30,7 +30,6 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
-import org.xpertss.jarsigner.JarSignerUtil;
 import org.apache.maven.shared.utils.cli.javatool.JavaToolException;
 import org.apache.maven.toolchain.Toolchain;
 import org.apache.maven.toolchain.ToolchainManager;

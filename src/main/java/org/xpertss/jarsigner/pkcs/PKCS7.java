@@ -32,7 +32,7 @@ public class PKCS7 {
     public byte[] getEncoded()
     {
         //https://github.com/JetBrains/jdk8u_jdk/blob/master/src/share/classes/sun/security/pkcs/PKCS7.java#L494
-        return null;
+        return new byte[0];
     }
 
 

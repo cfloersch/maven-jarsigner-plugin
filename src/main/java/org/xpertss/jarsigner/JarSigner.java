@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.jar.JarFile;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -68,14 +69,14 @@ public final class JarSigner {
     private final boolean clean;
 
 
-    private JarSigner(Builder builder)
+    private JarSigner(Builder builder, MessageDigest digest, Signature signature)
     {
         this.privateKey = builder.privateKey;
         this.certPath = builder.certPath;
+        this.digest = digest;
+        this.signature = signature;
 
         this.tsa = builder.tsa;
-        this.digest = builder.digest;
-        this.signature = builder.signature;
         this.signerName = builder.signerName;
         this.clean = builder.clean;
     }
@@ -204,8 +205,11 @@ public final class JarSigner {
         private final PrivateKey privateKey;
         private final CertPath certPath;
 
-        private MessageDigest digest;
-        private Signature signature;
+        private String digestAlg;
+        private String digestProv;
+        private String signatureAlg;
+        private String signatureProv;
+
         private String signerName = "SIGNER";
 
         private boolean clean;
@@ -246,7 +250,10 @@ public final class JarSigner {
         public Builder digestAlgorithm(String algorithm)
             throws NoSuchAlgorithmException
         {
-            digest = MessageDigest.getInstance(algorithm);
+            this.digestAlg = algorithm;
+            if(algorithm != null) {
+                MessageDigest.getInstance(algorithm);
+            }
             return this;
         }
 
@@ -263,7 +270,15 @@ public final class JarSigner {
         public Builder digestAlgorithm(String algorithm, String provider)
             throws NoSuchAlgorithmException, NoSuchProviderException
         {
-            digest = MessageDigest.getInstance(algorithm, provider);
+            this.digestAlg = algorithm;
+            this.digestProv = provider;
+            if(algorithm != null) {
+                if(provider != null) {
+                    MessageDigest.getInstance(algorithm, provider);
+                } else {
+                    MessageDigest.getInstance(algorithm);
+                }
+            }
             return this;
         }
 
@@ -284,7 +299,9 @@ public final class JarSigner {
         public Builder signatureAlgorithm(String algorithm)
             throws NoSuchAlgorithmException
         {
-            signature = Signature.getInstance(algorithm);
+            this.signatureAlg = algorithm;
+            if(algorithm != null)
+                Signature.getInstance(algorithm);
             return this;
         }
 
@@ -305,9 +322,18 @@ public final class JarSigner {
         public Builder signatureAlgorithm(String algorithm, String provider)
             throws NoSuchAlgorithmException, NoSuchProviderException
         {
-            signature = Signature.getInstance(algorithm, provider);
+            this.signatureAlg = algorithm;
+            this.signatureProv = provider;
+            if(algorithm != null) {
+                if(provider != null) {
+                    Signature.getInstance(algorithm, provider);
+                } else {
+                    Signature.getInstance(algorithm);
+                }
+            }
             return this;
         }
+
 
 
         /**
@@ -386,16 +412,9 @@ public final class JarSigner {
 
             name = name.toUpperCase(Locale.ENGLISH);
 
-            for (int j = 0; j < name.length(); j++) {
-                char c = name.charAt(j);
-                if (!
-                   ((c >= 'A' && c <= 'Z') ||
-                      (c >= '0' && c <= '9') ||
-                      (c == '-') ||
-                      (c == '_'))) {
-                    throw new IllegalArgumentException(
-                       "Invalid characters in name");
-                }
+            if(!Pattern.matches("^[a-zA-Z0-9_-]*$", name)) {
+                throw new IllegalArgumentException(
+                        "Invalid characters in name");
             }
             this.signerName = name;
             return this;
@@ -410,25 +429,42 @@ public final class JarSigner {
          * This will utilize default SHA-256 digest algorithm if none was specified.
          * <p/>
          * This will use the appropriate variant of signature for the given identity's
-         * private key and using SHA-256 digest if not explicitly specified.
-         * <p/>
-         * NoSuchAlgorithmException if there is something wrong with the machines JCE
-         * setup and these standard default algorithms cannot be found.
+         * private key and using SHA-256 digest if not explicitly specified. Ex:
+         * {@code SHA256withRSA} if the identity's private key is type RSA.
+         *
+         * @throws IllegalStateException if the signer name has not been defined
+         * @throws NoSuchAlgorithmException if the default digest or signature algorithm
+         *      cannot be found, usually due to an issue with the JCE config
+         * @throws NoSuchProviderException should never be thrown as it would normally
+         *      be caught in the setter methods.
          */
         public JarSigner build()
-           throws NoSuchAlgorithmException
+            throws NoSuchAlgorithmException, NoSuchProviderException
         {
             if(StringUtils.isEmpty(signerName))
                 throw new IllegalStateException("signer name not defined");
-            if(digest == null) {
+
+            MessageDigest digest = null;
+            if(StringUtils.isEmpty(digestAlg)) {
                 digest = MessageDigest.getInstance("SHA-256");
+            } else if(StringUtils.isEmpty(digestProv)) {
+                digest = MessageDigest.getInstance(digestAlg);
+            } else {
+                digest = MessageDigest.getInstance(digestAlg, digestProv);
             }
-            if(signature == null) {
+
+            Signature signature = null;
+            if(StringUtils.isEmpty(signatureAlg)) {
                 String keyalg = privateKey.getAlgorithm();
                 String sigalg = defaultSignatureForKey(keyalg);
                 signature = Signature.getInstance(sigalg);
+            } else if(StringUtils.isEmpty(digestProv)) {
+                signature = Signature.getInstance(signatureAlg);
+            } else {
+                signature = Signature.getInstance(signatureAlg, signatureProv);
             }
-            return new JarSigner(this);
+
+            return new JarSigner(this, digest, signature);
         }
 
 
