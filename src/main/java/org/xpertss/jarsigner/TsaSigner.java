@@ -22,20 +22,30 @@ public final class TsaSigner {
     private final URI uri;
 
     private String policyId;
-    private MessageDigest digestAlgorithm;
+    private String digest;
 
 
     private TsaSigner(Builder builder)
     {
         this.uri = builder.uri;
         this.policyId = builder.policyId;
-        this.digestAlgorithm = builder.digestAlg;
+        this.digest = builder.digestAlg;
     }
 
 
     public URI getUri()
     {
         return uri;
+    }
+
+    public String getDigestAlgorithm()
+    {
+        return (digest == null) ? "SHA-256" : digest;
+    }
+
+    public String getPolicyId()
+    {
+        return policyId;
     }
 
 
@@ -55,7 +65,15 @@ public final class TsaSigner {
     @Override
     public String toString()
     {
-        return "TsaSigner"; // TODO
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.format("uri=%s", uri));
+        if(policyId != null) {
+            builder.append(String.format(", policyId=%s", policyId));
+        }
+        if(digest != null) {
+            builder.append(String.format(", digest=%s", digest));
+        }
+        return builder.insert(0, "[").append("]").toString();
     }
 
 
@@ -63,7 +81,7 @@ public final class TsaSigner {
     public static class Builder {
 
         private URI uri;
-        private MessageDigest digestAlg;
+        private String digestAlg;
         private String policyId;
 
         private Builder(URI uri)
@@ -83,9 +101,8 @@ public final class TsaSigner {
         public Builder digestAlgorithm(String digestAlg)
             throws NoSuchAlgorithmException
         {
-            // TODO Will need to make this just digestAlg so that we can
-            // ensure a nwe instance of MessageDigest for each thread.
-            this.digestAlg = MessageDigest.getInstance(digestAlg);
+            if(digestAlg != null) MessageDigest.getInstance(digestAlg);
+            this.digestAlg = digestAlg;
             return this;
         }
 
@@ -99,9 +116,7 @@ public final class TsaSigner {
 
 
         public TsaSigner build()
-            throws NoSuchAlgorithmException
         {
-            if(digestAlg == null) digestAlg = MessageDigest.getInstance("SHA-256");
             return new TsaSigner(this);
         }
 
