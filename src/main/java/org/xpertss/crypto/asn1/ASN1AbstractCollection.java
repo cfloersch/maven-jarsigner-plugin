@@ -1,10 +1,12 @@
 package org.xpertss.crypto.asn1;
 
-import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -130,7 +132,16 @@ public abstract class ASN1AbstractCollection extends ASN1AbstractType implements
       elementData[size++] = o;
       return true;
    }
-   
+
+   public boolean addAll(ASN1Type ... o)
+   {
+      ensureCapacity(size + o.length);  // Increments modCount!!
+      System.arraycopy(o, 0, elementData, size, o.length);
+      size += o.length;
+      return true;
+   }
+
+
    
    /**
     * Replaces the element at the specified position in this collection 
@@ -194,7 +205,7 @@ public abstract class ASN1AbstractCollection extends ASN1AbstractType implements
     */
    public boolean remove(ASN1Type o) 
    {
-      for(Iterator it = iterator(); it.hasNext(); ) {
+      for(Iterator<ASN1Type> it = iterator(); it.hasNext(); ) {
          if((o == null && it.next() == null) || (it.next().equals(o))) {
             it.remove();
             return true;
@@ -252,7 +263,7 @@ public abstract class ASN1AbstractCollection extends ASN1AbstractType implements
     * 
     * @return an iterator over the elements in this collection in proper sequence.
     */
-   public Iterator iterator() 
+   public Iterator<ASN1Type> iterator()
    {
       return new Itr();
    }
@@ -282,12 +293,12 @@ public abstract class ASN1AbstractCollection extends ASN1AbstractType implements
       if (o == this) return true;
 
       if(o instanceof ASN1Collection) {
-         Iterator e1 = iterator();
-         Iterator e2 = ((ASN1Collection) o).iterator();
+         Iterator<ASN1Type> e1 = iterator();
+         Iterator<ASN1Type> e2 = ((ASN1Collection) o).iterator();
          while(e1.hasNext() && e2.hasNext()) {
             Object o1 = e1.next();
             Object o2 = e2.next();
-            if (!(o1==null ? o2==null : o1.equals(o2))) return false;
+            if (!(Objects.equals(o1, o2))) return false;
          }
          return !(e1.hasNext() || e2.hasNext());
       }
@@ -302,7 +313,7 @@ public abstract class ASN1AbstractCollection extends ASN1AbstractType implements
    public int hashCode() 
    {
       int hashCode = 1;
-      for(Iterator it = iterator(); it.hasNext(); ) {
+      for(Iterator<ASN1Type> it = iterator(); it.hasNext(); ) {
          Object obj = it.next();
          hashCode = 31 * hashCode + (obj == null ? 0 : obj.hashCode());
       }
@@ -316,20 +327,17 @@ public abstract class ASN1AbstractCollection extends ASN1AbstractType implements
    
    
    /**
-    * Returns the Java type that corresponds to this ASN.1 
-    * type. The default implementation returns a 
-    * java.util.List.
+    * Returns the Java type that corresponds to this ASN.1 type. The
+    * default implementation returns a java.util.List.
     *
     * @return The collection used internally for storing
     *   the elements in this constructed ASN.1 type.
     */
    public Object getValue()
    {
-      ArrayList list = new ArrayList(size);
-      for(int i = 0; i < size; i++) {
-         list.add(elementData[i].getValue());
-      }
-      return list;
+      return Stream.of(elementData)
+                     .map(ASN1Type::getValue)
+                     .collect(Collectors.toList());
    }
 
 
@@ -417,7 +425,7 @@ public abstract class ASN1AbstractCollection extends ASN1AbstractType implements
          buf.append(" ").append( ((ASN1CollectionOf) this).getElementType().getName() );
       buf.append(" {\n");
 
-      Iterator it = iterator();
+      Iterator<ASN1Type> it = iterator();
       while (it.hasNext())
          buf.append(it.next()).append("\n");
       buf.append("}");
@@ -453,7 +461,7 @@ public abstract class ASN1AbstractCollection extends ASN1AbstractType implements
    
    
    
-   private class Itr implements Iterator {
+   private class Itr implements Iterator<ASN1Type> {
       /**
        * Index of element to be returned by subsequent call to next.
        */
@@ -478,11 +486,11 @@ public abstract class ASN1AbstractCollection extends ASN1AbstractType implements
          return cursor != size();
       }
 
-      public Object next() 
+      public ASN1Type next()
       {
          checkForComodification();
          try {
-            Object next = ASN1AbstractCollection.this.get(cursor);
+            ASN1Type next = ASN1AbstractCollection.this.get(cursor);
             lastRet = cursor++;
             return next;
          } catch(IndexOutOfBoundsException e) {

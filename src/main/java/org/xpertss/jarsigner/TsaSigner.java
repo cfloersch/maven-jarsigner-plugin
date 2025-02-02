@@ -7,8 +7,7 @@
 package org.xpertss.jarsigner;
 
 
-import org.xpertss.crypto.pkcs.PKCS9Attribute;
-import org.xpertss.crypto.pkcs.PKCS9Attributes;
+
 
 import java.net.URI;
 import java.security.MessageDigest;
@@ -49,7 +48,7 @@ public final class TsaSigner {
         return policyId;
     }
 
-
+    /*
     public PKCS9Attributes stamp(byte[] signature)
     {
         // Create HttpTimestamper
@@ -62,6 +61,8 @@ public final class TsaSigner {
 
         return new PKCS9Attributes(new PKCS9Attribute(PKCS9Attribute.SIGNATURE_TIMESTAMP_TOKEN_STR, tsToken));
     }
+
+     */
 
     @Override
     public String toString()

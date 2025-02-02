@@ -1,4 +1,4 @@
-package org.xpertss.crypto.pkcs;
+package org.xpertss.crypto.pkcs_old;
 
 // https://github.com/JetBrains/jdk8u_jdk/blob/master/src/share/classes/sun/security/pkcs/PKCS9Attributes.java#L42
 public class PKCS9Attributes {

@@ -16,4 +16,14 @@ public class ASN1Exception extends IOException {
       super(message);
    }
 
+   public ASN1Exception(Throwable t)
+   {
+      super(t);
+   }
+
+   public ASN1Exception(String message, Throwable t)
+   {
+      super(message, t);
+   }
+
 }

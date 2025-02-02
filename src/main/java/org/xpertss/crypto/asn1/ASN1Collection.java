@@ -53,7 +53,7 @@ public interface ASN1Collection extends ASN1Type {
     * 
     * @return an <tt>Iterator</tt> over the elements in this collection
     */
-   Iterator iterator();
+   Iterator<ASN1Type> iterator();
    
    
    /**

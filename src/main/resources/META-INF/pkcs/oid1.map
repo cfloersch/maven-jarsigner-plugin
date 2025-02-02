@@ -1,0 +1,6 @@
+# X.509 Certificate
+1.2.840.113549.1.9.22.1 = org.xpertss.crypto.asn1.ASN1OctetString
+
+# X.509 CRL
+1.2.840.113549.1.9.23 = org.xpertss.crypto.asn1.ASN1OctetString
+

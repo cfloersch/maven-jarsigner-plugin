@@ -1,7 +1,6 @@
 package org.xpertss.jarsigner.tsa;
 
 
-import org.xpertss.crypto.pkcs.PKCS7;
 
 import java.io.IOException;
 
@@ -154,7 +153,7 @@ public class TSResponse {
 
     private byte[] encodedTsToken = null;
 
-    private PKCS7 tsToken = null;
+    //private PKCS7SignedData tsToken = null;
 
     private TimestampToken tstInfo;
 
@@ -268,10 +267,13 @@ public class TSResponse {
      *
      * @return If null then no token was received.
      */
-    public PKCS7 getToken()
+    /*
+    public PKCS7SignedData getToken()
     {
         return tsToken;
     }
+    
+     */
 
     public TimestampToken getTimestampToken()
     {

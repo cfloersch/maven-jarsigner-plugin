@@ -1,0 +1,78 @@
+# map names to OIDs
+# Message Digest Algorithms
+algorithm.MD2 =
+algorithm.MD5 =
+
+algorithm.SHA =
+algorithm.SHA1 =
+algorithm.SHA-1 =
+
+algorithm.SHA256 =
+algorithm.SHA-256 =
+
+algorithm.SHA384 =
+algorithm.SHA-384 =
+
+algorithm.SHA512 =
+algorithm.SHA-512 =
+
+algorithm.SHA224 =
+algorithm.SHA-224 =
+
+algorithm.SHA512/224 =
+algorithm.SHA-512/224 =
+
+algorithm.SHA512/256 =
+algorithm.SHA-512/256 =
+
+
+
+# Asymmetric Encryption Algorithms
+algorithm.RSA =
+algorithm.RSASSA-PSS =
+algorithm.RSAES-OAEP =
+
+algorithm.DSA =
+
+algorithm.Diffie-Hellman =
+algorithm.DH =
+
+algorithm.EC =
+algorithm.ECDH =
+
+
+# Signature Algorithms
+algorithm.MD2withRSA =
+algorithm.MD2/RSA =
+
+algorithm.MD5withRSA =
+algorithm.MD5/RSA =
+
+algorithm.SHA1withRSA =
+algorithm.SHA1/RSA =
+
+
+algorithm.SHAwithDSA =
+algorithm.SHA1withDSA =
+algorithm.SHA/DSA =
+algorithm.SHA1/DSA =
+algorithm.SHA-1/DSA =
+algorithm.DSAwithSHA1 =
+algorithm.DSS =
+
+algorithm.SHA224withDSA =
+
+algorithm.SHA256withDSA =
+
+algorithm.SHA224withECDSA =
+
+algorithm.SHA256withECDSA =
+
+algorithm.SHA384withECDSA =
+
+algorithm.SHA512withECDSA =
+
+
+# Symmetric Algorithms
+algorithm.AES =
+

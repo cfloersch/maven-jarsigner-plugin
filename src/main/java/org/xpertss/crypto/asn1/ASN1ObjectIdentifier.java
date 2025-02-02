@@ -9,7 +9,7 @@ import java.io.IOException;
  * type is <code>int[]</code>. Constraints are checked for this type
  * only at the end of method {@link #decode decode}.
  */
-public class ASN1ObjectIdentifier extends ASN1AbstractType implements Cloneable, Comparable {
+public class ASN1ObjectIdentifier extends ASN1AbstractType implements Comparable<ASN1ObjectIdentifier> {
 
    private int[] value = new int[2];
 
@@ -111,7 +111,7 @@ public class ASN1ObjectIdentifier extends ASN1AbstractType implements Cloneable,
    }
 
 
-   public int elementCount()
+   public int size()
    {
       return value.length;
    }
@@ -144,9 +144,8 @@ public class ASN1ObjectIdentifier extends ASN1AbstractType implements Cloneable,
     */
    public String toString()
    {
-      StringBuffer buf = new StringBuffer();
-      for (int i = 0; i < value.length; i++)
-         buf.append(value[i] + ".");
+      StringBuilder buf = new StringBuilder();
+      for(int j : value) buf.append(j).append(".");
       if (value.length > 0)
          buf.setLength(buf.length() - 1);
       return buf.toString();
@@ -186,8 +185,7 @@ public class ASN1ObjectIdentifier extends ASN1AbstractType implements Cloneable,
    public int hashCode()
    {
       int h = 23;
-      for (int i = 0; i < value.length; i++)
-         h = h * 7 + value[i];
+      for(int j : value) h = h * 7 + j;
       return h;
    }
 
@@ -205,7 +203,7 @@ public class ASN1ObjectIdentifier extends ASN1AbstractType implements Cloneable,
     * @exception ClassCastException iff <code>o</code> is not
     *   an ASN1ObjectIdentifier.
     */
-   public int compareTo(Object o)
+   public int compareTo(ASN1ObjectIdentifier o)
    {
       int[] oid = ((ASN1ObjectIdentifier) o).value;
 

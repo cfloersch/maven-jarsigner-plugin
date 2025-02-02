@@ -2,10 +2,7 @@ package org.xpertss.jarsigner.jar;
 
 
 import org.xpertss.jarsigner.TsaSigner;
-import org.xpertss.crypto.pkcs.ContentInfo;
-import org.xpertss.crypto.pkcs.PKCS7;
-import org.xpertss.crypto.pkcs.PKCS9Attributes;
-import org.xpertss.crypto.pkcs.SignerInfo;
+
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -111,14 +108,17 @@ public class SignatureFile {
          signature.update(section.getEncoded());
       }
       byte[] sigbytes = signature.sign();
+      /**
       PKCS9Attributes unauth = (tsaSigner != null) ? tsaSigner.stamp(sigbytes) : null;
       SignerInfo signerInfo = SignerInfo.create(certPath, sigbytes, signature.getAlgorithm(), unauth);
 
       // by default we do not include the SignatureFile in the ContentInfo of the signature block
       ContentInfo contentInfo = ContentInfo.empty();
 
-      PKCS7 pkcs7 = new PKCS7(certPath, contentInfo, signerInfo);
+      PKCS7SignedData pkcs7 = new PKCS7SignedData(certPath, contentInfo, signerInfo);
       return new SignatureBlock(name, algorithmFor(signature.getAlgorithm()), pkcs7.getEncoded());
+       */
+      return null;
    }
 
 
