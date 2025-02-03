@@ -38,7 +38,7 @@ public class Certificates extends ASN1SetOf {
    /**
     * The certificate factory that is used for decoding certificates.
     */
-   protected CertificateFactory factory_;
+   protected CertificateFactory factory;
 
    private final List<X509Certificate> certs = new ArrayList<>();
 
@@ -71,12 +71,12 @@ public class Certificates extends ASN1SetOf {
    {
       super.decode(dec);
 
-      if (factory_ == null) {
+      if (factory == null) {
          try {
-            factory_ = CertificateFactory.getInstance("X.509");
+            factory = CertificateFactory.getInstance("X.509");
          } catch (CertificateException e1) {
             try {
-               factory_ = CertificateFactory.getInstance("X509");
+               factory = CertificateFactory.getInstance("X509");
             } catch (CertificateException e2) {
                throw new ASN1Exception("Unable to load certificate factory");
             }
@@ -86,7 +86,7 @@ public class Certificates extends ASN1SetOf {
       for (int i = size() - 1; i >= 0; i--) {
          ASN1Opaque o = (ASN1Opaque) get(i);
          try(InputStream in = new ByteArrayInputStream(o.getEncoded())) {
-            X509Certificate cert = (X509Certificate) factory_.generateCertificate(in);
+            X509Certificate cert = (X509Certificate) factory.generateCertificate(in);
             certs.set(i, cert);
          } catch(CertificateException e) {
             throw new ASN1Exception(e.getMessage());

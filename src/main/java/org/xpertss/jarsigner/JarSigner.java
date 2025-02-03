@@ -141,7 +141,7 @@ public final class JarSigner {
      * @throws SignatureException if an error occurs generating the signature
      */
     public void sign(ZipFile file, Path output)
-        throws IOException, InvalidKeyException, SignatureException
+       throws IOException, InvalidKeyException, SignatureException, NoSuchAlgorithmException
     {
         JavaArchive archive = JavaArchive.from(file, clean);
         SignatureFile sigfile = archive.generateSignatureFile(signerName, digest);

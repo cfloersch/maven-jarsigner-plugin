@@ -1,17 +1,16 @@
 package org.xpertss.crypto.pkcs.pkcs7;
 
 import org.junit.jupiter.api.Test;
-import org.xpertss.crypto.asn1.ASN1ObjectIdentifier;
-import org.xpertss.crypto.asn1.ASN1Sequence;
-import org.xpertss.crypto.asn1.AsnUtil;
 import org.xpertss.crypto.asn1.DERDecoder;
-import org.xpertss.crypto.pkcs.AlgorithmIdentifier;
 
-import java.io.IOException;
+import javax.security.auth.x500.X500Principal;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.cert.X509Certificate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,36 +23,34 @@ import static org.junit.jupiter.api.Assertions.*;
 class SignedDataTest {
 
    @Test
-   public void basicTest() throws Exception
+   public void testFullDecodeOfJDKJarSignerSignatureBlock() throws Exception
    {
-      /*
-        So looking at the Sun code it would appear that PKCS7 is reading in a ContentInfo
-        instance, and the contentType = SignedData
-       */
-      ASN1ObjectIdentifier ident = new ASN1ObjectIdentifier();
-      SignedData signedData = new SignedData();
+      X500Principal issuer = new X500Principal("CN=DigiCert Trusted G4 Code Signing RSA4096 SHA384 2021 CA1, O=\"DigiCert, Inc.\", C=US");
+      BigInteger serial = new BigInteger("12103026106566223692519392944031625835");
 
-      ASN1Sequence wrapper = new ASN1Sequence(2);
-      wrapper.add(ident);
-      wrapper.add(signedData);
-
+      // Assumption is the SignatureBlock is ContentInfo with a SignedData content item
       ContentInfo content = new ContentInfo();
 
       try(DERDecoder decoder =  new DERDecoder(load("SERVER.RSA"))) {
          content.decode(decoder);
-         System.out.println(content.getContent());
-      } catch(IOException e) {
-         //System.out.println(ident);
-         throw e;
       }
-
-      /*
-      Class 0 (Universal): Bits 8 and 7 are both 0. This class includes common types like INTEGER, BOOLEAN, etc.link
-      Class 1 (Application): Bit 8 is 0, bit 7 is 1. Used for application-specific types.
-      Class 2 (Context-Specific): Bit 8 is 1, bit 7 is 0. Defined within the context of a specific structure.
-      Class 3 (Private): Bits 8 and 7 are both 1. For privately defined types.
-       */
+      SignedData signedData = (SignedData) content.getContent();
+      List<SignerInfo> signers = signedData.getSignerInfos();
+      assertEquals(1, signers.size());
+      SignerInfo signer = signers.get(0);
+      assertEquals(serial, signer.getSerialNumber());
+      assertEquals(issuer, signer.getIssuerDN());
+      List<X509Certificate> chain = signedData.getCertificates().getCertificates(issuer, serial);
+      assertEquals(3, chain.size());
+      assertEquals(serial, chain.get(0).getSerialNumber());
    }
+
+   @Test
+   public void testSigning() throws Exception
+   {
+
+   }
+
 
 
    private static InputStream load(String file) throws Exception

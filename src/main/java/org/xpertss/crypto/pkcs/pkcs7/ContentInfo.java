@@ -29,6 +29,15 @@ import java.io.*;
  */
 public class ContentInfo extends ASN1Sequence {
 
+
+   public static final ASN1ObjectIdentifier DATA_OID = new ASN1ObjectIdentifier(Data.OID);
+   public static final ASN1ObjectIdentifier SIGNED_DATA_OID = new ASN1ObjectIdentifier(SignedData.OID);
+   public static final ASN1ObjectIdentifier ENVELOPED_DATA_OID = new ASN1ObjectIdentifier(EnvelopedData.OID);
+   public static final ASN1ObjectIdentifier SIGNED_AND_EVENLOPED_DATA_OID = new ASN1ObjectIdentifier(SignedAndEnvelopedData.OID);
+   public static final ASN1ObjectIdentifier DIGESTED_DATA_OID = new ASN1ObjectIdentifier(DigestedData.OID);
+   public static final ASN1ObjectIdentifier ENCRYPTED_DATA_OID = new ASN1ObjectIdentifier(EncryptedData.OID);
+
+
    /**
     * The OID defining the contents of this structure.
     */

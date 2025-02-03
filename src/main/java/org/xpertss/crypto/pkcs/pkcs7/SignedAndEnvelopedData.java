@@ -56,12 +56,11 @@ public class SignedAndEnvelopedData extends ASN1Sequence implements ASN1Register
    /**
     * The OID of this structure. PKCS#7 SignedAndEnvelopedData.
     */
-   private static final int[] THIS_OID = {1, 2, 840, 113549, 1, 7, 4};
+   static final int[] OID = {1, 2, 840, 113549, 1, 7, 4};
 
    /**
     * The PKCS#7 Data OID.
     */
-   private static final int[] DATA_OID = {1, 2, 840, 113549, 1, 7, 1};
 
    /**
     * The DigestAlgorithmIdentifiers.
@@ -203,7 +202,7 @@ public class SignedAndEnvelopedData extends ASN1Sequence implements ASN1Register
     */
    public void addRecipient(X509Certificate cert)
       throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException,
-               NoSuchAlgorithmException, InvalidKeyException
+               NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException
    {
       if (!hasRecipient(cert)) {
          recipients_.add(info_.newRecipient(cert));
@@ -377,7 +376,7 @@ public class SignedAndEnvelopedData extends ASN1Sequence implements ASN1Register
     */
    public ASN1ObjectIdentifier getOID()
    {
-      return new ASN1ObjectIdentifier(THIS_OID);
+      return new ASN1ObjectIdentifier(OID);
    }
 
 
@@ -596,7 +595,7 @@ public class SignedAndEnvelopedData extends ASN1Sequence implements ASN1Register
     */
    public void setDataContentType()
    {
-      setContentType(new ASN1ObjectIdentifier(DATA_OID));
+      setContentType(new ASN1ObjectIdentifier(Data.OID));
    }
 
 

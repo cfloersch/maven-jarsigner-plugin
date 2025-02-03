@@ -46,11 +46,6 @@ public class EncryptedContentInfo extends ASN1Sequence {
    public static final int BUFFER_SIZE = 4096;
 
    /**
-    * The OID of PKCS#7 Data
-    */
-   private static final int[] DATA_OID = {1, 2, 840, 113549, 1, 7, 1};
-
-   /**
     * The OID defining the contents of this structure.
     */
    protected ASN1ObjectIdentifier contentType_;
@@ -118,7 +113,7 @@ public class EncryptedContentInfo extends ASN1Sequence {
          throw new NullPointerException("Encryption key is null!");
       if(params == null)
          throw new NullPointerException("AlgorithmParameters are null!");
-      contentType_ = new ASN1ObjectIdentifier(DATA_OID);
+      contentType_ = new ASN1ObjectIdentifier(Data.OID);
       cAlg_ = new AlgorithmIdentifier(params);
       econtent_ = new ASN1TaggedType(0, new ASN1OctetString(), false, true);
 
@@ -146,7 +141,7 @@ public class EncryptedContentInfo extends ASN1Sequence {
          throw new NullPointerException("Encryption key is null!");
       if (bea == null)
          throw new NullPointerException("Encryption algorithm is null!");
-      contentType_ = new ASN1ObjectIdentifier(DATA_OID);
+      contentType_ = new ASN1ObjectIdentifier(Data.OID);
       ASN1ObjectIdentifier beaOid = AlgorithmId.lookup(bea);
       cAlg_ = new AlgorithmIdentifier(beaOid);
       econtent_ = new ASN1TaggedType(0, new ASN1OctetString(), false, true);
@@ -291,10 +286,12 @@ public class EncryptedContentInfo extends ASN1Sequence {
     *
     * @exception IllegalStateException if the BEK is not yet initialised.
     * @exception NoSuchAlgorithmException if some required algorithm is not available.
+    *
+    * TODO Get a grip on the number of exceptions that can be thrown.. most never will be
     */
    public RecipientInfo newRecipient(X509Certificate cert)
       throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException,
-               NoSuchAlgorithmException, InvalidKeyException
+               NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException
    {
       if (bek_ == null) throw new IllegalStateException("Not initialised!");
       return new RecipientInfo(cert, bek_);
@@ -317,7 +314,7 @@ public class EncryptedContentInfo extends ASN1Sequence {
       byte[] b = out.toByteArray();
       out.close();
 
-      contentType_ = new ASN1ObjectIdentifier(DATA_OID);
+      contentType_ = new ASN1ObjectIdentifier(Data.OID);
       econtent_ = new ASN1TaggedType(0, new ASN1OctetString(b), false, false);
 
       clear();
@@ -339,7 +336,7 @@ public class EncryptedContentInfo extends ASN1Sequence {
       throws NoSuchElementException, InvalidAlgorithmParameterException, IllegalBlockSizeException,
                BadPaddingException, InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException
    {
-      if (!Arrays.equals(contentType_.getOID(), DATA_OID)) {
+      if (!Arrays.equals(contentType_.getOID(), Data.OID)) {
          throw new NoSuchElementException("Content type is not Data!");
       }
       byte[] b = getEncryptedContent();

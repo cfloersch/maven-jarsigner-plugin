@@ -1,5 +1,6 @@
 package org.xpertss.crypto.asn1;
 
+import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -327,16 +328,15 @@ public abstract class ASN1AbstractCollection extends ASN1AbstractType implements
    
    
    /**
-    * Returns the Java type that corresponds to this ASN.1 type. The
-    * default implementation returns a java.util.List.
+    * Returns the Java type that corresponds to this ASN.1 type. The default implementation
+    * returns a java.util.List.
     *
-    * @return The collection used internally for storing
-    *   the elements in this constructed ASN.1 type.
+    * @return The collection used internally for storing the elements in this constructed ASN.1
+    *    type.
     */
    public Object getValue()
    {
-      return Stream.of(elementData)
-                     .map(ASN1Type::getValue)
+      return Stream.of(Arrays.copyOf(elementData, size))
                      .collect(Collectors.toList());
    }
 
@@ -356,11 +356,10 @@ public abstract class ASN1AbstractCollection extends ASN1AbstractType implements
 
 
    /**
-    * Reads this collection from the given {@link Decoder decoder}. This 
-    * type is initialised with the decoded data. The components of the 
-    * decoded collection must match the components of this collection. If 
-    * they do then the components are also initialised with the decoded 
-    * values. Otherwise an exception is thrown.
+    * Reads this collection from the given {@link Decoder decoder}. This type is initialised
+    * with the decoded data. The components of the decoded collection must match the components
+    * of this collection. If they do then the components are also initialised with the decoded
+    * values. Otherwise, an exception is thrown.
     *
     * @param dec - The decoder to read from.
     */

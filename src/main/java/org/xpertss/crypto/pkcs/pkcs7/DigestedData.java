@@ -52,7 +52,7 @@ public class DigestedData extends ASN1Sequence implements ASN1RegisteredType {
    /**
     * The OID of this structure. PKCS#7 SignedData.
     */
-   private static final int[] THIS_OID = {1, 2, 840, 113549, 1, 7, 5};
+    static final int[] OID = {1, 2, 840, 113549, 1, 7, 5};
 
    protected AlgorithmIdentifier digestAlg;
 
@@ -116,7 +116,7 @@ public class DigestedData extends ASN1Sequence implements ASN1RegisteredType {
     */
    public ASN1ObjectIdentifier getOID()
    {
-      return new ASN1ObjectIdentifier(THIS_OID);
+      return new ASN1ObjectIdentifier(OID);
    }
 
 

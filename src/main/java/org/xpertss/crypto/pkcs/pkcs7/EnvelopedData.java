@@ -40,7 +40,7 @@ public class EnvelopedData extends ASN1Sequence implements ASN1RegisteredType {
    /**
     * The OID of this structure. PKCS#7 EnvelopedData.
     */
-   private static final int[] THIS_OID = {1, 2, 840, 113549, 1, 7, 3};
+   static final int[] OID = {1, 2, 840, 113549, 1, 7, 3};
 
    /**
     * The version of this structure.
@@ -111,7 +111,7 @@ public class EnvelopedData extends ASN1Sequence implements ASN1RegisteredType {
     */
    public ASN1ObjectIdentifier getOID()
    {
-      return new ASN1ObjectIdentifier(THIS_OID);
+      return new ASN1ObjectIdentifier(OID);
    }
 
 
@@ -196,7 +196,7 @@ public class EnvelopedData extends ASN1Sequence implements ASN1RegisteredType {
     */
    public void addRecipient(X509Certificate cert)
       throws IllegalBlockSizeException, NoSuchPaddingException, BadPaddingException,
-               NoSuchAlgorithmException, InvalidKeyException
+               NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException
    {
       if (!hasRecipient(cert)) {
          recipients.add(info.newRecipient(cert));

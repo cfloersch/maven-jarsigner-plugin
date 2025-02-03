@@ -4,6 +4,8 @@ package org.xpertss.crypto.pkcs.pkcs7;
 import org.xpertss.crypto.asn1.*;
 import org.xpertss.crypto.pkcs.AlgorithmIdentifier;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertPath;
 import java.security.cert.X509Certificate;
 import java.util.*;
 
@@ -51,12 +53,8 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
    /**
     * The OID of this structure. PKCS#7 SignedData.
     */
-   private static final int[] THIS_OID = {1, 2, 840, 113549, 1, 7, 2};
+   static final int[] OID = {1, 2, 840, 113549, 1, 7, 2};
 
-   /**
-    * The PKCS#7 Data OID.
-    */
-   private static final int[] DATA_OID = {1, 2, 840, 113549, 1, 7, 1};
 
    /**
     * The DigestAlgorithmIdentifiers.
@@ -121,7 +119,7 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
     */
    public ASN1ObjectIdentifier getOID()
    {
-      return new ASN1ObjectIdentifier(THIS_OID);
+      return new ASN1ObjectIdentifier(OID);
    }
 
 
@@ -262,6 +260,26 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
    }
 
 
+   /**
+    * Creates, adds, and returns a new {@link SignerInfo} initialized with the given X509
+    * certificate path and signature algorithm. It adds the certificate path to this SignedData
+    * utilizing the first element to initialize the SignerInfo that is added and returned.
+    *
+    *
+    * @param certPath The certificate path identifying the signer
+    * @param algorithm The signature algorithm being used to do the signing
+    * @return The SignerInfo initialized by signer certificate and algorithm
+    * @throws NoSuchAlgorithmException If the specified algorithm is not found in this system
+    */
+   public SignerInfo newSigner(CertPath certPath, String algorithm)
+      throws NoSuchAlgorithmException
+   {
+      X509Certificate cert = (X509Certificate) certPath.getCertificates().get(0);
+      SignerInfo signerInfo = new SignerInfo(cert, algorithm);
+      addSignerInfo(signerInfo);
+      getCertificates().addCertPath(certPath);
+      return signerInfo;
+   }
 
 
    /**

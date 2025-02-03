@@ -1,11 +1,17 @@
 package org.xpertss.jarsigner.jar;
 
 
+import org.xpertss.crypto.asn1.DEREncoder;
+import org.xpertss.crypto.pkcs.pkcs7.ContentInfo;
+import org.xpertss.crypto.pkcs.pkcs7.SignedData;
+import org.xpertss.crypto.pkcs.pkcs7.SignerInfo;
 import org.xpertss.jarsigner.TsaSigner;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.cert.CertPath;
@@ -84,6 +90,7 @@ public class SignatureFile {
       return main;
    }
 
+   
    public Section getSection(String name)
    {
       return sections.get(name);
@@ -101,24 +108,35 @@ public class SignatureFile {
 
 
    public SignatureBlock generateBlock(Signature signature, CertPath certPath, TsaSigner tsaSigner)
-      throws SignatureException
+      throws SignatureException, NoSuchAlgorithmException
    {
       signature.update(main.getEncoded());
       for(Section section : sections.values()) {
          signature.update(section.getEncoded());
       }
       byte[] sigbytes = signature.sign();
-      /**
-      PKCS9Attributes unauth = (tsaSigner != null) ? tsaSigner.stamp(sigbytes) : null;
-      SignerInfo signerInfo = SignerInfo.create(certPath, sigbytes, signature.getAlgorithm(), unauth);
 
-      // by default we do not include the SignatureFile in the ContentInfo of the signature block
-      ContentInfo contentInfo = ContentInfo.empty();
 
-      PKCS7SignedData pkcs7 = new PKCS7SignedData(certPath, contentInfo, signerInfo);
-      return new SignatureBlock(name, algorithmFor(signature.getAlgorithm()), pkcs7.getEncoded());
-       */
-      return null;
+      SignedData signedData = new SignedData();
+      signedData.setContentType(ContentInfo.DATA_OID);
+      SignerInfo signer = signedData.newSigner(certPath, signature.getAlgorithm());
+      signer.setEncryptedDigest(sigbytes);
+
+      // TODO Create Unauthenticated Attribute for tsaSigner Timestamp
+      // Attributes unauth = (tsaSigner != null) ? tsaSigner.stamp(sigbytes) : null;
+      // signer.addUnauthenticatedAttribute(unauth);
+
+
+      ContentInfo content = new ContentInfo(signedData);
+
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      try(DEREncoder encoder = new DEREncoder(baos)) {
+         content.encode(encoder);
+      } catch(IOException e) {
+         throw new SignatureException(e);
+      }
+
+      return new SignatureBlock(name, algorithmFor(signature.getAlgorithm()), baos.toByteArray());
    }
 
 

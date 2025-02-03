@@ -26,7 +26,7 @@ public class EncryptedData extends ASN1Sequence implements ASN1RegisteredType {
    /**
     * The OID of this structure. PKCS#7 Data
     */
-   private static final int[] oid_ = {1, 2, 840, 113549, 1, 7, 6};
+   static final int[] OID = {1, 2, 840, 113549, 1, 7, 6};
 
    /**
     * the verson of this syntax
@@ -98,7 +98,7 @@ public class EncryptedData extends ASN1Sequence implements ASN1RegisteredType {
 
    public ASN1ObjectIdentifier getOID()
    {
-      return new ASN1ObjectIdentifier(oid_);
+      return new ASN1ObjectIdentifier(OID);
    }
 
 

@@ -4,7 +4,6 @@ import org.xpertss.crypto.asn1.*;
 import org.xpertss.crypto.pkcs.AlgorithmId;
 import org.xpertss.crypto.pkcs.AlgorithmIdentifier;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.security.AlgorithmParameters;
 import java.security.InvalidAlgorithmParameterException;
@@ -59,7 +58,7 @@ public class RecipientInfo extends ASN1Sequence {
    /**
     * The version number of this RecipientInfo.
     */
-   protected ASN1Integer version_;
+   protected ASN1Integer version;
 
    /**
     * The issuer name serial number.
@@ -69,12 +68,12 @@ public class RecipientInfo extends ASN1Sequence {
    /**
     * The {@link AlgorithmIdentifier KeyEncryptionAlgorithmIdentifier}.
     */
-   protected AlgorithmIdentifier cAlg_;
+   protected AlgorithmIdentifier encAlg;
 
    /**
     * The encrypted key.
     */
-   protected ASN1OctetString ekey_;
+   protected ASN1OctetString encryptedKey;
 
 
    /**
@@ -87,20 +86,20 @@ public class RecipientInfo extends ASN1Sequence {
       ASN1Sequence seq;
 
       /* Global structure and Version */
-      version_ = new ASN1Integer(0);
-      add(version_);
+      version = new ASN1Integer(0);
+      add(version);
 
       /* Issuer and serial number */
       identity = new IssuerAndSerialNumber();
       add(identity);
 
       /* Key Encryption Algorithm Identifier */
-      cAlg_ = new AlgorithmIdentifier();
-      add(cAlg_);
+      encAlg = new AlgorithmIdentifier();
+      add(encAlg);
 
       /* Encrypted Key */
-      ekey_ = new ASN1OctetString();
-      add(ekey_);
+      encryptedKey = new ASN1OctetString();
+      add(encryptedKey);
    }
 
 
@@ -113,15 +112,15 @@ public class RecipientInfo extends ASN1Sequence {
     */
    public RecipientInfo(X509Certificate cert, Key bek)
       throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException,
-               NoSuchPaddingException, NoSuchAlgorithmException
+               NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException
    {
       super(4);
 
       if (cert == null || bek == null)
          throw new NullPointerException("cert or bulk encryption key");
       /* Global structure and Version */
-      version_ = new ASN1Integer(0);
-      add(version_);
+      version = new ASN1Integer(0);
+      add(version);
 
       /* Issuer and serial number */
       identity = new IssuerAndSerialNumber();
@@ -130,20 +129,27 @@ public class RecipientInfo extends ASN1Sequence {
       /* Extract algorithm identifier from the public key */
       PublicKey pub = cert.getPublicKey();
 
-      // TODO Is this the correct algId
-      // Are there AlgorithmParameters???
-      ASN1ObjectIdentifier algId = AlgorithmId.lookup(pub.getAlgorithm());
-      AlgorithmIdentifier aid = new AlgorithmIdentifier(algId);
-      // TODO check if public key is keyUsage encryption?
 
+      AlgorithmIdentifier aid = null;
+
+      // TODO check if public key is keyUsage encryption?
 
       /* Initialise the cipher instance */
       Cipher cipher = Cipher.getInstance(pub.getAlgorithm());
       cipher.init(Cipher.ENCRYPT_MODE, pub);
 
+      // TODO Do we need to capture the algorithm parameters and use them to create the identifier?
+      AlgorithmParameters params = cipher.getParameters();
+      if(params != null) {
+         aid = new AlgorithmIdentifier(params);
+      } else {
+         ASN1ObjectIdentifier algId = AlgorithmId.lookup(pub.getAlgorithm());
+         aid = new AlgorithmIdentifier(algId);
+      }
+
       /* Key Encryption Algorithm Identifier */
-      cAlg_ = (AlgorithmIdentifier) aid.copy();
-      add(cAlg_);
+      encAlg = (AlgorithmIdentifier) aid.copy();
+      add(encAlg);
 
       /* Encrypt the bulk encryption key. Better safe than
        * sorry - we check for bad return values from both
@@ -158,9 +164,9 @@ public class RecipientInfo extends ASN1Sequence {
 
       if (b == null || b.length == 0)
          throw new InvalidKeyException("Cipher returned no data!");
-      ekey_ = new ASN1OctetString(b);
+      encryptedKey = new ASN1OctetString(b);
 
-      add(ekey_);
+      add(encryptedKey);
    }
 
 
@@ -172,7 +178,7 @@ public class RecipientInfo extends ASN1Sequence {
     */
    public byte[] getEncryptedKey()
    {
-      return (byte[]) ekey_.getByteArray().clone();
+      return (byte[]) encryptedKey.getByteArray().clone();
    }
 
 
@@ -189,8 +195,8 @@ public class RecipientInfo extends ASN1Sequence {
    public SecretKey getSecretKey(PrivateKey kdk, String bekalg)
       throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException, NoSuchAlgorithmException
    {
-      AlgorithmParameters params = cAlg_.getParameters();
-      String alg = cAlg_.getAlgorithmOID().toString();
+      AlgorithmParameters params = encAlg.getParameters();
+      String alg = encAlg.getAlgorithmOID().toString();
       Cipher cipher = Cipher.getInstance(alg);
 
       if (params == null) {
@@ -198,7 +204,7 @@ public class RecipientInfo extends ASN1Sequence {
       } else {
          cipher.init(Cipher.DECRYPT_MODE, kdk, params);
       }
-      byte[] b = ekey_.getByteArray();
+      byte[] b = encryptedKey.getByteArray();
       if (b.length == 0)
          throw new InvalidKeyException("No encrypted key available!");
       b = cipher.doFinal(b);
@@ -240,7 +246,7 @@ public class RecipientInfo extends ASN1Sequence {
     */
    public AlgorithmIdentifier getAlgorithmIdentifier()
    {
-      return cAlg_;
+      return encAlg;
    }
 
 
@@ -256,7 +262,7 @@ public class RecipientInfo extends ASN1Sequence {
       String alg;
 
       try {
-         alg = AlgorithmId.lookup(cAlg_.getAlgorithmOID());
+         alg = AlgorithmId.lookup(encAlg.getAlgorithmOID());
       } catch (Exception e) {
          alg = "<unknown>";
       }
@@ -264,11 +270,11 @@ public class RecipientInfo extends ASN1Sequence {
       StringBuffer buf = new StringBuffer();
 
       buf.append("PKCS#7 RecipientInfo {").append("\n")
-         .append("Version   : ").append(version_.toString()).append("\n")
+         .append("Version   : ").append(version.toString()).append("\n")
          .append("Issuer    : ").append(identity.getIssuerDN().getName()).append("\n")
          .append("Serial    : ").append(identity.getSerialNumber().toString()).append("\n")
          .append("Algorithm : ").append(alg).append("\n")
-         .append("Enc. DEK  : ").append(ekey_.toString()).append("\n}");
+         .append("Enc. DEK  : ").append(encryptedKey.toString()).append("\n}");
 
       return buf.toString();
    }

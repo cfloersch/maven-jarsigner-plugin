@@ -61,27 +61,27 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType, Sign
    /**
     * The DigestAlgorithmIdentifiers.
     */
-   protected ASN1Set digestID_;
+   protected ASN1Set digestID;
 
    /**
     * The X.509 certificates.
     */
-   protected Certificates certs_;
+   protected Certificates certs;
 
    /**
     * The {@link SignerInfo SignerInfos}.
     */
-   protected ASN1SetOf infos_;
+   protected ASN1SetOf signers;
 
    /**
     * The revocation lists.
     */
-   protected ASN1Set crls_;
+   protected ASN1Set crls;
 
    /**
     * The {@link ContentInfo ContentInfo}.
     */
-   protected ContentInfo content_;
+   protected ContentInfo content;
 
 
 
@@ -94,20 +94,20 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType, Sign
 
       add(new ASN1Integer(1)); // version
 
-      digestID_ = new ASN1SetOf(AlgorithmIdentifier.class);
-      add(digestID_);
+      digestID = new ASN1SetOf(AlgorithmIdentifier.class);
+      add(digestID);
 
-      content_ = new ContentInfo();
-      add(content_);
+      content = new ContentInfo();
+      add(content);
 
-      certs_ = new Certificates();
-      add(new ASN1TaggedType(0, certs_, false, true));
+      certs = new Certificates();
+      add(new ASN1TaggedType(0, certs, false, true));
 
-      crls_ = new ASN1SetOf(ASN1Opaque.class);
-      add(new ASN1TaggedType(1, crls_, false, true));
+      crls = new ASN1SetOf(ASN1Opaque.class);
+      add(new ASN1TaggedType(1, crls, false, true));
 
-      infos_ = new ASN1SetOf(SignerInfo.class);
-      add(infos_);
+      signers = new ASN1SetOf(SignerInfo.class);
+      add(signers);
    }
 
 
@@ -115,74 +115,60 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType, Sign
 
 
    /**
-    * This method retrieves the content of this structure,
-    * consisting of the ASN.1 type embedded in the {@link
-    * #content_ ContentInfo} structure. Beware, the content
-    * type might be faked by adversaries, if it is not of
-    * type {@link Data Data}. If it is not data then the
-    * authenticated content type must be given as an
-    * authenticated attribute in all the {@link SignerInfo
+    * This method retrieves the content of this structure, consisting of the ASN.1 type
+    * embedded in the {@link ContentInfo} structure. Beware, the content type might be faked
+    * by adversaries, if it is not of type {@link Data}. If it is not data then the
+    * authenticated content type must be given as an authenticated attribute in all the {@link
     * SignerInfo} structures.
     *
     * @return The contents octets.
     */
    public ASN1Type getContent()
    {
-      return content_.getContent();
+      return content.getContent();
    }
 
 
    /**
-    * Sets the content type to the given OID. The content
-    * itself is set to <code>null</code>. This method should
-    * be called if the content to be signed is external (not
-    * inserted into this structure).<p>
-    *
-    * If this structure is signed with the {@link Signer
-    * Signer} then the {@link SignerInfo SignerInfo} that
-    * is passed to it must have either:
+    * Sets the content type to the given OID. The content itself is set to <code>null</code>.
+    * This method should be called if the content to be signed is external (not inserted into
+    * this structure).
+    * <p/>
+    * If this structure is signed with the {@link Signer} then the {@link SignerInfo} that is
+    * passed to it must have either:
     * <ul>
     * <li> no authenticated content type attribute, or
-    * <li> the authenticated content type attribute must
-    *   match <code>oid</code>.
+    * <li> the authenticated content type attribute must match <code>oid</code>.
     * </ul>
-    * In the first case, a new authenticated content type
-    * attribute with <code>oid</code> as its value will be
-    * added to the <code>SignerInfo</code> automatically
-    * (if the content type is not {@link Data Data} or at
-    * least one other authenticated attribute is already
-    * in that <code>SignerInfo</code>.
+    * In the first case, a new authenticated content type attribute with <code>oid</code> as
+    * its value will be added to the <code>SignerInfo</code> automatically (if the content type
+    * is not {@link Data} or at least one other authenticated attribute is already in that
+    * <code>SignerInfo</code>.
     *
-    * @param oid The OID that identifies the content
-    *   type of the signed data.
-    * @exception NullPointerException if <code>oid</code>
-    *   is <code>null</code>.
+    * @param oid The OID that identifies the content type of the signed data.
+    * @exception NullPointerException if <code>oid</code> is <code>null</code>.
     */
    public void setContentType(ASN1ObjectIdentifier oid)
    {
-      if (oid == null)
-         throw new NullPointerException("OID");
-      content_.setContent(oid);
+      if (oid == null) throw new NullPointerException("OID");
+      content.setContent(oid);
    }
 
 
    /**
-    * Sets the content to be embedded into this instance's
-    * <code>ContentInfo</code>.
+    * Sets the content to be embedded into this instance's <code>ContentInfo</code>.
     *
     * @param t The actual content.
     */
    public void setContent(ASN1RegisteredType t)
    {
-      if (t == null)
-         throw new NullPointerException("Need content!");
-      content_.setContent(t);
+      if (t == null) throw new NullPointerException("Need content!");
+      content.setContent(t);
    }
 
 
    /**
-    * Sets the content to be embedded into this instance's
-    * <code>ContentInfo</code>.
+    * Sets the content to be embedded into this instance's <code>ContentInfo</code>.
     *
     * @param oid The object identifier of the content.
     * @param t The actual content.
@@ -191,20 +177,19 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType, Sign
    {
       if (oid == null || t == null)
          throw new NullPointerException("Need an OID and content!");
-      content_.setContent(oid, t);
+      content.setContent(oid, t);
    }
 
 
    /**
-    * Returns the content type of the content embedded
-    * in this structure. The returned OID is a copy, no side
-    * effects are caused by modifying it.
+    * Returns the content type of the content embedded in this structure. The returned OID is
+    * a copy, no side effects are caused by modifying it.
     *
     * @return The content type of this structure's payload.
     */
    public ASN1ObjectIdentifier getContentType()
    {
-      return (ASN1ObjectIdentifier) content_.getContentType().copy();
+      return (ASN1ObjectIdentifier) content.getContentType().copy();
    }
 
 
@@ -215,8 +200,8 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType, Sign
 
 
    /**
-    * Returns the OID of this structure. The returned OID is
-    * a copy, no side effects are caused by modifying it.
+    * Returns the OID of this structure. The returned OID is a copy, no side effects are
+    * caused by modifying it.
     *
     * @return The OID.
     */
@@ -235,31 +220,27 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType, Sign
     */
    public Certificates getCertificates()
    {
-      return certs_;
+      return certs;
    }
 
 
    /**
-    * This method returns the {@link SignerInfo
-    * SignerInfos} of the signers of this structure.
+    * This method returns the {@link SignerInfo} of the signers of this structure.
     *
     * @return The unmodifiable view of the list of SignerInfos.
     */
    public List getSignerInfos()
    {
       // TODO Optimize this and generify it
-      return (List) infos_.getValue();
+      return (List) signers.getValue();
    }
 
 
    /**
-    * Returns the <code>SignerInfo</code> that matches the
-    * given certificate.
+    * Returns the <code>SignerInfo</code> that matches the given certificate.
     *
-    * @param cert The certificate matching the <code>SignerInfo
-    *   </code> to be retrieved.
-    * @return The <code>SignerInfo</code> or <code>null</code>
-    *   if no matching one is found.
+    * @param cert The certificate matching the <code>SignerInfo</code> to be retrieved.
+    * @return The <code>SignerInfo</code> or <code>null</code> if no matching one is found.
     */
    public SignerInfo getSignerInfo(X509Certificate cert)
    {
@@ -284,24 +265,18 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType, Sign
 
 
    /**
-    * Adds the given {@link SignerInfo SignerInfo} to this
-    * instance. This method should be used rarely. In general,
-    * the signing methods take care of adding <code>SignerInfo
-    * </code> instances. Explicit adding of a <code>SignerInfo
-    * </code> is provided only in those cases where fine control
-    * of the creation of signatures is required.
+    * Adds the given {@link SignerInfo} to this instance. This method should be used rarely. In
+    * general, the signing methods take care of adding <code>SignerInfo</code> instances.
+    * Explicit adding of a <code>SignerInfo</code> is provided only in those cases where fine
+    * control of the creation of signatures is required.
     *
     * @param info The <code>SignerInfo</code> to add.
-    * @exception NullPointerException if the <code>info</code>
-    *   is <code>null</code>.
+    * @exception NullPointerException if the <code>info</code> is <code>null</code>.
     */
    public void addSignerInfo(SignerInfo info)
    {
-      Iterator i;
-
-      if (info == null)
-         throw new NullPointerException("Need a SignerInfo!");
-      infos_.add(info);
+      if (info == null) throw new NullPointerException("Need a SignerInfo!");
+      signers.add(info);
 
       /* We also have to add the DigestAlgorithmIdentifier
        * of the SignerInfo to the list of digest algs if it
@@ -309,11 +284,11 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType, Sign
        */
       AlgorithmIdentifier idn = info.getDigestAlgorithmIdentifier();
 
-      for (i = digestID_.iterator(); i.hasNext();) {
+      for (Iterator i = digestID.iterator(); i.hasNext();) {
          AlgorithmIdentifier idv = (AlgorithmIdentifier) i.next();
          if (idn.equals(idv)) return;
       }
-      digestID_.add(idn);
+      digestID.add(idn);
    }
 
 
