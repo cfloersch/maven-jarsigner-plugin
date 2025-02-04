@@ -194,6 +194,8 @@ public class AlgorithmId {
    /** Collects the algorithm names from the installed providers. */
    private static Map<String,ASN1ObjectIdentifier> computeOidTable()
    {
+      // TODO As much as I might want to use the Provider model below it seems it is ill equipped.
+      //  Move to a oid map file which will allow me to be much more precise but limited to know things
       Map<String,ASN1ObjectIdentifier> tab = new HashMap<>();
       Pattern pattern = Pattern.compile("ALG\\.ALIAS\\.\\w+\\.OID\\.(\\d+(?:\\.\\d+)+)");
       for (Provider provider : Security.getProviders()) {
@@ -202,8 +204,11 @@ public class AlgorithmId {
             String stdAlgName = provider.getProperty((String)key);
             Matcher matcher = pattern.matcher(alias);
             if (matcher.matches()) {
-               tab.computeIfAbsent(stdAlgName.toUpperCase(Locale.ENGLISH),
-                        s -> new ASN1ObjectIdentifier(matcher.group(1)));
+               // Short name is required for SHA256 to be found
+               String shortAlgName = stdAlgName.replace("-", "").replace("_", "");
+               ASN1ObjectIdentifier algIdent = new ASN1ObjectIdentifier(matcher.group(1));
+               tab.putIfAbsent(stdAlgName.toUpperCase(Locale.ENGLISH), algIdent);
+               tab.putIfAbsent(shortAlgName.toUpperCase(Locale.ENGLISH), algIdent);
             }
          }
       }
@@ -211,7 +216,7 @@ public class AlgorithmId {
       tab.put("RSA", new ASN1ObjectIdentifier("1.2.840.113549.1.1.1"));
       tab.put("RSASSA-PSS", new ASN1ObjectIdentifier("1.2.840.113549.1.1.10"));
       tab.put("RSAES-OAEP", new ASN1ObjectIdentifier("1.2.840.113549.1.1.7"));
-      tab.put("EC", new ASN1ObjectIdentifier(" 1.2.840.10045.2.1"));
+      tab.put("EC", new ASN1ObjectIdentifier("1.2.840.10045.2.1"));
       return tab;
    }
 

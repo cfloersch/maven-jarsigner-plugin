@@ -10,12 +10,12 @@ import org.xpertss.crypto.asn1.Encoder;
 import javax.security.auth.x500.X500Principal;
 import java.io.*;
 import java.security.cert.CertPath;
-import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.*;
 import java.math.*;
+import java.util.stream.Collectors;
 
 /**
  * Represents a set of certificates. The ASN.1 structure of this type is:
@@ -62,6 +62,8 @@ public class Certificates extends ASN1SetOf {
     * @param cert The certificate to add.
     * @return <code>true</code> if the certificate was added and <code>false</code> if it
     *    already existed.
+    *
+    * TODO Probably don't need this one as certChain and certPath should be better alternatives
     */
    public boolean addCertificate(X509Certificate cert)
    {
@@ -70,6 +72,7 @@ public class Certificates extends ASN1SetOf {
 
       if (getCertificate(issuer, serial) == null) {
          certs.add(cert);
+         setOptional(false);
          return true;
       }
       return false;
@@ -83,7 +86,7 @@ public class Certificates extends ASN1SetOf {
     * 
     * @param chain The chain of certificates to add
     */
-   public void addChain(X509Certificate ... chain)
+   public void addCertChain(X509Certificate ... chain)
    {
       for(int i = chain.length - 1; i >= 0; i--) {
          X509Certificate cert = chain[i];
@@ -93,6 +96,7 @@ public class Certificates extends ASN1SetOf {
             certs.add(cert);
          }
       }
+      setOptional(certs.isEmpty());
    }
 
    /**
@@ -108,18 +112,19 @@ public class Certificates extends ASN1SetOf {
     */
    public void addCertPath(CertPath certPath)
    {
-      List<? extends Certificate> chain = certPath.getCertificates();
-      for(int i = chain.size() - 1; i >= 0; i--) {
-         X509Certificate cert = (X509Certificate) chain.get(i);
+      List<X509Certificate> chain = certPath.getCertificates().stream()
+                                       .map(cert -> (X509Certificate) cert)
+                                       .collect(Collectors.toList());
+      for(X509Certificate cert : chain) {
          X500Principal issuer = cert.getIssuerX500Principal();
          BigInteger serial = cert.getSerialNumber();
          if (getCertificate(issuer, serial) == null) {
             certs.add(cert);
          }
       }
+      setOptional(certs.isEmpty());
    }
    
-
 
 
 
@@ -296,12 +301,14 @@ public class Certificates extends ASN1SetOf {
    public void encode(Encoder enc)
       throws IOException
    {
-      clear();
-      for(X509Certificate cert : certs) {
-         try {
-            add(new ASN1Opaque(cert.getEncoded()));
-         } catch(CertificateException e) {
-            throw new ASN1Exception(e);
+      if(!isOptional()) {
+         clear();
+         for(X509Certificate cert : certs) {
+            try {
+               add(new ASN1Opaque(cert.getEncoded()));
+            } catch(CertificateException e) {
+               throw new ASN1Exception(e);
+            }
          }
       }
       super.encode(enc);

@@ -119,7 +119,7 @@ public class SignatureFile {
 
       SignedData signedData = new SignedData();
       signedData.setContentType(ContentInfo.DATA_OID);
-      SignerInfo signer = signedData.newSigner(certPath, signature.getAlgorithm());
+      SignerInfo signer = signedData.newSigner(signature.getAlgorithm(), certPath);
       signer.setEncryptedDigest(sigbytes);
 
       // TODO Create Unauthenticated Attribute for tsaSigner Timestamp

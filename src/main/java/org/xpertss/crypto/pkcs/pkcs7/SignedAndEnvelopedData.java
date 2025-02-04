@@ -169,6 +169,8 @@ public class SignedAndEnvelopedData extends ASN1Sequence implements ASN1Register
    }
 
 
+
+   // TODO Look at SignedData and impl certificates like that
    /**
     * Adds the given certificate to this structure if none
     * with the same issuer and serial number already exists.

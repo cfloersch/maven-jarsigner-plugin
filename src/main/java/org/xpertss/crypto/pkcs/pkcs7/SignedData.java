@@ -4,6 +4,8 @@ package org.xpertss.crypto.pkcs.pkcs7;
 import org.xpertss.crypto.asn1.*;
 import org.xpertss.crypto.pkcs.AlgorithmIdentifier;
 
+import javax.security.auth.x500.X500Principal;
+import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertPath;
 import java.security.cert.X509Certificate;
@@ -219,14 +221,41 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
 
 
    /**
-    * This method returns the certificates stored in this structure.
+    * Returns the certificate with the given issuer and serial number if one exists of {@code
+    * null} if it does not exist.
     *
-    * @return The set of Certificates
+    * @param issuer The issuer of the certificate
+    * @param serial The serial number of the desired certificate
     */
-   public Certificates getCertificates()
+   public X509Certificate getCertificate(X500Principal issuer, BigInteger serial)
    {
-      return certs;
+      return certs.getCertificate(issuer, serial);
    }
+
+   /**
+    * This will return the certificate chain with the signer cert first followed by the
+    * remainder of the chain. This will return {@code null} if a certificate with the
+    * given issuer and serial number is not found.
+    *
+    * @param issuer The issuer of the subject certificate
+    * @param serial The serial number of the subject certificate
+    */
+   public List<X509Certificate> getCertificates(X500Principal issuer, BigInteger serial)
+   {
+      return certs.getCertificates(issuer, serial);
+   }
+
+   /**
+    * Returns all certificates in this collection as an unmodifiable List.
+    */
+   public List<X509Certificate> getCertificates()
+   {
+      return certs.getCertificates();
+   }
+
+
+
+
 
 
 
@@ -263,23 +292,56 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
    /**
     * Creates, adds, and returns a new {@link SignerInfo} initialized with the given X509
     * certificate path and signature algorithm. It adds the certificate path to this SignedData
-    * utilizing the first element to initialize the SignerInfo that is added and returned.
+    * utilizing the last element to initialize the SignerInfo that is added and returned.
     *
     *
-    * @param certPath The certificate path identifying the signer
     * @param algorithm The signature algorithm being used to do the signing
+    * @param certPath The certificate path identifying the signer
     * @return The SignerInfo initialized by signer certificate and algorithm
     * @throws NoSuchAlgorithmException If the specified algorithm is not found in this system
     */
-   public SignerInfo newSigner(CertPath certPath, String algorithm)
+   public SignerInfo newSigner(String algorithm, CertPath certPath)
       throws NoSuchAlgorithmException
    {
-      X509Certificate cert = (X509Certificate) certPath.getCertificates().get(0);
-      SignerInfo signerInfo = new SignerInfo(cert, algorithm);
+
+      Optional<X509Certificate> last = certPath.getCertificates().stream()
+                                          .map(certificate -> (X509Certificate) certificate)
+                                          .reduce((first, second) -> second);
+
+
+      SignerInfo signerInfo = new SignerInfo(last.get(), algorithm);
       addSignerInfo(signerInfo);
-      getCertificates().addCertPath(certPath);
+      certs.addCertPath(certPath);
+      get(3).setOptional(false);
       return signerInfo;
    }
+
+
+   /**
+    * Creates, adds, and returns a new {@link SignerInfo} initialized with the given X509
+    * certificate chain and signature algorithm. It adds the certificate chain to this
+    * SignedData utilizing the first element to initialize the SignerInfo that is added and
+    * returned.
+    *
+    *
+    * @param algorithm The signature algorithm being used to do the signing
+    * @param certChain The certificate chain identifying the signer
+    * @return The SignerInfo initialized by signer certificate and algorithm
+    * @throws NoSuchAlgorithmException If the specified algorithm is not found in this system
+    */
+   public SignerInfo newSigner(String algorithm, X509Certificate ... certChain)
+      throws NoSuchAlgorithmException
+   {
+      Optional<X509Certificate> first = Arrays.stream(certChain).findFirst();
+      SignerInfo signerInfo = new SignerInfo(first.get(), algorithm);
+      addSignerInfo(signerInfo);
+      certs.addCertChain(certChain);
+      get(3).setOptional(false);
+      return signerInfo;
+   }
+
+
+
 
 
    /**
@@ -291,7 +353,7 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
     * @param info The <code>SignerInfo</code> to add.
     * @exception NullPointerException if the <code>info</code> is <code>null</code>.
     */
-   public void addSignerInfo(SignerInfo info)
+   private void addSignerInfo(SignerInfo info)
    {
       Iterator i;
 
