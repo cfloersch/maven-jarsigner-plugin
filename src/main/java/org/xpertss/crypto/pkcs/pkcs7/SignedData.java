@@ -293,6 +293,9 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
     * Creates, adds, and returns a new {@link SignerInfo} initialized with the given X509
     * certificate path and signature algorithm. It adds the certificate path to this SignedData
     * utilizing the last element to initialize the SignerInfo that is added and returned.
+    * <p/>
+    * A CertPath holds its chain in reverse order where the most trusted cert is first and the
+    * signer cert is last.
     *
     *
     * @param algorithm The signature algorithm being used to do the signing
@@ -322,6 +325,9 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
     * certificate chain and signature algorithm. It adds the certificate chain to this
     * SignedData utilizing the first element to initialize the SignerInfo that is added and
     * returned.
+    * <p/>
+    * A CertChain holds its chain in forward order where the signer cert is first and the most
+    * trusted cert is last.
     *
     *
     * @param algorithm The signature algorithm being used to do the signing

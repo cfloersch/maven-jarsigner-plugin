@@ -7,7 +7,7 @@ import java.io.IOException;
  * The basic interface for Java objects representing primitive 
  * ASN.1 types according to ITU-T Recommendation X.680.
  */
-public abstract class ASN1AbstractType implements ASN1Type {
+public abstract class ASN1AbstractType implements ASN1Type,Cloneable {
 
    private boolean optional_ = false;
    private boolean explicit_ = true;

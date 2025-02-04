@@ -368,14 +368,13 @@ public class SignerInfo extends ASN1Sequence {
 
 
    /**
-    * This method returns the encrypted digest stored in
-    * this structure. The EncryptedDigest is defined as
+    * This method returns the encrypted digest stored in this structure. The EncryptedDigest is
+    * defined as
     * <pre>
     * EncryptedDigest ::= OCTET STRING
     * </pre>
-    * This octet string contains the encrypted digest
-    * info structure, which is reproduced below for
-    * completeness:
+    * This octet string contains the encrypted digest info structure, which is reproduced below
+    * for completeness:
     * <pre>
     * DigestInfo ::= SEQUENCE {
     *   digestAlgorithm DigestAlgorithmIdentifier,
@@ -447,8 +446,7 @@ public class SignerInfo extends ASN1Sequence {
 
 
    /**
-    * Returns the {@link X500Principal name} of the issuer of the certificate of this
-    * signer.
+    * Returns the {@link X500Principal name} of the issuer of the certificate of this signer.
     *
     * @return The issuer name.
     */
@@ -493,18 +491,15 @@ public class SignerInfo extends ASN1Sequence {
 
 
    /**
-    * Returns the algorithm parameter spec for the parameters
-    * of the signature algorithm (PKCS#1 Version 2.1 Draft 1)
-    * or <code>null</code> if there are none.
+    * Returns the algorithm parameter spec for the parameters of the signature algorithm
+    * (PKCS#1 Version 2.1 Draft 1) or <code>null</code> if there are none.
     *
-    * @return The AlgorithmParameterSpec to use when initialising
-    *   the signature engine.
-    * @exception NoSuchAlgorithmException if the OIDs in this
-    *   structure cannot be mapped onto an algorithm name by
-    *   means of the alias definitions of the installed providers.
-    * @exception InvalidAlgorithmParameterException if the
-    *   signature algorithm identifier contains parameters but
-    *   the parameters cannot be decoded.
+    * @return The AlgorithmParameterSpec to use when initialising the signature engine.
+    * @exception NoSuchAlgorithmException if the OIDs in this structure cannot be mapped
+    *    onto an algorithm name by means of the alias definitions of the installed
+    *    providers.
+    * @exception InvalidAlgorithmParameterException if the signature algorithm identifier
+    *    contains parameters but the parameters cannot be decoded.
     *
     *   TODO When I rework the constructor
     *
