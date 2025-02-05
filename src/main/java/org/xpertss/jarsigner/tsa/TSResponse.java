@@ -268,7 +268,7 @@ public class TSResponse {
      * @return If null then no token was received.
      */
     /*
-    public PKCS7SignedData getToken()
+    public ContentInfo getToken()
     {
         return tsToken;
     }

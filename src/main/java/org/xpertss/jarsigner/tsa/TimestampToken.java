@@ -8,7 +8,7 @@ import java.util.Date;
  * This class provides the timestamp token info resulting from a successful
  * timestamp request, as defined in
  * <a href="http://www.ietf.org/rfc/rfc3161.txt">RFC 3161</a>.
- *
+ * <p/>
  * The timestampTokenInfo ASN.1 type has the following definition:
  * <pre>
  *
@@ -35,6 +35,7 @@ import java.util.Date;
  *         millis     [0] INTEGER  (1..999) OPTIONAL,
  *         micros     [1] INTEGER  (1..999) OPTIONAL  }
  *
+ *     TSAPolicyId ::= OBJECT IDENTIFIER
  * </pre>
  */
 public class TimestampToken {
