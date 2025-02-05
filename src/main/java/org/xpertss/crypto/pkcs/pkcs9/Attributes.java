@@ -58,6 +58,11 @@ public class Attributes extends ASN1SetOf {
    }
 
 
+   // TODO Creator methods for instances to be encoded
+
+
+
+
    /**
     * Returns the first attribute of the given type that is found in this instance.
     *

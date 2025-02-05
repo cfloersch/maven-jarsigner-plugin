@@ -67,6 +67,7 @@ import java.io.IOException;
  *         -- eContent within SignedData is TSTInfo
  *
  * </pre>
+ * TODO Get rid of this
  */
 public class TSResponse {
 

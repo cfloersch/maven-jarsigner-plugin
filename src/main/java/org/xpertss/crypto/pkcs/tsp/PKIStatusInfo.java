@@ -4,6 +4,7 @@ import org.xpertss.crypto.asn1.ASN1BitString;
 import org.xpertss.crypto.asn1.ASN1Integer;
 import org.xpertss.crypto.asn1.ASN1Sequence;
 
+
 /**
  * This class provides the response corresponding to a timestamp response status, as
  * defined in <a href="http://www.ietf.org/rfc/rfc3161.txt">RFC 3161</a>.
@@ -56,7 +57,7 @@ import org.xpertss.crypto.asn1.ASN1Sequence;
  *
  * </pre>
  */
-public class PKIStatusInfo extends ASN1Sequence {
+class PKIStatusInfo extends ASN1Sequence {
 
     private ASN1Integer status;
 
@@ -71,16 +72,18 @@ public class PKIStatusInfo extends ASN1Sequence {
         add(status);
 
         freeText = new PKIFreeText();
-        add(freeText);  // NOTE Can be optional
+        add(freeText);
 
         failureInfo = new ASN1BitString(true, false);
         add(failureInfo);
     }
 
+    /**
+     * Returns a response code indicating the success or failure of the request.
+     */
     public int getStatusCode()
     {
-        // TODO Do we want to check value for enumerated values?
-        return status.getBigInteger().intValue();
+        return status.getBigInteger().intValueExact();
     }
 
     public String[] getStatusMessages()
@@ -95,7 +98,7 @@ public class PKIStatusInfo extends ASN1Sequence {
      */
     public boolean[] getFailureInfo()
     {
-        return new boolean[0]; // TODO
+        return failureInfo.getBits();
     }
 
 }

@@ -1,5 +1,9 @@
 package org.xpertss.jarsigner.tsa;
 
+import org.xpertss.crypto.asn1.AsnUtil;
+import org.xpertss.crypto.pkcs.tsp.TimeStampRequest;
+import org.xpertss.crypto.pkcs.tsp.TimeStampResponse;
+
 import java.io.BufferedInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -62,17 +66,19 @@ public class HttpTimestamper implements Timestamper {
      * @throws IOException The exception is thrown if a problem occurs while
      *         communicating with the TSA.
      */
-    public TSResponse generateTimestamp(TSRequest tsQuery)
-            throws IOException
+    public TimeStampResponse generateTimestamp(TimeStampRequest tsQuery)
+        throws IOException
     {
 
-        // Need to build a ProxyManager or something that allows us to determine
+        // TODO Need to build a ProxyManager or something that allows us to determine
         // what proxy to use for given URL given nonProxyHosts
         // may also need user creds via Authenticator (no way to directly associate)
         // generally speaking I don't think TSA require authentication so may be overkill
         // We could of course just set the Authorization header to basic with the creds (assumes basic auth)
         Authenticator authenticator = null;
         Proxy proxy = Proxy.NO_PROXY;
+
+
         HttpURLConnection connection = (HttpURLConnection) tsaURI.toURL().openConnection(proxy);
 
         connection.setDoOutput(true);
@@ -87,7 +93,7 @@ public class HttpTimestamper implements Timestamper {
         DataOutputStream output = null;
         try {
             output = new DataOutputStream(connection.getOutputStream());
-            byte[] request = tsQuery.encode();
+            byte[] request = AsnUtil.encode(tsQuery);
             output.write(request, 0, request.length);
             output.flush();
         } finally {
@@ -114,7 +120,7 @@ public class HttpTimestamper implements Timestamper {
                 input.close();
             }
         }
-        return new TSResponse(replyBuffer);
+        return (TimeStampResponse) AsnUtil.decode(new TimeStampResponse(), replyBuffer);
     }
 
     /*

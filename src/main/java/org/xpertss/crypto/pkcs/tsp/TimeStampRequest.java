@@ -93,6 +93,7 @@ public class TimeStampRequest extends ASN1Sequence {
 
 
 
+
     public AlgorithmIdentifier getHashAlgorithm()
     {
         return msgImprint.getHashAlgorithm();
@@ -100,9 +101,10 @@ public class TimeStampRequest extends ASN1Sequence {
 
     public byte[] getHashedMessage()
     {
-        // TODO Check hashed message for null
-        return msgImprint.getHashedMessage().clone();
+        byte[] digest = msgImprint.getHashedMessage();
+        return (digest == null) ? null : digest.clone();
     }
+
 
 
     public void setPolicy(String policyId)

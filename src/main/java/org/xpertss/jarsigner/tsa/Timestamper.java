@@ -1,5 +1,8 @@
 package org.xpertss.jarsigner.tsa;
 
+import org.xpertss.crypto.pkcs.tsp.TimeStampRequest;
+import org.xpertss.crypto.pkcs.tsp.TimeStampResponse;
+
 import java.io.IOException;
 
 public interface Timestamper {
@@ -13,6 +16,6 @@ public interface Timestamper {
      * @throws IOException The exception is thrown if a problem occurs while
      *         communicating with the TSA.
      */
-    public TSResponse generateTimestamp(TSRequest tsQuery) throws IOException;
+    public TimeStampResponse generateTimestamp(TimeStampRequest tsQuery) throws IOException;
 
 }

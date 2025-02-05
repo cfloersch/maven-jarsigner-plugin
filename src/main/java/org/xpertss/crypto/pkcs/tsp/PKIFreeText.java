@@ -6,13 +6,14 @@ import org.xpertss.crypto.asn1.Decoder;
 
 import java.io.IOException;
 
-public class PKIFreeText extends ASN1SequenceOf {
+class PKIFreeText extends ASN1SequenceOf {
 
     private String[] messages;
 
     public PKIFreeText()
     {
         super(ASN1UTF8String.class);
+        setOptional(true);
     }
 
     public String[] getMessages()

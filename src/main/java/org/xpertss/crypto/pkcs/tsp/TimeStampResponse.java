@@ -2,6 +2,7 @@ package org.xpertss.crypto.pkcs.tsp;
 
 import org.xpertss.crypto.asn1.ASN1Sequence;
 import org.xpertss.crypto.pkcs.pkcs7.ContentInfo;
+import org.xpertss.crypto.pkcs.pkcs7.SignedData;
 
 /**
  * This class provides the response corresponding to a timestamp response, as defined in
@@ -99,7 +100,9 @@ public class TimeStampResponse extends ASN1Sequence {
      */
     public static final int REVOCATION_NOTIFICATION = 5;
 
-    // Failure codes (from RFC 3161)
+
+
+    // Failure codes (from RFC 3161) TODO Figure out what these operate on?
 
     /**
      * Unrecognized or unsupported algorithm identifier.
@@ -149,7 +152,10 @@ public class TimeStampResponse extends ASN1Sequence {
 
     private ContentInfo token;
 
-
+    /**
+     * Create an instance of TimeStampResponse ready to decode a response from a stream or
+     * byte source.
+     */
     public TimeStampResponse()
     {
         super(2);
@@ -161,16 +167,10 @@ public class TimeStampResponse extends ASN1Sequence {
         add(token);
     }
 
-    public TimeStampResponse(PKIStatusInfo status)
-    {
-        super(2);
-        // TODO Impl
-    }
 
-    public TimeStampResponse(PKIStatusInfo status, ContentInfo token)
-    {
-        // TODO Impl
-    }
+
+    // TODO Create creators for timestamp server impls
+
 
 
     /**
@@ -200,6 +200,8 @@ public class TimeStampResponse extends ASN1Sequence {
     {
         return status.getFailureInfo();
     }
+
+
 
     public String getStatusCodeAsText()
     {
@@ -232,12 +234,16 @@ public class TimeStampResponse extends ASN1Sequence {
 
     public ContentInfo getToken()
     {
-        return null;    // TODO
+        return token;
     }
 
     public TSTokenInfo getTimestampTokenInfo()
     {
-        return null;    // TODO
+        SignedData signedData = (SignedData) token.getContent();
+        if(signedData == null) return null;
+        // TODO Check contentType or just use ClassCastException??
+        //  1.2.840.113549.1.9.16.1.4
+        return (TSTokenInfo) signedData.getContent();
     }
 
 

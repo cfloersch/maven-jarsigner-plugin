@@ -48,8 +48,18 @@ public final class TsaSigner {
         return policyId;
     }
 
-    /*
-    public PKCS9Attributes stamp(byte[] signature)
+    /**
+     * Given a signature, crate a time stamp token, and return it as an BER encoded ContentInfo
+     * structure. The ContentInfo defined in PKCS7 will include an embedded SignedData object
+     * which itself will include the TSTInfo content entry.
+     * <p/>
+     * The resulting encoded object can be used as the attribute value for PKCS9 attributes
+     * which are attached to the signature as unauthenticated attributes.
+     *
+     * @param signature The signature to timestamp
+     * @return A BER encoded ContentInfo structure.
+     */
+    public byte[] stamp(byte[] signature)
     {
         // Create HttpTimestamper
         byte[] tsToken = null;
@@ -59,10 +69,9 @@ public final class TsaSigner {
         // HttpTimestamper tsa = new HttpTimestamper(tsaURI);
         //https://github.com/JetBrains/jdk8u_jdk/blob/master/src/share/classes/sun/security/timestamp/HttpTimestamper.java#L50
 
-        return new PKCS9Attributes(new PKCS9Attribute(PKCS9Attribute.SIGNATURE_TIMESTAMP_TOKEN_STR, tsToken));
+        return null;
+        //return new PKCS9Attributes(new PKCS9Attribute(PKCS9Attribute.SIGNATURE_TIMESTAMP_TOKEN_STR, tsToken));
     }
-
-     */
 
     @Override
     public String toString()

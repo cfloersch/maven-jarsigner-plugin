@@ -41,6 +41,12 @@ import java.util.Date;
  *
  *     TSAPolicyId ::= OBJECT IDENTIFIER
  * </pre>
+ * <p/>
+ * id-ct-TSTInfo  OBJECT IDENTIFIER ::= {
+ *   iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9) smime(16) ct(1) 4
+ * }
+ * <p/>
+ * 1.2.840.113549.1.9.16.1.4
  */
 public class TSTokenInfo extends ASN1Sequence {
 
@@ -91,14 +97,18 @@ public class TSTokenInfo extends ASN1Sequence {
         extensions = new ASN1TaggedType(1, new ASN1Opaque(), false, true);
         add(extensions);
 
+        // Used by timestamp requesters to parse a response into objects
     }
 
 
     public TSTokenInfo(String digestAlg, byte[] digest, BigInteger serial, Date timestamp)
         throws NoSuchAlgorithmException
     {
-
+        // Used by time stamp providers to create a response
     }
+
+
+
 
 
     /**
@@ -118,8 +128,8 @@ public class TSTokenInfo extends ASN1Sequence {
 
     public byte[] getHashedMessage()
     {
-        // TODO Check hashed message for null
-        return msgImprint.getHashedMessage().clone();
+        byte[] digest = msgImprint.getHashedMessage();
+        return (digest == null) ? null : digest.clone();
     }
 
     public BigInteger getNonce()
@@ -136,6 +146,8 @@ public class TSTokenInfo extends ASN1Sequence {
     {
         return serial.getBigInteger();
     }
+
+
 
     /**
      * Gets the Time-Stamp Protocol extensions.

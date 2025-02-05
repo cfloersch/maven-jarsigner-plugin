@@ -31,6 +31,7 @@ import java.security.cert.X509Extension;
  *     TSAPolicyId ::= OBJECT IDENTIFIER
  *
  * </pre>
+ * TODO Get rid of this
  */
 public class TSRequest {
 

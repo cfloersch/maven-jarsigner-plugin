@@ -14,7 +14,7 @@ import java.math.BigInteger;
  *          micros     [1] INTEGER  (1..999)    OPTIONAL  }
  * </pre>
  */
-public class Accuracy extends ASN1Sequence {
+class Accuracy extends ASN1Sequence {
 
     private ASN1Integer seconds;
     private ASN1TaggedType millis;

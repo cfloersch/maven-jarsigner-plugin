@@ -18,6 +18,141 @@ import java.util.*;
  * AttributeType ::= ObjectIdentifier
  * AttributeValue ::= ANY
  * </pre>
+ * <p/>
+ * <a name="classTable"><h3>Type/Class Table</h3></a>
+ * The following table shows the correspondence between PKCS9 attribute types and value
+ * component classes. For types not listed here, its name is the OID in string form, its
+ * value is a (single-valued) byte array that is the SET's encoding.
+ * <p/>
+ * <TABLE BORDER CELLPADDING=8 ALIGN=CENTER>
+ *
+ * <TR>
+ * <TH>Object Identifier</TH>
+ * <TH>Attribute Name</TH>
+ * <TH>Type</TH>
+ * <TH>Value Class</TH>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.1</TD>
+ * <TD>EmailAddress</TD>
+ * <TD>Multi-valued</TD>
+ * <TD><code>String[]</code></TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.2</TD>
+ * <TD>UnstructuredName</TD>
+ * <TD>Multi-valued</TD>
+ * <TD><code>String[]</code></TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.3</TD>
+ * <TD>ContentType</TD>
+ * <TD>Single-valued</TD>
+ * <TD><code>ObjectIdentifier</code></TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.4</TD>
+ * <TD>MessageDigest</TD>
+ * <TD>Single-valued</TD>
+ * <TD><code>byte[]</code></TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.5</TD>
+ * <TD>SigningTime</TD>
+ * <TD>Single-valued</TD>
+ * <TD><code>Date</code></TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.6</TD>
+ * <TD>Countersignature</TD>
+ * <TD>Multi-valued</TD>
+ * <TD><code>SignerInfo[]</code></TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.7</TD>
+ * <TD>ChallengePassword</TD>
+ * <TD>Single-valued</TD>
+ * <TD><code>String</code></TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.8</TD>
+ * <TD>UnstructuredAddress</TD>
+ * <TD>Single-valued</TD>
+ * <TD><code>String</code></TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.9</TD>
+ * <TD>ExtendedCertificateAttributes</TD>
+ * <TD>Multi-valued</TD>
+ * <TD>(not supported)</TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.10</TD>
+ * <TD>IssuerAndSerialNumber</TD>
+ * <TD>Single-valued</TD>
+ * <TD>(not supported)</TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.{11,12}</TD>
+ * <TD>RSA DSI proprietary</TD>
+ * <TD>Single-valued</TD>
+ * <TD>(not supported)</TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.13</TD>
+ * <TD>S/MIME unused assignment</TD>
+ * <TD>Single-valued</TD>
+ * <TD>(not supported)</TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.14</TD>
+ * <TD>ExtensionRequest</TD>
+ * <TD>Single-valued</TD>
+ * <TD>CertificateExtensions</TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.15</TD>
+ * <TD>SMIMECapability</TD>
+ * <TD>Single-valued</TD>
+ * <TD>(not supported)</TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.16.2.12</TD>
+ * <TD>SigningCertificate</TD>
+ * <TD>Single-valued</TD>
+ * <TD>SigningCertificateInfo</TD>
+ * </TR>
+ *
+ * <TR>
+ * <TD>1.2.840.113549.1.9.16.2.14</TD>
+ * <TD>SignatureTimestampToken</TD>
+ * <TD>Single-valued</TD>
+ * <TD>byte[]</TD>
+ * </TR>
+ *
+ * </TABLE>
+ */
+/**
+ * Class supporting any PKCS9 attributes. Supports DER decoding/encoding
+ * and access to attribute values.
+ *
+ *
+ *
  */
 public class Attribute extends ASN1Sequence implements ASN1RegisteredType {
    /**
@@ -64,6 +199,8 @@ public class Attribute extends ASN1Sequence implements ASN1RegisteredType {
       add(type);
       add(values);
    }
+
+
 
 
    /**
