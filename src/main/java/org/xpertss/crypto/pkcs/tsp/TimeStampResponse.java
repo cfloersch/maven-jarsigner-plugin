@@ -326,6 +326,13 @@ public class TimeStampResponse extends ASN1Sequence {
     {
         SignedData signedData = (SignedData) token.getContent();
         if(signedData == null) return null;
+
+        // TODO Even though contentType is a TSTokenInfo, it is actually a Data instance (aka OctetString)
+        //  so I will need to grab the bytes and parse it. How to handle the exceptions?
+        // I can create a subclass of OctetString (kind of like Data) which decodes those bytes into TSTokenInfo on decode()
+        // With the getContent() returning the TSTokenInfo like it is supposed to
+
+
         // TODO Check contentType or just use ClassCastException??
         //  1.2.840.113549.1.9.16.1.4
         return (TSTokenInfo) signedData.getContent();

@@ -120,7 +120,7 @@ public class HttpTimestamper implements Timestamper {
                 input.close();
             }
         }
-        return (TimeStampResponse) AsnUtil.decode(new TimeStampResponse(), replyBuffer);
+        return AsnUtil.decode(new TimeStampResponse(), replyBuffer);
     }
 
     /*

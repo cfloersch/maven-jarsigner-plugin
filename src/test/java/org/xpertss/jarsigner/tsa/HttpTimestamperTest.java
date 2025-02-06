@@ -52,13 +52,19 @@ class HttpTimestamperTest {
 
         byte[] encoded = tsReply.getEncodedToken();
         ContentInfo content = AsnUtil.decode(new ContentInfo(), encoded);
-        System.out.println(content);
+        //System.out.println(content);
 
         // TODO Find a way to make getContent generic or more friendly
         //  possibly tie it in with getContentType() which can return a Class as an example
         //  do I want all of the Content Impls to extends from a common class?
         //  They are all Sequences (except data itself which is OctetString)
         SignedData signedData = (SignedData) content.getContent();
+
+        // Not sure why content is an OctetString and not an actual TSTokenInfo instance..
+        // Maybe something to do with my definition of implicit/explicit?
+        System.out.println("ContentType: " + signedData.getContentType());
+        System.out.println(signedData.getContent());
+        System.out.println();
 
         byte[] encToken = ((ASN1OctetString) signedData.getContent()).getByteArray();
 

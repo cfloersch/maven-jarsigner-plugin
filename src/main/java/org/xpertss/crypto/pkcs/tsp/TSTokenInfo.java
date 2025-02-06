@@ -49,6 +49,11 @@ import java.util.Date;
  * }
  * <p/>
  * 1.2.840.113549.1.9.16.1.4
+ * <p/>
+ * TODO Due to the way TSA encode the TSTokenInfo as an OctetString I need to modify this to
+ *  extend OctetString. Override the encode()/decode() methods to parse that byte array into
+ *  the properties above (making them available via the getters below). Internalize the Seq
+ *
  */
 public class TSTokenInfo extends ASN1Sequence implements ASN1RegisteredType {
 
@@ -161,6 +166,12 @@ public class TSTokenInfo extends ASN1Sequence implements ASN1RegisteredType {
         return serial.getBigInteger();
     }
 
+
+
+    public String getTsaName()
+    {
+        return null;    // TODO General name toString
+    }
 
 
     /**
