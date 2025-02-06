@@ -147,13 +147,6 @@ import java.util.*;
  *
  * </TABLE>
  */
-/**
- * Class supporting any PKCS9 attributes. Supports DER decoding/encoding
- * and access to attribute values.
- *
- *
- *
- */
 public class Attribute extends ASN1Sequence implements ASN1RegisteredType {
    /**
     * The Object Identifier specifying the attribute type.

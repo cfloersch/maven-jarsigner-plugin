@@ -102,7 +102,9 @@ public class TimeStampResponse extends ASN1Sequence {
 
 
 
-    // Failure codes (from RFC 3161) TODO Figure out what these operate on?
+
+
+    // Failure codes (from RFC 3161)
 
     /**
      * Unrecognized or unsupported algorithm identifier.
@@ -163,13 +165,86 @@ public class TimeStampResponse extends ASN1Sequence {
         status = new PKIStatusInfo();
         add(status);
 
-        token = new ContentInfo();  // I do know what contentType the info should have
+        token = new ContentInfo();
+        token.setOptional(true);
         add(token);
+    }
+
+    /**
+     * Create an instance of TimeStampResponse ready to encode a response to a stream or
+     * byte source.
+     * <p/>
+     * Simple success (or success with modifications) response.
+     *
+     * @param statusCode The status code to respond with
+     * @param token The token to respond with
+     */
+    public TimeStampResponse(int statusCode, ContentInfo token)
+    {
+        super(2);
+
+        status = new PKIStatusInfo(statusCode);
+        add(status);
+
+        this.token = (ContentInfo) token.copy();
+        add(this.token);
+
+        // TODO Verify there is no reason to send messages on success??
+    }
+
+    /**
+     * Create an instance of TimeStampResponse ready to encode a response to a stream or
+     * byte source.
+     * <p/>
+     * Simple failure response with messages. No token is returned in the failure cases.
+     *
+     * @param statusCode The status code to respond with
+     * @param messages The messages to respond with in the PKIFreeText
+     */
+    public TimeStampResponse(int statusCode, String ... messages)
+    {
+        super(2);
+        status = new PKIStatusInfo(statusCode, messages);
+        add(status);
+        // TODO may need variant that includes ContentInfo token
+    }
+
+    /**
+     * Create an instance of TimeStampResponse ready to encode a response to a stream or
+     * byte source.
+     * <p/>
+     * Simple failure response with failure codes. No token is returned in the failure cases.
+     *
+     * @param statusCode The status code to respond with
+     * @param failures The failure codes to respond with as a bit string
+     */
+    public TimeStampResponse(int statusCode, boolean[] failures)
+    {
+        super(2);
+        status = new PKIStatusInfo(statusCode, failures);
+        add(status);
     }
 
 
 
-    // TODO Create creators for timestamp server impls
+    /**
+     * Create an instance of TimeStampResponse ready to encode a response to a stream or
+     * byte source.
+     * <p/>
+     * Simple failure response with failure codes. No token is returned in the failure cases.
+     *
+     * @param statusCode The status code to respond with
+     * @param failures The failure codes to respond with as a bit string
+     * @param messages The messages to respond with in the PKIFreeText
+     */
+    public TimeStampResponse(int statusCode, boolean[] failures, String ... messages)
+    {
+        super(2);
+        status = new PKIStatusInfo(statusCode, failures, messages);
+        add(status);
+    }
+
+
 
 
 
@@ -201,6 +276,16 @@ public class TimeStampResponse extends ASN1Sequence {
         return status.getFailureInfo();
     }
 
+    /**
+     * Utility method to check the failure info bit string for individual failure reasons.
+     *
+     * @param failureCode One of the defined failure codes as a bit position.
+     */
+    public boolean isFailure(int failureCode)
+    {
+        boolean[] failures = status.getFailureInfo();
+        return failures != null && failures.length > failureCode && failures[failureCode];
+    }
 
 
     public String getStatusCodeAsText()
@@ -234,7 +319,7 @@ public class TimeStampResponse extends ASN1Sequence {
 
     public ContentInfo getToken()
     {
-        return token;
+        return (token.isOptional()) ? null : token;
     }
 
     public TSTokenInfo getTimestampTokenInfo()

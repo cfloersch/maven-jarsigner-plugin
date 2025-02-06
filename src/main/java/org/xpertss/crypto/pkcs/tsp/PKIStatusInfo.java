@@ -79,6 +79,86 @@ class PKIStatusInfo extends ASN1Sequence {
     }
 
     /**
+     * Construct a PKIStatusInfo with the given status code and no failure info
+     * nor PKIFreeText.
+     *
+     * @param code The status code to respond with
+     */
+    public PKIStatusInfo(int code)
+    {
+        super(3);
+        status = new ASN1Integer(code);
+        add(status);
+
+        freeText = new PKIFreeText();
+        add(freeText);
+
+        failureInfo = new ASN1BitString(true, false);
+        add(failureInfo);
+    }
+
+    /**
+     * Construct a PKIStatusInfo with the given status code and no failure info
+     * nor PKIFreeText.
+     *
+     * @param code The status code to respond with
+     * @param messages The messages to include the status response
+     */
+    public PKIStatusInfo(int code, String ... messages)
+    {
+        super(3);
+        status = new ASN1Integer(code);
+        add(status);
+
+        freeText = new PKIFreeText(messages);
+        add(freeText);
+
+        failureInfo = new ASN1BitString(true, false);
+        add(failureInfo);
+    }
+
+    /**
+     * Construct a PKIStatusInfo with the given status code and no failure info
+     * nor PKIFreeText.
+     *
+     * @param code The status code to respond with
+     * @param failureCodes The failure codes to respond with
+     */
+    public PKIStatusInfo(int code, boolean[] failureCodes)
+    {
+        super(3);
+        status = new ASN1Integer(code);
+        add(status);
+
+        freeText = new PKIFreeText();
+        add(freeText);
+
+        failureInfo = new ASN1BitString(failureCodes);
+        add(failureInfo);
+    }
+
+    /**
+     * Construct a PKIStatusInfo with the given status code and no failure info
+     * nor PKIFreeText.
+     *
+     * @param code The status code to respond with
+     * @param failureCodes The failure codes to respond with
+     * @param messages The messages to include the status response
+     */
+    public PKIStatusInfo(int code, boolean[] failureCodes, String ... messages)
+    {
+        super(3);
+        status = new ASN1Integer(code);
+        add(status);
+
+        freeText = new PKIFreeText(messages);
+        add(freeText);
+
+        failureInfo = new ASN1BitString(failureCodes);
+        add(failureInfo);
+    }
+
+    /**
      * Returns a response code indicating the success or failure of the request.
      */
     public int getStatusCode()

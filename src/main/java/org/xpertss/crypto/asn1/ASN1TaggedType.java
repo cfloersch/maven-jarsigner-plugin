@@ -212,7 +212,7 @@ public class ASN1TaggedType extends ASN1AbstractType {
    public void setExplicit(boolean explicit)
    {
       if (!explicit)
-         throw new IllegalArgumentException("Tagget types are never IMPLICIT!");
+         throw new IllegalArgumentException("Tagged types are never IMPLICIT!");
    }
 
 

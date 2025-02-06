@@ -17,8 +17,6 @@ import java.security.cert.X509Extension;
  *     TimeStampReq ::= SEQUENCE {
  *         version           INTEGER { v1(1) },
  *         messageImprint    MessageImprint
- *           -- a hash algorithm OID and the hash value of the data to be
- *           -- time-stamped.
  *         reqPolicy         TSAPolicyId    OPTIONAL,
  *         nonce             INTEGER        OPTIONAL,
  *         certReq           BOOLEAN        DEFAULT FALSE,
@@ -30,16 +28,24 @@ import java.security.cert.X509Extension;
  *
  *     TSAPolicyId ::= OBJECT IDENTIFIER
  *
+ *     Extensions  ::= SEQUENCE SIZE (1..MAX) OF Extension
+ *
+ *     Extension  ::= SEQUENCE {
+ *        extnID      OBJECT IDENTIFIER,
+ *        critical    BOOLEAN DEFAULT FALSE,
+ *        extnValue   OCTET STRING
+ *     }
  * </pre>
  */
 
 public class TimeStampRequest extends ASN1Sequence {
+
     private ASN1Integer version;
     private MessageImprint msgImprint;
     private ASN1ObjectIdentifier policy;
     private ASN1Integer nonce;
     private ASN1Boolean certReq;
-    private ASN1TaggedType extensions;
+    private ASN1SequenceOf extensions;
 
 
     public TimeStampRequest()
@@ -61,8 +67,8 @@ public class TimeStampRequest extends ASN1Sequence {
         certReq = new ASN1Boolean(false);
         add(certReq);
 
-        extensions = new ASN1TaggedType(0, new ASN1Opaque(), false, true);
-        add(extensions);
+        extensions = new ASN1SequenceOf(ASN1Opaque.class);
+        add(new ASN1TaggedType(0, extensions, false, true));
     }
 
 
@@ -87,8 +93,8 @@ public class TimeStampRequest extends ASN1Sequence {
         add(certReq);
 
         // TODO What sort of extensions are supported
-        extensions = new ASN1TaggedType(0, new ASN1Opaque(), false, true);
-        add(extensions);
+        extensions = new ASN1SequenceOf(ASN1Opaque.class);
+        add(new ASN1TaggedType(0, extensions, false, true));
     }
 
 
@@ -115,7 +121,7 @@ public class TimeStampRequest extends ASN1Sequence {
 
     public String getPolicy()
     {
-        return policy.toString();
+        return (policy.isOptional()) ? null : policy.toString();
     }
 
 

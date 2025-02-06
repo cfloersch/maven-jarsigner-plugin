@@ -10,6 +10,11 @@
 # pkcs-9 CounterSignature attribute
 1.2.840.113549.1.9.6 = org.xpertss.crypto.pkcs.pkcs7.SignerInfo
 
+# pkcs-9 SignatureTimestampToken (technically a ContentInfo)
+1.2.840.113549.1.9.16.2.14 = org.xpertss.crypto.asn1.ASN1OctetString
+
+# TODO What is this 1.2.840.113549.1.9.16.2.12  (id-aa-signingCertificate) -- Some sort of hash
+# TODO What is this 1.2.840.113549.1.9.16.2.47  (id-aa-signingCertificateV2) -- Full signer cert??
 
 # TODO: Need to add RandomNonce
 

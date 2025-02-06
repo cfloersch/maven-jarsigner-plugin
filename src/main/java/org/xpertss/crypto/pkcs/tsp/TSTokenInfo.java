@@ -2,7 +2,9 @@ package org.xpertss.crypto.pkcs.tsp;
 
 import org.xpertss.crypto.asn1.*;
 import org.xpertss.crypto.pkcs.AlgorithmIdentifier;
+import org.xpertss.crypto.pkcs.x509.GeneralName;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Extension;
@@ -48,7 +50,7 @@ import java.util.Date;
  * <p/>
  * 1.2.840.113549.1.9.16.1.4
  */
-public class TSTokenInfo extends ASN1Sequence {
+public class TSTokenInfo extends ASN1Sequence implements ASN1RegisteredType {
 
     private ASN1Integer version;
     private ASN1ObjectIdentifier policy;
@@ -58,9 +60,12 @@ public class TSTokenInfo extends ASN1Sequence {
     private Accuracy accuracy;
     private ASN1Boolean ordering;
     private ASN1Integer nonce;
-    private ASN1TaggedType tsa;
-    private ASN1TaggedType extensions;
+    private GeneralName tsa;
+    private ASN1SequenceOf extensions;
 
+    /**
+     * Construct an uninitialized instance ready to decode a stream into
+     */
     public TSTokenInfo()
     {
         super(10);
@@ -84,29 +89,38 @@ public class TSTokenInfo extends ASN1Sequence {
         add(accuracy);
 
         ordering = new ASN1Boolean(false);
+        ordering.setOptional(true);
         add(ordering);
 
         nonce = new ASN1Integer(true, true);
         add(nonce);
 
-        // TODO What is a GeneralName (X500Principal or can it be much more)
-        tsa = new ASN1TaggedType(0, new ASN1Opaque(), true, true);
-        add(tsa);
 
-        // TODO What sort of extensions are supported
-        extensions = new ASN1TaggedType(1, new ASN1Opaque(), false, true);
-        add(extensions);
+        tsa = new GeneralName();
+        add(new ASN1TaggedType(0, new ASN1OctetString(), false, true));
 
-        // Used by timestamp requesters to parse a response into objects
+
+        extensions = new ASN1SequenceOf(ASN1Opaque.class);
+        add(new ASN1TaggedType(1, extensions, false, true));
     }
 
 
+    // TODO Create creators.. Possibly one from the request
+    //  (policy and message imprint along with nonce and extensions are generally copyable)
     public TSTokenInfo(String digestAlg, byte[] digest, BigInteger serial, Date timestamp)
         throws NoSuchAlgorithmException
     {
         // Used by time stamp providers to create a response
     }
 
+
+
+
+    @Override
+    public ASN1ObjectIdentifier getOID()
+    {
+        return new ASN1ObjectIdentifier("1.2.840.113549.1.9.16.1.4");
+    }
 
 
 
@@ -156,6 +170,13 @@ public class TSTokenInfo extends ASN1Sequence {
     {
         // TODO
         throw new UnsupportedOperationException();
+    }
+
+
+    public void decode(Decoder decoder)
+        throws IOException
+    {
+        super.decode(decoder);
     }
 
 }

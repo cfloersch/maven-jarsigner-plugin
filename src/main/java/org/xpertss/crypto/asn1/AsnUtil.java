@@ -33,7 +33,7 @@ public class AsnUtil {
     * or storage. This is useful for ASN Types that are not defined in the
     * base ASN package. AKA if you have made your own constructed types.
     */
-   public static final ASN1Type decode(ASN1Type ansObj, byte[] encoded)
+   public static <T extends ASN1Type> T decode(T ansObj, byte[] encoded)
       throws IOException
    {
       DERDecoder dec = null;

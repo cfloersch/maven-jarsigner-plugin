@@ -94,7 +94,6 @@ public class SimpleDigestTest {
       assertEquals(encoded[70], (byte) 0x0D);   // zero based
       assertEquals(encoded[71], (byte) 0x0A);
       assertEquals(encoded[72], (byte) 0x20);
-      System.out.println(new String(encoded, StandardCharsets.UTF_8));
 
    }
 

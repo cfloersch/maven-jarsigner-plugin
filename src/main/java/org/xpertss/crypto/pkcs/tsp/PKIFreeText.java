@@ -16,6 +16,14 @@ class PKIFreeText extends ASN1SequenceOf {
         setOptional(true);
     }
 
+    public PKIFreeText(String ... messages)
+    {
+        super(ASN1UTF8String.class);
+        for(String message : messages) {
+            add(new ASN1UTF8String(message));
+        }
+    }
+
     public String[] getMessages()
     {
         return messages;

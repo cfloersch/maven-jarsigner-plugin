@@ -157,7 +157,7 @@ public class ASN1Integer extends ASN1AbstractType {
 
    public BigInteger getBigInteger()
    {
-      return value;
+      return (isOptional()) ? null : value;
    }
 
    public void setBigInteger(BigInteger n)

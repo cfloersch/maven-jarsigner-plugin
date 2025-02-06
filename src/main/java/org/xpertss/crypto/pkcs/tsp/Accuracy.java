@@ -17,18 +17,18 @@ import java.math.BigInteger;
 class Accuracy extends ASN1Sequence {
 
     private ASN1Integer seconds;
-    private ASN1TaggedType millis;
-    private ASN1TaggedType micros;
+    private ASN1Integer millis;
+    private ASN1Integer micros;
 
     public Accuracy()
     {
         super(3, true, true);
-        seconds = new ASN1Integer(true, false);
+        seconds = new ASN1Integer(true, true);
         add(seconds);
-        millis = new ASN1TaggedType(0, new ASN1Integer(), true, true);
-        add(millis);
-        micros = new ASN1TaggedType(1, new ASN1Integer(), true, true);
-        add(micros);
+        millis = new ASN1Integer();
+        add(new ASN1TaggedType(0, millis, false, true));
+        micros = new ASN1Integer();
+        add(new ASN1TaggedType(1, micros, false, true));
     }
 
 
@@ -39,14 +39,12 @@ class Accuracy extends ASN1Sequence {
 
     public int getMillis()
     {
-        ASN1Integer i = (ASN1Integer) millis.getInnerType();
-        return narrow(i, "millis");
+        return narrow(millis, "millis");
     }
 
     public int getMicros()
     {
-        ASN1Integer i = (ASN1Integer) micros.getInnerType();
-        return narrow(i, "micros");
+        return narrow(micros, "micros");
     }
 
 
