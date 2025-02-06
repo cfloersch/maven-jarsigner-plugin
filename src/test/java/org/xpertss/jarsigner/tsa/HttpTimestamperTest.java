@@ -32,8 +32,9 @@ class HttpTimestamperTest {
     {
         // http://timestamp.digicert.com            (No GeneralName nor Accuracy)
         // http://timestamp.acs.microsoft.com       (Both GeneralName and Accuracy with millis)
+        // http://rfc3161timestamp.globalsign.com/advanced  (Accuracy in seconds - not sure what sort of GeneralName)
 
-        URI tsaURI = URI.create("http://rfc3161timestamp.globalsign.com/advanced");
+        URI tsaURI = URI.create("http://timestamp.globalsign.com/tsa/r6advanced1"); //
 
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         TSRequest tsQuery = new TSRequest(null, SIGNATURE, md);

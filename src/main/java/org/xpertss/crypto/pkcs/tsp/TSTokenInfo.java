@@ -97,7 +97,7 @@ public class TSTokenInfo extends ASN1Sequence implements ASN1RegisteredType {
 
 
         tsa = new GeneralName();
-        add(new ASN1TaggedType(0, new ASN1OctetString(), false, true));
+        add(new ASN1TaggedType(0, tsa, true, true));
 
 
         extensions = new ASN1SequenceOf(ASN1Opaque.class);

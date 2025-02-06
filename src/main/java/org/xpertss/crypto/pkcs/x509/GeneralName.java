@@ -61,8 +61,12 @@ public class GeneralName extends ASN1Choice {
     public GeneralName()
     {
         super(3);
-        addType(new ASN1Sequence());
-        addType(new ASN1IA5String());
-        addType(new ASN1Set());
+        addType(new ASN1TaggedType(0, new ASN1Sequence(), false, true));
+        addType(new ASN1TaggedType(1, new ASN1IA5String(), false, true));
+        addType(new ASN1TaggedType(2, new ASN1IA5String(), false, true));
+        addType(new ASN1TaggedType(3, new ASN1Sequence(), false, true));
+        addType(new ASN1TaggedType(4, new ASN1SetOf(ASN1Opaque.class), false, true));
+        addType(new ASN1TaggedType(5, new ASN1Sequence(), false, true));
+        addType(new ASN1TaggedType(6, new ASN1IA5String(), false, true));
     }
 }
