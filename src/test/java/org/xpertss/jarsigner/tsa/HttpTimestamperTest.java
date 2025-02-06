@@ -54,6 +54,10 @@ class HttpTimestamperTest {
         ContentInfo content = AsnUtil.decode(new ContentInfo(), encoded);
         System.out.println(content);
 
+        // TODO Find a way to make getContent generic or more friendly
+        //  possibly tie it in with getContentType() which can return a Class as an example
+        //  do I want all of the Content Impls to extends from a common class?
+        //  They are all Sequences (except data itself which is OctetString)
         SignedData signedData = (SignedData) content.getContent();
 
         byte[] encToken = ((ASN1OctetString) signedData.getContent()).getByteArray();

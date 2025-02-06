@@ -4,7 +4,7 @@ import org.xpertss.crypto.asn1.*;
 
 /**
  * <pre>
- *   GeneralNames  ::= CHOICE {
+ *   GeneralName  ::= CHOICE {
  *     otherName                    [0] OtherName,
  *     rfc822Name                   [1] IA5String,
  *     dNSName                      [2] IA5String,
