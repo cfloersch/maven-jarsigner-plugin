@@ -1,21 +1,28 @@
 package org.xpertss.jarsigner.tsa;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.xpertss.crypto.asn1.ASN1OctetString;
+import org.xpertss.crypto.asn1.ASN1ObjectIdentifier;
 import org.xpertss.crypto.asn1.AsnUtil;
+import org.xpertss.crypto.pkcs.AlgorithmId;
+import org.xpertss.crypto.pkcs.AlgorithmIdentifier;
 import org.xpertss.crypto.pkcs.pkcs7.ContentInfo;
 import org.xpertss.crypto.pkcs.pkcs7.SignedData;
 import org.xpertss.crypto.pkcs.tsp.TSTokenInfo;
-import sun.security.pkcs.PKCS7;
 import sun.security.timestamp.TSRequest;
 import sun.security.timestamp.TSResponse;
-import sun.security.timestamp.TimestampToken;
 import sun.security.timestamp.HttpTimestamper;
 
 import java.math.BigInteger;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +34,8 @@ class HttpTimestamperTest {
             0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F };
 
 
-    @Test
+
+    @Test@Disabled
     public void testSunHttpTimeStamper() throws Exception
     {
         // http://timestamp.digicert.com            (No GeneralName nor Accuracy)
@@ -47,10 +55,10 @@ class HttpTimestamperTest {
 
         assertEquals(TSResponse.GRANTED, tsReply.getStatusCode());
 
-        //PKCS7 tsToken = tsReply.getToken();
-        //System.out.println(tsToken);
-
         byte[] encoded = tsReply.getEncodedToken();
+
+
+
         ContentInfo content = AsnUtil.decode(new ContentInfo(), encoded);
         //System.out.println(content);
 
@@ -66,13 +74,66 @@ class HttpTimestamperTest {
         System.out.println(signedData.getContent());
         System.out.println();
 
-        byte[] encToken = ((ASN1OctetString) signedData.getContent()).getByteArray();
+        TSTokenInfo tstInfo = (TSTokenInfo) signedData.getContent();
 
-        TSTokenInfo tstInfo = AsnUtil.decode(new TSTokenInfo(), encToken);
         System.out.println(tstInfo);
 
-
-
-
     }
+
+
+
+
+
+    private static final Map<String,URI> TSA = new LinkedHashMap<>();
+    static {
+        TSA.put("DigitCert", URI.create("http://timestamp.digicert.com"));
+        TSA.put("MicroSoft", URI.create("http://timestamp.acs.microsoft.com"));
+        TSA.put("GlobalSign", URI.create("http://rfc3161timestamp.globalsign.com/advanced"));
+    }
+
+    @Test@Disabled
+    public void testStoreTimestampTokens() throws Exception
+    {
+        SecureRandom random = new SecureRandom();
+        BigInteger NONCE = new BigInteger(64, random);
+
+        for(Map.Entry<String,URI> e : TSA.entrySet()) {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            TSRequest tsQuery = new TSRequest(null, SIGNATURE, md);
+            tsQuery.setNonce(NONCE);
+            tsQuery.requestCertificate(true);
+
+            HttpTimestamper tsa = new HttpTimestamper(e.getValue());
+            TSResponse tsReply = tsa.generateTimestamp(tsQuery);
+
+            assertEquals(TSResponse.GRANTED, tsReply.getStatusCode());
+
+            byte[] encoded = tsReply.getEncodedToken();
+            Path path = Paths.get("src", "test", "resources", "timestamps", e.getKey() + ".ts");
+            Files.write(path, encoded, StandardOpenOption.CREATE_NEW);
+        }
+    }
+
+    @Test
+    public void testTimestamps() throws Exception
+    {
+        BigInteger NONCE = new BigInteger("4477040867524275589");
+        ASN1ObjectIdentifier hashIdent = AlgorithmId.lookup("SHA-256");
+        for(Map.Entry<String,URI> e : TSA.entrySet()) {
+            Path path = Paths.get("src", "test", "resources", "timestamps", e.getKey() + ".ts");
+            byte[] encoded = Files.readAllBytes(path);
+            ContentInfo content = AsnUtil.decode(new ContentInfo(), encoded);
+            assertNotNull(content);
+            SignedData signedData = (SignedData) content.getContent();
+            assertNotNull(signedData);
+            TSTokenInfo tstInfo = (TSTokenInfo) signedData.getContent();
+            assertNotNull(tstInfo);
+            assertEquals(new AlgorithmIdentifier(hashIdent), tstInfo.getHashAlgorithm());
+            assertEquals(32, tstInfo.getHashedMessage().length);
+            assertEquals(NONCE, tstInfo.getNonce());
+            assertNotNull(tstInfo.getPolicyID());
+        }
+    }
+
+
 }

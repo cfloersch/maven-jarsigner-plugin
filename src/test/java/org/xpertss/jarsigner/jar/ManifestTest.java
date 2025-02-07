@@ -188,6 +188,9 @@ class ManifestTest {
       assertEquals("missing version", ex.getMessage());
       assertNull(ex.getCause());
    }
+
+
+   
    
    private static InputStream manifestFileStream() throws Exception
    {
@@ -196,13 +199,13 @@ class ManifestTest {
 
    private static byte[] manifestFileBytes() throws Exception
    {
-      Path manifestPath = Paths.get("src","test", "resources", "MANIFEST.MF");
+      Path manifestPath = Paths.get("src","test", "resources", "manifest", "MANIFEST.MF");
       return Files.readAllBytes(manifestPath);
    }
 
    private static InputStream load(String file) throws Exception
    {
-      Path manifestPath = Paths.get("src","test", "resources", file);
+      Path manifestPath = Paths.get("src","test", "resources", "manifest", file);
       return Files.newInputStream(manifestPath);
    }
 }

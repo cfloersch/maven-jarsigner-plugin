@@ -20,7 +20,7 @@ public class JavaManifestTest {
     public void testManifest_InvalidVersion() throws Exception
     {
         Manifest manifest = new Manifest();
-        try(InputStream in = load("CORRUPT.MF")) {
+        try(InputStream in = load("manifest/CORRUPT.MF")) {
             manifest.read(in);
         }
         Attributes attributes = manifest.getMainAttributes();
@@ -31,7 +31,7 @@ public class JavaManifestTest {
     public void testManifest_InvalidName() throws Exception
     {
         Manifest manifest = new Manifest();
-        try(InputStream in = load("INVALID_NAME.MF")) {
+        try(InputStream in = load("manifest/INVALID_NAME.MF")) {
             manifest.read(in);
         }
         Attributes attributes = manifest.getMainAttributes();
@@ -42,7 +42,7 @@ public class JavaManifestTest {
     public void testManifest_Garbage() throws Exception
     {
         Manifest manifest = new Manifest();
-        try(InputStream in = load("GARBAGE.MF")) {
+        try(InputStream in = load("manifest/GARBAGE.MF")) {
             manifest.read(in);
         }
         Attributes attributes = manifest.getMainAttributes();

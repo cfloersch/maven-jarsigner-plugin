@@ -38,7 +38,7 @@ class SignedDataTest {
       // Assumption is the SignatureBlock is ContentInfo with a SignedData content item
       ContentInfo content = new ContentInfo();
 
-      try(DERDecoder decoder =  new DERDecoder(load("SERVER.RSA"))) {
+      try(DERDecoder decoder =  new DERDecoder(load("signatures", "SERVER.RSA"))) {
          content.decode(decoder);
       }
       SignedData signedData = (SignedData) content.getContent();
@@ -63,7 +63,7 @@ class SignedDataTest {
       CertificateFactory factory = CertificateFactory.getInstance("X509");
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-      try(InputStream in = load("server-cert-path.crt")) {
+      try(InputStream in = load("certs", "server-cert-path.crt")) {
          while(in.available() > 0) {
             CertPath certPath = factory.generateCertPath(in, "PKCS7");
 
@@ -99,12 +99,12 @@ class SignedDataTest {
    {
       CertificateFactory factory = CertificateFactory.getInstance("X509");
 
-      try(InputStream in = load("server-cert-chain.pem")) {
+      try(InputStream in = load("certs", "server-cert-chain.pem")) {
          Collection<? extends Certificate> chain = factory.generateCertificates(in);
          assertEquals(3, chain.size());
       }
 
-      try(InputStream in = load("server-cert-path.crt")) {
+      try(InputStream in = load("certs", "server-cert-path.crt")) {
          ContentInfo content = new ContentInfo();
          try(DERDecoder decoder =  new DERDecoder(in)) {
             content.decode(decoder);
@@ -115,7 +115,7 @@ class SignedDataTest {
 
       }
 
-      try(InputStream in = load("server-cert-path.crt")) {
+      try(InputStream in = load("certs", "server-cert-path.crt")) {
          CertPath certPath = factory.generateCertPath(in, "PKCS7");
          assertEquals(3, certPath.getCertificates().size());
       }
@@ -137,9 +137,9 @@ class SignedDataTest {
    }
 
 
-   private static InputStream load(String file) throws Exception
+   private static InputStream load(String directory, String file) throws Exception
    {
-      Path manifestPath = Paths.get("src","test", "resources", file);
+      Path manifestPath = Paths.get("src","test", "resources", directory, file);
       return Files.newInputStream(manifestPath);
    }
 

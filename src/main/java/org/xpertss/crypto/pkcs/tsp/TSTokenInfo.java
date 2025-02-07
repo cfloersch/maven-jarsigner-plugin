@@ -49,64 +49,17 @@ import java.util.Date;
  * }
  * <p/>
  * 1.2.840.113549.1.9.16.1.4
- * <p/>
- * TODO Due to the way TSA encode the TSTokenInfo as an OctetString I need to modify this to
- *  extend OctetString. Override the encode()/decode() methods to parse that byte array into
- *  the properties above (making them available via the getters below). Internalize the Seq
- *
  */
-public class TSTokenInfo extends ASN1Sequence implements ASN1RegisteredType {
+public class TSTokenInfo extends ASN1OctetString implements ASN1RegisteredType {
 
-    private ASN1Integer version;
-    private ASN1ObjectIdentifier policy;
-    private MessageImprint msgImprint;
-    private ASN1Integer serial;
-    private ASN1GeneralizedTime timestamp;
-    private Accuracy accuracy;
-    private ASN1Boolean ordering;
-    private ASN1Integer nonce;
-    private GeneralName tsa;
-    private ASN1SequenceOf extensions;
+    private TstInfo info;
 
     /**
      * Construct an uninitialized instance ready to decode a stream into
      */
     public TSTokenInfo()
     {
-        super(10);
-
-        version = new ASN1Integer(1);
-        add(version);
-
-        policy = new ASN1ObjectIdentifier();
-        add(policy);
-
-        msgImprint = new MessageImprint();
-        add(msgImprint);
-
-        serial = new ASN1Integer();
-        add(serial);
-
-        timestamp = new ASN1GeneralizedTime();
-        add(timestamp);
-
-        accuracy = new Accuracy();
-        add(accuracy);
-
-        ordering = new ASN1Boolean(false);
-        ordering.setOptional(true);
-        add(ordering);
-
-        nonce = new ASN1Integer(true, true);
-        add(nonce);
-
-
-        tsa = new GeneralName();
-        add(new ASN1TaggedType(0, tsa, true, true));
-
-
-        extensions = new ASN1SequenceOf(ASN1Opaque.class);
-        add(new ASN1TaggedType(1, extensions, false, true));
+        info = new TstInfo();
     }
 
 
@@ -137,33 +90,33 @@ public class TSTokenInfo extends ASN1Sequence implements ASN1RegisteredType {
      */
     public Date getDate()
     {
-        return timestamp.getDate();
+        return info.timestamp.getDate();
     }
 
     public AlgorithmIdentifier getHashAlgorithm()
     {
-        return msgImprint.getHashAlgorithm();
+        return info.msgImprint.getHashAlgorithm();
     }
 
     public byte[] getHashedMessage()
     {
-        byte[] digest = msgImprint.getHashedMessage();
+        byte[] digest = info.msgImprint.getHashedMessage();
         return (digest == null) ? null : digest.clone();
     }
 
     public BigInteger getNonce()
     {
-        return nonce.getBigInteger();
+        return info.nonce.getBigInteger();
     }
 
     public String getPolicyID()
     {
-        return policy.toString();
+        return info.policy.toString();
     }
 
     public BigInteger getSerialNumber()
     {
-        return serial.getBigInteger();
+        return info.serial.getBigInteger();
     }
 
 
@@ -184,10 +137,90 @@ public class TSTokenInfo extends ASN1Sequence implements ASN1RegisteredType {
     }
 
 
+
     public void decode(Decoder decoder)
         throws IOException
     {
         super.decode(decoder);
+        info = AsnUtil.decode(new TstInfo(), getByteArray());
+    }
+
+    public void encode(Encoder encoder)
+       throws IOException
+    {
+        setByteArray(AsnUtil.encode(info));
+        super.encode(encoder);
+    }
+
+
+
+    public String toString()
+    {
+        return info.toString();
+    }
+
+
+
+
+
+
+
+    private static class TstInfo extends ASN1Sequence {
+
+        private ASN1Integer version;
+        private ASN1ObjectIdentifier policy;
+        private MessageImprint msgImprint;
+        private ASN1Integer serial;
+        private ASN1GeneralizedTime timestamp;
+        private Accuracy accuracy;
+        private ASN1Boolean ordering;
+        private ASN1Integer nonce;
+        private GeneralName tsa;
+        private ASN1SequenceOf extensions;
+
+        /**
+         * Construct an uninitialized instance ready to decode a stream into
+         */
+        public TstInfo()
+        {
+            super(10);
+
+            version = new ASN1Integer(1);
+            add(version);
+
+            policy = new ASN1ObjectIdentifier();
+            add(policy);
+
+            msgImprint = new MessageImprint();
+            add(msgImprint);
+
+            serial = new ASN1Integer();
+            add(serial);
+
+            timestamp = new ASN1GeneralizedTime();
+            add(timestamp);
+
+            accuracy = new Accuracy();
+            add(accuracy);
+
+            ordering = new ASN1Boolean(false);
+            ordering.setOptional(true);
+            add(ordering);
+
+            nonce = new ASN1Integer(true, true);
+            add(nonce);
+
+
+            tsa = new GeneralName();
+            add(new ASN1TaggedType(0, tsa, true, true));
+
+
+            extensions = new ASN1SequenceOf(ASN1Opaque.class);
+            add(new ASN1TaggedType(1, extensions, false, true));
+        }
+
+
+
     }
 
 }

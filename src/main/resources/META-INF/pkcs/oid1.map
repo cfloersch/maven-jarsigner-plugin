@@ -5,5 +5,5 @@
 1.2.840.113549.1.9.23 = org.xpertss.crypto.asn1.ASN1OctetString
 
 # Time Stamp Protocol TimeStamp Token Info
-1.2.840.113549.1.9.16.1.4 = org.xpertss.crypto.asn1.ASN1OctetString
-#1.2.840.113549.1.9.16.1.4 = org.xpertss.crypto.pkcs.tsp.TSTokenInfo
+#1.2.840.113549.1.9.16.1.4 = org.xpertss.crypto.asn1.ASN1OctetString
+1.2.840.113549.1.9.16.1.4 = org.xpertss.crypto.pkcs.tsp.TSTokenInfo
