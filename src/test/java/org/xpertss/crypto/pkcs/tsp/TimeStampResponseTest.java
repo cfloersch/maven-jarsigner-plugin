@@ -134,7 +134,6 @@ class TimeStampResponseTest {
         byte[] encoded = Files.readAllBytes(path);
         TimeStampResponse response = AsnUtil.decode(new TimeStampResponse(), encoded);
         assertNotNull(response);
-        System.out.println(response);
 
         assertEquals(2, response.getStatusCode());
         String[] statusMessages = response.getStatusMessages();;
