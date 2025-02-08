@@ -1,6 +1,5 @@
 TODO
-  Download TimeStamp Responses and save them to files in test resources
-  Impl HttpTimestamper, utilize Proxies
-  Implement GeneralName
+  Improve GeneralName tests for URI, DNS, RFC, registeredID, and IP
   Add GeneralName to TSTokenInfo tests
+  Impl HttpTimestamper, utilize Proxies
   Finish off TSTokenInfo impl (test General Name, Create Creators, impl Extensions)
