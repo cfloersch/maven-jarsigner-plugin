@@ -2,6 +2,7 @@ package org.xpertss.crypto.pkcs.tsp;
 
 import org.xpertss.crypto.asn1.*;
 import org.xpertss.crypto.pkcs.AlgorithmIdentifier;
+import org.xpertss.crypto.pkcs.pkcs7.Data;
 import org.xpertss.crypto.pkcs.x509.GeneralName;
 
 import java.io.IOException;
@@ -50,7 +51,7 @@ import java.util.Date;
  * <p/>
  * 1.2.840.113549.1.9.16.1.4
  */
-public class TSTokenInfo extends ASN1OctetString implements ASN1RegisteredType {
+public class TSTokenInfo extends Data implements ASN1RegisteredType {
 
     private TstInfo info;
 

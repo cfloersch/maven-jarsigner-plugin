@@ -5,9 +5,11 @@ import org.xpertss.crypto.pkcs.tsp.TimeStampRequest;
 import org.xpertss.crypto.pkcs.tsp.TimeStampResponse;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
@@ -42,6 +44,9 @@ public class HttpTimestamper implements Timestamper {
      */
     private URI tsaURI = null;
 
+    private Proxy proxy;
+
+
     /**
      * Creates a timestamper that connects to the specified TSA.
      *
@@ -58,6 +63,21 @@ public class HttpTimestamper implements Timestamper {
         this.tsaURI = tsa;
     }
 
+
+    /**
+     * Creates a timestamper that connects to the specified TSA.
+     *
+     * @param tsa The location of the TSA. It must be an HTTP or HTTPS URI.
+     * @throws IllegalArgumentException if tsaURI is not an HTTP or HTTPS URI
+     */
+    public HttpTimestamper(URI tsa, Proxy proxy)
+    {
+        this(tsa);
+        this.proxy = proxy;
+    }
+
+
+
     /**
      * Connects to the TSA and requests a timestamp.
      *
@@ -66,6 +86,7 @@ public class HttpTimestamper implements Timestamper {
      * @throws IOException The exception is thrown if a problem occurs while
      *         communicating with the TSA.
      */
+    //public TimeStampResponse generateTimestamp(TimeStampRequest tsQuery)
     public TimeStampResponse generateTimestamp(TimeStampRequest tsQuery)
         throws IOException
     {
@@ -75,8 +96,15 @@ public class HttpTimestamper implements Timestamper {
         // may also need user creds via Authenticator (no way to directly associate)
         // generally speaking I don't think TSA require authentication so may be overkill
         // We could of course just set the Authorization header to basic with the creds (assumes basic auth)
-        Authenticator authenticator = null;
+
         Proxy proxy = Proxy.NO_PROXY;
+        if(this.proxy != null) {
+            proxy = this.proxy;
+            if(proxy instanceof AuthenticatedProxy) {
+                AuthenticatedProxy ap = (AuthenticatedProxy) proxy;
+                Authenticator.setDefault(ap.getAuthenticator());
+            }
+        }
 
 
         HttpURLConnection connection = (HttpURLConnection) tsaURI.toURL().openConnection(proxy);
@@ -90,35 +118,23 @@ public class HttpTimestamper implements Timestamper {
         connection.connect(); // No HTTP authentication is performed
 
         // Send the request
-        DataOutputStream output = null;
-        try {
-            output = new DataOutputStream(connection.getOutputStream());
+        try(DataOutputStream output =  new DataOutputStream(connection.getOutputStream())) {
             byte[] request = AsnUtil.encode(tsQuery);
             output.write(request, 0, request.length);
             output.flush();
-        } finally {
-            if (output != null) {
-                output.close();
-            }
         }
 
         // Receive the reply
-        BufferedInputStream input = null;
         byte[] replyBuffer = null;
-        try {
-            input = new BufferedInputStream(connection.getInputStream());
+        try (InputStream input = new BufferedInputStream(connection.getInputStream())) {
             verifyMimeType(connection.getContentType());
 
             int clen = connection.getContentLength();
-            //replyBuffer = IOUtils.readAllBytes(input);    // TODO
+            replyBuffer = readAllBytes(input);
             if (clen != -1 && replyBuffer.length != clen)
                 throw new EOFException("Expected:" + clen +
                         ", read:" + replyBuffer.length);
 
-        } finally {
-            if (input != null) {
-                input.close();
-            }
         }
         return AsnUtil.decode(new TimeStampResponse(), replyBuffer);
     }
@@ -129,11 +145,26 @@ public class HttpTimestamper implements Timestamper {
      * @param contentType The MIME content type to be checked.
      * @throws IOException The exception is thrown if a mismatch occurs.
      */
-    private static void verifyMimeType(String contentType) throws IOException {
+    private static void verifyMimeType(String contentType)
+       throws IOException
+    {
         if (! TS_REPLY_MIME_TYPE.equalsIgnoreCase(contentType)) {
             throw new IOException("MIME Content-Type is not " +
                     TS_REPLY_MIME_TYPE);
         }
+    }
+
+
+    private static byte[] readAllBytes(InputStream in)
+       throws IOException
+    {
+        int len = 0;
+        byte[] buffer = new byte[8192];
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        while((len = in.read(buffer)) != -1) {
+            baos.write(buffer, 0, len);
+        }
+        return baos.toByteArray();
     }
 
 }

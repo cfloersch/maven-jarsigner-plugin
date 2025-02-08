@@ -207,16 +207,26 @@ public class AlgorithmId {
                // Short name is required for SHA256 to be found
                String shortAlgName = stdAlgName.replace("-", "").replace("_", "");
                ASN1ObjectIdentifier algIdent = new ASN1ObjectIdentifier(matcher.group(1));
+               //System.out.println(stdAlgName);
+
                tab.putIfAbsent(stdAlgName.toUpperCase(Locale.ENGLISH), algIdent);
                tab.putIfAbsent(shortAlgName.toUpperCase(Locale.ENGLISH), algIdent);
             }
          }
       }
-      // Fix a couple
+      
+      // Fix a couple - This list is proof that maybe I ought to just define them myself rather than rely on Providers
       tab.put("RSA", new ASN1ObjectIdentifier("1.2.840.113549.1.1.1"));
       tab.put("RSASSA-PSS", new ASN1ObjectIdentifier("1.2.840.113549.1.1.10"));
       tab.put("RSAES-OAEP", new ASN1ObjectIdentifier("1.2.840.113549.1.1.7"));
       tab.put("EC", new ASN1ObjectIdentifier("1.2.840.10045.2.1"));
+
+      tab.put("MD5", new ASN1ObjectIdentifier("1.2.840.113549.2.5"));
+      tab.put("MD2", new ASN1ObjectIdentifier("1.2.840.113549.2.2"));
+      tab.put("ECDH", new ASN1ObjectIdentifier("1.3.132.1.12"));
+      tab.put("DSS", new ASN1ObjectIdentifier("1.2.840.10040.4.3"));
+      tab.put("AES", new ASN1ObjectIdentifier("2.16.840.1.101.3.4.1"));
+
       return tab;
    }
 

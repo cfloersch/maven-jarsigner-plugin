@@ -544,7 +544,7 @@ public class SignerInfo extends ASN1Sequence {
       buf.append(
          "PKCS#7 SignerInfo {\n" +
          "Version   : " + version.toString() + "\n" +
-         "Issuer    : " + identity.getIssuerDN().getName() + "\n" +
+         "Issuer    : " + identity.getIssuerDN() + "\n" +
          "Serial    : " + identity.getSerialNumber().toString() + "\n" +
          "Algorithm : " + alg + "\n" +
          "Auth A    : " + auth.size() + " elements\n" +
