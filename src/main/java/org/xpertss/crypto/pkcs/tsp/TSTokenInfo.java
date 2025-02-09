@@ -124,7 +124,7 @@ public class TSTokenInfo extends Data implements ASN1RegisteredType {
 
     public String getTsaName()
     {
-        // TODO Maybe return X500Principal?
+        if(info.tsa.isOptional()) return null;
         return info.tsa.toString();
     }
 

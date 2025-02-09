@@ -3,12 +3,10 @@ package org.xpertss.crypto.pkcs.tsp;
 import org.junit.jupiter.api.Test;
 import org.xpertss.crypto.asn1.ASN1ObjectIdentifier;
 import org.xpertss.crypto.asn1.AsnUtil;
-import org.xpertss.crypto.pkcs.AlgorithmId;
 import org.xpertss.crypto.pkcs.AlgorithmIdentifier;
 import org.xpertss.crypto.pkcs.pkcs7.ContentInfo;
 import org.xpertss.crypto.pkcs.pkcs7.SignedData;
 
-import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,6 +41,7 @@ class TSTokenInfoTest {
       assertNotNull(tstInfo.getPolicyID());
       assertEquals("2.16.840.1.114412.7.1", tstInfo.getPolicyID());
       assertEquals(new BigInteger("151283616440287569804835811747875277570"), tstInfo.getSerialNumber());
+      assertNull(tstInfo.getTsaName());
    }
 
 
@@ -63,6 +62,7 @@ class TSTokenInfoTest {
       assertNotNull(tstInfo.getPolicyID());
       assertEquals("1.3.6.1.4.1.4146.2.3", tstInfo.getPolicyID());
       assertEquals(new BigInteger("307522907613851416694125661223718855633298980549"), tstInfo.getSerialNumber());
+      assertEquals("CN=Globalsign TSA for Advanced - G4 - 202311, O=GlobalSign nv-sa, C=BE", tstInfo.getTsaName());
    }
 
 
@@ -82,6 +82,7 @@ class TSTokenInfoTest {
       assertNotNull(tstInfo.getPolicyID());
       assertEquals("1.3.6.1.4.1.601.10.3.1", tstInfo.getPolicyID());
       assertEquals(new BigInteger("113918696925722"), tstInfo.getSerialNumber());
+      assertEquals("CN=Microsoft Public RSA Time Stamping Authority, OU=Thales TSS ESN:E462-96F0-442E, OU=Microsoft America Operations, O=Microsoft Corporation, L=Redmond, ST=Washington, C=US", tstInfo.getTsaName());
    }
 
 

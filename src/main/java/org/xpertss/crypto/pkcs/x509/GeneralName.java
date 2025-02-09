@@ -147,32 +147,33 @@ public class GeneralName extends ASN1Choice {
     
     public ASN1Type getGeneralName()
     {
-        int tag = getTag();
         // extract the TaggedType first, then the "real" inner value
         ASN1TaggedType inner = (ASN1TaggedType) getInnerType();
-        switch (tag) {
-            case otherName:
-                return (OtherName) inner.getInnerType();
-            case rfc822Name:
-                return (ASN1IA5String) inner.getInnerType();
-            case dNSName:
-                return (ASN1IA5String) inner.getInnerType();
-            case x400Address:
-                throw new UnsupportedOperationException("Tag not supported for GeneralName: " + tag);
-            case directoryName:
-                return (ASN1Sequence) inner.getInnerType();
-            case ediPartyName:
-                throw new UnsupportedOperationException("ediPartyName not yet supported!");
-            case uniformRessourceIdentifier:
-                return (ASN1IA5String) inner.getInnerType();
-            case iPAddress:
-                return (ASN1OctetString) inner.getInnerType();
-            case registeredID:
-                return (ASN1ObjectIdentifier) inner.getInnerType();
-            default :
-                throw new UnsupportedOperationException("Tag not supported for GeneralName: " + tag);
+        if(inner != null) {
+            switch(getTag()) {
+                case otherName:
+                    return (OtherName) inner.getInnerType();
+                case rfc822Name:
+                    return (ASN1IA5String) inner.getInnerType();
+                case dNSName:
+                    return (ASN1IA5String) inner.getInnerType();
+                case x400Address:
+                    throw new UnsupportedOperationException("x400Address not yet supported!");
+                case directoryName:
+                    return (ASN1Sequence) inner.getInnerType();
+                case ediPartyName:
+                    throw new UnsupportedOperationException("ediPartyName not yet supported!");
+                case uniformRessourceIdentifier:
+                    return (ASN1IA5String) inner.getInnerType();
+                case iPAddress:
+                    return (ASN1OctetString) inner.getInnerType();
+                case registeredID:
+                    return (ASN1ObjectIdentifier) inner.getInnerType();
+                default:
+                    throw new UnsupportedOperationException("Tag not supported for GeneralName: " + getTag());
+            }
         }
-
+        return null;
     }
 
 
@@ -180,18 +181,21 @@ public class GeneralName extends ASN1Choice {
     @Override
     public String toString()
     {
-        switch(getTag()) {
-            case directoryName:
-                return x500Name.toString();
-            case rfc822Name:
-            case dNSName:
-            case uniformRessourceIdentifier:
-                return ((ASN1IA5String)getGeneralName()).getString();
-            case iPAddress:
-                byte[] addr = ((ASN1OctetString)getGeneralName()).getByteArray();
-                return toInetAddress(addr);
+        if(getInnerType() != null) {
+            switch(getTag()) {
+                case directoryName:
+                    return x500Name.toString();
+                case rfc822Name:
+                case dNSName:
+                case uniformRessourceIdentifier:
+                    return ((ASN1IA5String) getGeneralName()).getString();
+                case iPAddress:
+                    byte[] addr = ((ASN1OctetString) getGeneralName()).getByteArray();
+                    return toInetAddress(addr);
+            }
+            return getGeneralName().toString();
         }
-        return getGeneralName().toString();
+        return null;
     }
 
 
