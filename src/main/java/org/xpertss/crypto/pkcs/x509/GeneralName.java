@@ -118,13 +118,8 @@ public class GeneralName extends ASN1Choice {
                 setInnerType(new ASN1TaggedType(registeredID, new ASN1ObjectIdentifier(value), false, false));
                 break;
             case iPAddress:
-               try {
-                  InetAddress addr = InetAddress.getByName(value);
-                   setInnerType(new ASN1TaggedType(iPAddress, new ASN1OctetString(addr.getAddress()), false, false));
-                  break;
-               } catch(UnknownHostException e) {
-                  throw new IllegalArgumentException("Not an ip address", e);
-               }
+              setInnerType(new ASN1TaggedType(iPAddress, new ASN1OctetString(toBytes(value)), false, false));
+              break;
            default:
                 throw new UnsupportedOperationException("Type doesn't support string values");
         }
@@ -182,6 +177,7 @@ public class GeneralName extends ASN1Choice {
 
 
 
+    @Override
     public String toString()
     {
         switch(getTag()) {
@@ -202,6 +198,7 @@ public class GeneralName extends ASN1Choice {
 
 
 
+    @Override
     public void decode(Decoder decoder)
        throws IOException
     {
@@ -212,6 +209,7 @@ public class GeneralName extends ASN1Choice {
         }
     }
 
+    @Override
     public void encode(Encoder encoder)
        throws IOException
     {
@@ -225,7 +223,17 @@ public class GeneralName extends ASN1Choice {
 
 
 
-    public static String toInetAddress(byte[] octets)
+    private static byte[] toBytes(String ip)
+    {
+        try {
+            return InetAddress.getByName(ip).getAddress();
+        } catch(UnknownHostException e) {
+           throw new IllegalArgumentException(ip + " not a valid ip address");
+        }
+    }
+
+
+    private static String toInetAddress(byte[] octets)
     {
         StringBuilder builder = new StringBuilder();
         if(octets.length == 4) {

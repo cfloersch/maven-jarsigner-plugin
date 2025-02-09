@@ -2,6 +2,7 @@ package org.xpertss.crypto.pkcs.x509;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.xpertss.crypto.asn1.AsnUtil;
 
 import javax.security.auth.x500.X500Principal;
@@ -134,6 +135,26 @@ class GeneralNameTest {
       assertEquals(GeneralName.iPAddress, decoded.getType());
 
       assertArrayEquals(addr, (byte[])decoded.getGeneralName().getValue());
+   }
+
+
+
+   @Test
+   public void testNegatives() throws Exception
+   {
+      assertThrows(IllegalArgumentException.class, () -> {
+         GeneralName ip = new GeneralName(GeneralName.iPAddress, "hello dude");
+      });
+
+      assertThrows(IllegalArgumentException.class, () -> {
+         GeneralName oid = new GeneralName(GeneralName.registeredID, "hello dude");
+      });
+
+      assertThrows(IllegalArgumentException.class, () -> {
+         GeneralName x500 = new GeneralName(GeneralName.directoryName, "hello dude");
+      });
+
+      // TODO should we validate the rfc, dns, or uri forms?
    }
 
 
