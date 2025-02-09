@@ -274,6 +274,16 @@ public class ASN1TaggedType extends ASN1AbstractType {
       }
    }
 
+   public boolean equals(Object obj)
+   {
+      if(obj instanceof ASN1Type && obj.getClass() == getClass()) {
+         ASN1TaggedType o = (ASN1TaggedType) obj;
+         return o.getInnerType().equals(getInnerType());
+      }
+      return false;
+   }
+
+
 }
 
 

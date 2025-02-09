@@ -339,7 +339,7 @@ public class ASN1OpenType extends ASN1AbstractType {
          throw new InternalError();
       }
    }
-   
+
 }
 
 

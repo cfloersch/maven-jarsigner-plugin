@@ -364,7 +364,18 @@ public class ASN1Choice extends ASN1AbstractType {
          throw new InternalError();
       }
    }
-   
+
+
+   public boolean equals(Object obj)
+   {
+      if(obj instanceof ASN1Type && obj.getClass() == getClass()) {
+         ASN1Choice o = (ASN1Choice) obj;
+         return o.getInnerType().equals(getInnerType());
+      }
+      return false;
+   }
+
+
 }
 
 

@@ -5,7 +5,6 @@ import org.xpertss.crypto.asn1.*;
 import javax.security.auth.x500.X500Principal;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.URI;
 import java.net.UnknownHostException;
 
 /**
@@ -182,13 +181,25 @@ public class GeneralName extends ASN1Choice {
     }
 
 
+
     public String toString()
     {
-        if(getTag() == directoryName) {
-            return x500Name.toString();
+        switch(getTag()) {
+            case directoryName:
+                return x500Name.toString();
+            case rfc822Name:
+            case dNSName:
+            case uniformRessourceIdentifier:
+                return ((ASN1IA5String)getGeneralName()).getString();
+            case iPAddress:
+                byte[] addr = ((ASN1OctetString)getGeneralName()).getByteArray();
+                return toInetAddress(addr);
         }
         return getGeneralName().toString();
     }
+
+
+
 
 
     public void decode(Decoder decoder)
@@ -210,5 +221,30 @@ public class GeneralName extends ASN1Choice {
         }
         super.encode(encoder);
     }
+
+
+
+
+    public static String toInetAddress(byte[] octets)
+    {
+        StringBuilder builder = new StringBuilder();
+        if(octets.length == 4) {
+            for(byte octet : octets) {
+                int unsigned = octet & 0xFF;
+                if(builder.length() > 0) builder.append(".");
+                builder.append(unsigned);
+            }
+        } else {
+            for (int i = 0; i < 16; i += 2) {
+                int high = (octets[i] & 0xFF) << 8;
+                int low = octets[i + 1] & 0xFF;
+                int value = high | low;
+                builder.append(String.format("%x", value));
+                if (i < 14) builder.append(":");
+            }
+        }
+        return builder.toString();
+    }
+
 
 }
