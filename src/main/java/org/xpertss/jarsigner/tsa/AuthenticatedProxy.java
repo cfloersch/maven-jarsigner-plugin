@@ -8,46 +8,31 @@ package org.xpertss.jarsigner.tsa;
 
 import javax.security.auth.Destroyable;
 import java.net.Authenticator;
+import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.SocketAddress;
 
-public class AuthenticatedProxy extends Proxy {
+public final class AuthenticatedProxy extends Proxy {
 
    private PasswordAuthenticator authenticator;
 
    /**
-    * Creates an entry representing a PROXY connection.
-    * Certain combinations are illegal. For instance, for types Http, and
-    * Socks, a SocketAddress <b>must</b> be provided.
-    * <p>
-    * Use the {@code Proxy.NO_PROXY} constant
-    * for representing a direct connection.
-    *
-    * @param type the {@code Type} of the proxy
-    * @param sa   the {@code SocketAddress} for that proxy
-    * @throws IllegalArgumentException when the type and the address are
-    *                                  incompatible
-    */
-   public AuthenticatedProxy(Type type, SocketAddress sa)
-   {
-      super(type, sa);
-   }
-
-   /**
-    * Creates an entry representing a PROXY connection. Certain combinations are illegal.
-    * For instance, for types Http, and Socks, a SocketAddress <b>must</b> be provided.
+    * Creates an entry representing a PROXY connection. Certain combinations are illegal. For
+    * instance, for types Http, and Socks, a SocketAddress <b>must</b> be provided.
     * <p>
     * Use the {@code Proxy.NO_PROXY} constant for representing a direct connection.
     *
     * @param type the {@code Type} of the proxy
     * @param sa   the {@code SocketAddress} for that proxy
+    * @param username The username to use through the proxy
+    * @param password The password to use through the proxy
     * @throws IllegalArgumentException when the type and the address are incompatible
     */
    public AuthenticatedProxy(Type type, SocketAddress sa, String username, String password)
    {
       super(type, sa);
-      this.authenticator = new PasswordAuthenticator(username, password);
+      this.authenticator = new PasswordAuthenticator(sa, username, password);
    }
 
 
@@ -67,8 +52,11 @@ public class AuthenticatedProxy extends Proxy {
       private final String username;
       private final char[] password;
 
-      public PasswordAuthenticator(String username, String password)
+      private SocketAddress sa;
+
+      public PasswordAuthenticator(SocketAddress sa, String username, String password)
       {
+         this.sa = sa;
          this.username = username;
          this.password = password.toCharArray();
       }
@@ -80,15 +68,20 @@ public class AuthenticatedProxy extends Proxy {
          // TODO Make sure host is correct before returning
          //  if direct then must match target uri otherwise must match proxy host
 
-         getRequestorType();
-         getRequestingURL();
+         //getRequestorType();
+         //getRequestingURL();
 
-         getRequestingScheme();
-         getRequestingSite();
-         getRequestingHost();
-         getRequestingPort();
+         //getRequestingScheme();
+         //getRequestingSite();
 
-         return new PasswordAuthentication(username, password);
+         //getRequestingHost();
+         //getRequestingPort();
+
+         InetSocketAddress target = new InetSocketAddress(getRequestingHost(), getRequestingPort());
+
+         
+         if(!sa.equals(target)) return null;
+         return new PasswordAuthentication(username, password.clone());
       }
 
    }

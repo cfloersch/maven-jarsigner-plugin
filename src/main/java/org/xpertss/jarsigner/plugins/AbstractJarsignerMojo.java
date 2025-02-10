@@ -3,6 +3,9 @@ package org.xpertss.jarsigner.plugins;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.URI;
 import java.nio.file.Path;
 import java.security.Provider;
 import java.security.Security;
@@ -22,6 +25,7 @@ import org.apache.maven.shared.utils.io.FileUtils;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcherException;
 import org.xpertss.jarsigner.jar.ArchiveUtils;
+import org.xpertss.jarsigner.tsa.AuthenticatedProxy;
 
 /**
  * Maven Jarsigner Plugin base class.
@@ -262,6 +266,53 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
     }
 
 
+    protected java.net.Proxy findProxyFor(URI uri)
+    {
+        Proxy proxy = findActiveProxy(uri.getScheme(), uri.getHost());
+        if(proxy != null) {
+            InetSocketAddress address = new InetSocketAddress(proxy.getHost(), proxy.getPort());
+            if(StringUtils.isNotEmpty(proxy.getUsername())) {
+                return new AuthenticatedProxy(java.net.Proxy.Type.HTTP, address, proxy.getUsername(), proxy.getPassword());
+            } else {
+                return new java.net.Proxy(java.net.Proxy.Type.HTTP, address);
+            }
+        }
+        return java.net.Proxy.NO_PROXY;
+    }
+
+    private Proxy findActiveProxy(String protocol, String host)
+    {
+        for(Proxy proxy : settings.getProxies()) {
+            if(proxy.isActive() && matchesProtocol(protocol, proxy.getProtocol())) {
+                String nonProxied = proxy.getNonProxyHosts();
+                if(nonProxied != null && !nonProxied.isEmpty()) {
+                    String[] patterns = nonProxied.split("[|]");
+                    if(matchesNone(patterns, host)) return proxy;
+                } else {
+                    return proxy;
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean matchesProtocol(String protocol, String proxyProtocol)
+    {
+        return (StringUtils.isEmpty(proxyProtocol)
+                    || proxyProtocol.equalsIgnoreCase(protocol));
+    }
+
+    private boolean matchesNone(String[] patterns, String host)
+    {
+        InetAddress hostInet = NetUtils.getInetAddress(host);
+        if(hostInet == null) return false;
+        for(String pattern : patterns) {
+            if(NetUtils.matches(pattern, hostInet)) return false;
+        }
+        return true;
+    }
+
+
     /**
      * Finds all jar files, by looking at the Maven project and user configuration.
      *
@@ -429,5 +480,7 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
         getLog().debug(getMessage("unsupported", artifact));
         return Optional.empty();
     }
+
+
 
 }
