@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import java.io.File;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -183,8 +184,13 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
             getLog().debug("Loaded identity: " + identity);
 
             TsaSigner tsaSigner = null;
-            if(tsa != null) {
-                tsaSigner = tsa.build();
+            if(tsa != null && StringUtils.isNotEmpty(tsa.getUri())) {
+                URI tsaUri = URI.create(tsa.getUri());
+                TsaSigner.Builder tsaBuilder = TsaSigner.Builder.of(tsaUri)
+                        .digestAlgorithm(tsa.getDigestAlg()).policyId(tsa.getPolicyId())
+                        .proxiedBy(findProxyFor(tsaUri));
+
+                tsaSigner = tsaBuilder.build();
                 getLog().debug("Loaded timestamp authority: " + tsaSigner);
             }
 
@@ -194,10 +200,10 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
             if(digest == null) digest = new AlgorithmSpec();
             if(signature == null) signature = new AlgorithmSpec();
 
-            signerBuilder = new JarSigner.Builder(identity)
+            signerBuilder = new JarSigner.Builder(identity).clean(clean)
                                     .digestAlgorithm(digest.getAlgorithm(), digest.getProvider())
                                     .signatureAlgorithm(signature.getAlgorithm(), signature.getProvider())
-                                    .signerName(sigfile).tsa(tsaSigner).clean(clean);
+                                    .signerName(sigfile).tsa(tsaSigner);
 
         } catch(Exception e) {
             throw new MojoExecutionException(e);

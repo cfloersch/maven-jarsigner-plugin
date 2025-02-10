@@ -1,2 +1,10 @@
 TODO
+  Test Maven Plugins
+     Constructs/Picks proper Proxy
+     Properly Inits Providers
+     Matches Jarfile Set Properly
+     Configs TSA Properly?
+     Concurrency of Signing???
+  Impl TsaSigner
+     Finish validation checks
   Impl HttpTimestamper, utilize Proxies

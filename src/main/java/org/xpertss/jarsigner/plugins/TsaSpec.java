@@ -1,12 +1,11 @@
 package org.xpertss.jarsigner.plugins;
 
 import org.codehaus.plexus.util.StringUtils;
-import org.xpertss.jarsigner.TsaSigner;
 
-import java.io.IOException;
-import java.net.URI;
-import java.security.NoSuchAlgorithmException;
 
+/**
+ * Simple Mojo property holder for Time Stamp Authority configuration.
+ */
 public class TsaSpec {
 
     private String uri;     // TODO Can I make this type URI??
@@ -44,19 +43,6 @@ public class TsaSpec {
     public void setDigestAlg(String digestAlg)
     {
         this.digestAlg = digestAlg;
-    }
-
-
-
-    public TsaSigner build()
-        throws IOException, NoSuchAlgorithmException
-    {
-        TsaSigner.Builder builder = null;
-        if(uri != null) {
-            builder = TsaSigner.Builder.of(URI.create(uri))
-                            .digestAlgorithm(digestAlg).policyId(policyId);
-        }
-        return (builder != null) ? builder.build() : null;
     }
 
 

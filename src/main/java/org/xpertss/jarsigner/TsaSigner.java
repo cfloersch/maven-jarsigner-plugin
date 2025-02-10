@@ -9,20 +9,41 @@ package org.xpertss.jarsigner;
 
 
 
+import org.apache.maven.shared.utils.StringUtils;
+import org.xpertss.crypto.asn1.AsnUtil;
+import org.xpertss.crypto.pkcs.pkcs7.ContentInfo;
+import org.xpertss.crypto.pkcs.pkcs7.SignedData;
+import org.xpertss.crypto.pkcs.tsp.TSTokenInfo;
+import org.xpertss.crypto.pkcs.tsp.TimeStampRequest;
+import org.xpertss.crypto.pkcs.tsp.TimeStampResponse;
+import org.xpertss.jarsigner.tsa.HttpTimestamper;
+
+import java.io.IOException;
+import java.math.BigInteger;
+import java.net.Proxy;
 import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Objects;
 
+/**
+ * An implementation of time stamp protocol that interacts with a TSA and produces a
+ * timestamp token that can be included in our signature.
+ */
 // Sun Timestamper Impl
 // https://github.com/JetBrains/jdk8u_jdk/tree/master/src/share/classes/sun/security/timestamp
 // https://www.ietf.org/rfc/rfc5035.txt
 public final class TsaSigner {
 
+    private final SecureRandom random = new SecureRandom();
+
     private final URI uri;
 
     private String policyId;
     private String digest;
+
+    private Proxy proxy;
 
 
     private TsaSigner(Builder builder)
@@ -30,26 +51,38 @@ public final class TsaSigner {
         this.uri = builder.uri;
         this.policyId = builder.policyId;
         this.digest = builder.digestAlg;
+        this.proxy = proxy;
     }
 
 
+    /**
+     * Returns the URI of the Time Stamp Authority this will use to generate timestamp tokens.
+     */
     public URI getUri()
     {
         return uri;
     }
 
+    /**
+     * Returns the message digest algorithm this implementation will use to produce the hash
+     * the TSA will sign and return. It must be one the TSA supports.
+     */
     public String getDigestAlgorithm()
     {
         return (digest == null) ? "SHA-256" : digest;
     }
 
+    /**
+     * The TSA specific policyId we are requesting the TSA to apply when generating the timestamp.
+     */
     public String getPolicyId()
     {
         return policyId;
     }
 
+
     /**
-     * Given a signature, crate a time stamp token, and return it as an BER encoded ContentInfo
+     * Given a signature, crate a time stamp token, and return it as a BER encoded ContentInfo
      * structure. The ContentInfo defined in PKCS7 will include an embedded SignedData object
      * which itself will include the TSTInfo content entry.
      * <p/>
@@ -60,17 +93,85 @@ public final class TsaSigner {
      * @return A BER encoded ContentInfo structure.
      */
     public byte[] stamp(byte[] signature)
+       throws NoSuchAlgorithmException, IOException
     {
-        // Create HttpTimestamper
-        byte[] tsToken = null;
+        BigInteger NONCE = new BigInteger(64, random);
 
-        // TODO get timestamp..
-        // https://github.com/JetBrains/jdk8u_jdk/blob/master/src/share/classes/sun/security/pkcs/PKCS7.java#L872
-        // HttpTimestamper tsa = new HttpTimestamper(tsaURI);
-        //https://github.com/JetBrains/jdk8u_jdk/blob/master/src/share/classes/sun/security/timestamp/HttpTimestamper.java#L50
+        digest = (StringUtils.isEmpty(digest)) ? "SHA-256" : digest;
 
-        return null;
-        //return new PKCS9Attributes(new PKCS9Attribute(PKCS9Attribute.SIGNATURE_TIMESTAMP_TOKEN_STR, tsToken));
+        MessageDigest md = MessageDigest.getInstance(digest);
+        TimeStampRequest request = new TimeStampRequest(md.getAlgorithm(), md.digest(signature));
+        if(StringUtils.isNotEmpty(policyId)) request.setPolicy(policyId);
+        request.setNonce(NONCE);
+        request.setRequestCertificate(true);
+
+        HttpTimestamper timestamper = new HttpTimestamper(uri, proxy);
+        TimeStampResponse response = timestamper.generateTimestamp(request);
+        if(response.getStatusCode() > 1) {
+            throw new IOException("Error generating timestamp: " + response.getStatusCodeAsText());
+        }
+        TSTokenInfo tstInfo = response.getTimestampTokenInfo();
+
+        if (StringUtils.isNotEmpty(policyId) && !policyId.equals(tstInfo.getPolicyID())) {
+            throw new IOException("TSAPolicyID changed in timestamp token");
+        }
+
+        // TODO A bunch of validation of NONCE, Hashes, Digest Alg, policyId, etc
+        /*
+        try {
+            if (!tstInfo.getHashAlgorithm().equals(AlgorithmId.get(digest))) {
+                throw new IOException("Digest algorithm not " + digest + " in "
+                   + "timestamp token");
+            }
+        } catch (NoSuchAlgorithmException nase) {
+            throw new IllegalArgumentException();   // should have been caught before
+        }
+        */
+
+        if (!MessageDigest.isEqual(tstInfo.getHashedMessage(),
+                                    request.getHashedMessage())) {
+            throw new IOException("Digest octets changed in timestamp token");
+        }
+
+        BigInteger replyNonce = tstInfo.getNonce();
+        if (replyNonce == null) {
+            throw new IOException("Nonce missing in timestamp token");
+        } else if(!replyNonce.equals(NONCE)) {
+            throw new IOException("Nonce changed in timestamp token");
+        }
+
+        ContentInfo content = response.getToken();
+        // TODO Add check for ContentType
+        SignedData singedData = (SignedData) content.getContent();
+
+        // Examine the TSA's certificate (if present)
+        /*
+        for (SignerInfo si: signedData.getSignerInfos()) {
+            // TODO How much do we want to validate about the TSA?
+            X509Certificate cert = si.getCertificate(tsToken);
+            if (cert == null) {
+                // Error, we've already set tsRequestCertificate = true
+                throw new CertificateException(
+                   "Certificate not included in timestamp token");
+            } else {
+                if (!cert.getCriticalExtensionOIDs().contains(
+                   EXTENDED_KEY_USAGE_OID)) {
+                    throw new CertificateException(
+                       "Certificate is not valid for timestamping");
+                }
+                List<String> keyPurposes = cert.getExtendedKeyUsage();
+                if (keyPurposes == null ||
+                   !keyPurposes.contains(KP_TIMESTAMPING_OID)) {
+                    throw new CertificateException(
+                       "Certificate is not valid for timestamping");
+                }
+            }
+        }
+         */
+
+
+
+        return AsnUtil.encode(response.getToken());
     }
 
     @Override
@@ -94,6 +195,9 @@ public final class TsaSigner {
         private URI uri;
         private String digestAlg;
         private String policyId;
+
+        private Proxy proxy;
+
 
         private Builder(URI uri)
         {
@@ -123,6 +227,12 @@ public final class TsaSigner {
             return this;
         }
 
+
+        public Builder proxiedBy(Proxy proxy)
+        {
+            this.proxy = proxy;
+            return this;
+        }
 
 
 

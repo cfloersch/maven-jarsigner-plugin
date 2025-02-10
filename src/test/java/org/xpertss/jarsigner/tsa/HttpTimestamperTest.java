@@ -8,7 +8,11 @@ package org.xpertss.jarsigner.tsa;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.xpertss.crypto.pkcs.pkcs7.ContentInfo;
+import org.xpertss.crypto.pkcs.tsp.TSTokenInfo;
 import org.xpertss.crypto.pkcs.tsp.TimeStampRequest;
+import org.xpertss.crypto.pkcs.tsp.TimeStampResponse;
+
 import java.math.BigInteger;
 import java.net.URI;
 import java.security.MessageDigest;
@@ -16,6 +20,7 @@ import java.security.SecureRandom;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -49,14 +54,24 @@ public class HttpTimestamperTest {
          request.setNonce(NONCE);
          request.setRequestCertificate(true);
          HttpTimestamper timestamper = new HttpTimestamper(e.getValue());
+         TimeStampResponse response = timestamper.generateTimestamp(request);
+         assertNotNull(response);
+         assertEquals(0, response.getStatusCode());
 
-         // TODO Test something
+         TSTokenInfo tstInfo = response.getTimestampTokenInfo();
+         assertNotNull(tstInfo);
+         assertEquals(NONCE, tstInfo.getNonce());
+         assertArrayEquals(request.getHashedMessage(), tstInfo.getHashedMessage());
+
+         ContentInfo content = response.getToken();
+         assertNotNull(content);
+         assertEquals("1.2.840.113549.1.7.2", content.getContentType().toString());
       }
    }
 
 
 
-
+   // TODO Some sort of Proxy Test? How?
 
 
 
