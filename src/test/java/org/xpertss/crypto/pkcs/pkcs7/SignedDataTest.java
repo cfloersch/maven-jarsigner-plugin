@@ -18,6 +18,8 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -63,19 +65,22 @@ class SignedDataTest {
       CertificateFactory factory = CertificateFactory.getInstance("X509");
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-      try(InputStream in = load("certs", "server-cert-path.crt")) {
-         while(in.available() > 0) {
-            CertPath certPath = factory.generateCertPath(in, "PKCS7");
+      // TODO Server-certs-path.crt is storing/regurgitating the certPath in reverse order
 
-            SignedData signedData = new SignedData();
-            signedData.setContentType(ContentInfo.DATA_OID);
-            SignerInfo signer = signedData.newSigner("SHA256withRSA", certPath); // certs are backwards
-            signer.setEncryptedDigest(signature);
+      try(InputStream in = load("certs", "server-cert-chain.pem")) {
+         Collection<? extends Certificate> collection = factory.generateCertificates(in);
+         List<X509Certificate> certChain = collection.stream()
+                 .map((Function<Certificate, X509Certificate>) certificate -> (X509Certificate) certificate)
+                 .collect(Collectors.toList());
 
-            ContentInfo content = new ContentInfo(signedData);
-            try(DEREncoder encoder = new DEREncoder(baos)) {
-               content.encode(encoder);
-            }
+         SignedData signedData = new SignedData();
+         signedData.setContentType(ContentInfo.DATA_OID);
+         SignerInfo signer = signedData.newSigner("SHA256withRSA", certChain.toArray(new X509Certificate[0])); // certs are backwards
+         signer.setEncryptedDigest(signature);
+
+         ContentInfo content = new ContentInfo(signedData);
+         try(DEREncoder encoder = new DEREncoder(baos)) {
+            content.encode(encoder);
          }
       }
 
@@ -111,13 +116,16 @@ class SignedDataTest {
          }
          assertEquals(ContentInfo.SIGNED_DATA_OID, content.getContentType());
          SignedData signedData = (SignedData) content.getContent();
-         assertEquals(3, signedData.getCertificates().size());
+         List<X509Certificate> chain = signedData.getCertificates();
+         assertEquals(3, chain.size());
 
       }
 
       try(InputStream in = load("certs", "server-cert-path.crt")) {
+         // TODO I can't explain why it loads the certificates in backwards order
          CertPath certPath = factory.generateCertPath(in, "PKCS7");
-         assertEquals(3, certPath.getCertificates().size());
+         List<? extends Certificate> path = certPath.getCertificates();
+         assertEquals(3, path.size());
       }
 
    }

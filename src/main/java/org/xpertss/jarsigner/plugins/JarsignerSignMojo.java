@@ -173,7 +173,7 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
             IdentityBuilder builder = new IdentityBuilder();
             builder.strict(strict)
                     .trustStore(toPath(truststore))
-                    .certificatePath(toPath(certchain))
+                    .certificateChain(toPath(certchain))
                     .alias(alias).keyPass(create(keypass));
             if(keystore != null) {
                 builder.keyStore(toPath(keystore.getPath()))

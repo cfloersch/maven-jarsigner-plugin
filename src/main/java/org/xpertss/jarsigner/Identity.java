@@ -9,6 +9,7 @@ package org.xpertss.jarsigner;
 import java.security.PrivateKey;
 import java.security.cert.CertPath;
 import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
 
 /**
  * An Identity represents the name (Alias) associated with a private key and it's
@@ -19,9 +20,9 @@ public interface Identity {
    public String getName();
 
    public PrivateKey getPrivateKey();
-   public Certificate getCertificate();
+   public X509Certificate getCertificate();
 
-   public CertPath getCertificatePath();
+   public X509Certificate[] getCertificateChain();
 
 
 }

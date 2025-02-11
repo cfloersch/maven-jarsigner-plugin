@@ -81,6 +81,9 @@ public class GeneralName extends ASN1Choice {
     // Types: dNSName, directoryName (aka X.500 distinguished name), rfc822Name (email),
     //          x400Address, ediPartyName, uniformResourceIdentifier, otherName
 
+    /**
+     * Create an instance for Decoding
+     */
     public GeneralName()
     {
         super(3);
@@ -101,7 +104,16 @@ public class GeneralName extends ASN1Choice {
     }
 
 
-
+    /**
+     * Create an instance for rfc822Name, dNSName, uniformResourceIdentifier, directoryName,
+     * registeredID, or iPAddress. The format of the string input must match the type of
+     * general name being created.
+     * <p/>
+     * This method has no support for creating ediParty, x400Address, nor otherName instances.
+     *
+     * @param type The type of GeneralName
+     * @param value The string value for the type
+     */
     public GeneralName(int type, String value)
     {
         switch(type) {
@@ -125,7 +137,12 @@ public class GeneralName extends ASN1Choice {
         }
     }
 
-
+    /**
+     * Special constructor to create an instance of GeneralName of type {@link #directoryName}
+     * using a X500Principal object.
+     *
+     * @param x500Name The X500Principal from which this name is to be created.
+     */
     public GeneralName(X500Principal x500Name)
     {
         this.x500Name = x500Name;
@@ -137,14 +154,24 @@ public class GeneralName extends ASN1Choice {
     // TODO Do I care about constructors for x400, EDI, or Other Names?
 
 
-
-
+    /**
+     * Get the type associated with this general name. Will throw an IllegalStateException if
+     * the type has not yet been set through decoding.
+     */
     public int getType()
     {
         return getTag();
     }
 
-    
+    /**
+     * Returns the ASN1 object representation of the name. Each type may have a
+     * different ASN1 Type.
+     * <p/>
+     * This will return {@code null} if the GeneralName has not yet been initialized.
+     * <p/>
+     * This will throw an UnsupportedOperationException if the decoded name happens
+     * to be x400Address or ediParty, or it's tag is not one defined above.
+     */
     public ASN1Type getGeneralName()
     {
         // extract the TaggedType first, then the "real" inner value
@@ -177,7 +204,10 @@ public class GeneralName extends ASN1Choice {
     }
 
 
-
+    /**
+     * Returns the name as a simple Java String unless it is a complex
+     * type like OtherName.
+     */
     @Override
     public String toString()
     {

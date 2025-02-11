@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.security.*;
-import java.security.cert.CertPath;
+import java.security.cert.X509Certificate;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
@@ -59,7 +59,7 @@ public final class JarSigner {
      */
 
     private final PrivateKey privateKey;
-    private final CertPath certPath;
+    private final X509Certificate[] chain;
 
     private final MessageDigest digest;
     private final Signature signature;
@@ -72,7 +72,7 @@ public final class JarSigner {
     private JarSigner(Builder builder, MessageDigest digest, Signature signature)
     {
         this.privateKey = builder.privateKey;
-        this.certPath = builder.certPath;
+        this.chain = builder.chain;
         this.digest = digest;
         this.signature = signature;
 
@@ -147,7 +147,7 @@ public final class JarSigner {
         SignatureFile sigfile = archive.generateSignatureFile(signerName, digest);
 
         signature.initSign(privateKey);
-        SignatureBlock sigblock = sigfile.generateBlock(signature, certPath, tsa);
+        SignatureBlock sigblock = sigfile.generateBlock(signature, tsa, chain);
 
         Manifest manifest = archive.getManifest();
         boolean modified = manifest.isModified();
@@ -201,7 +201,7 @@ public final class JarSigner {
     public static class Builder {
 
         private final PrivateKey privateKey;
-        private final CertPath certPath;
+        private final X509Certificate[] chain;
 
         private String digestAlg;
         private String digestProv;
@@ -223,17 +223,17 @@ public final class JarSigner {
         {
             this.signerName = identity.getName();
             this.privateKey = identity.getPrivateKey();
-            this.certPath = identity.getCertificatePath();
+            this.chain = identity.getCertificateChain();
         }
 
         /**
          * Alternative method to construct an instance of JarSigner Builder using
-         * the privateKey and cert path directly.
+         * the privateKey and certificate chain directly.
          */
-        public Builder(PrivateKey privateKey, CertPath certPath)
+        public Builder(PrivateKey privateKey, X509Certificate ... chain)
         {
             this.privateKey = Objects.requireNonNull(privateKey, "privateKey");
-            this.certPath = Objects.requireNonNull(certPath, "certPath");
+            this.chain = Objects.requireNonNull(chain, "chain");
         }
 
         /**

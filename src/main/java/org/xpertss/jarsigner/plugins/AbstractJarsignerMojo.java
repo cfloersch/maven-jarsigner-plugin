@@ -156,9 +156,6 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
 
 
 
-    /**
-     * TODO Do I need this?
-     */
     private final SecDispatcher securityDispatcher;
 
 
@@ -214,9 +211,9 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
                     Security.addProvider(prov);
                     getLog().info(getMessage("provider.loaded", prov.getName()));
                 } catch (ClassCastException cce) {
-                    throw new MojoExecutionException(String.format(getMessage("provider.class.not.a.provider"), provider.getClassName()));
+                    throw new MojoExecutionException(getMessage("provider.class.not.a.provider", provider.getClassName()));
                 } catch (ReflectiveOperationException  e) {
-                    throw new MojoExecutionException(String.format(getMessage("provider.class.not.found"), provider.getClassName()), e.getCause());
+                    throw new MojoExecutionException(getMessage("provider.class.not.found", provider.getClassName()), e.getCause());
                 }
             }
         }
@@ -232,37 +229,6 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
        throws MojoExecutionException
     {
         // Default implementation does nothing
-
-
-        // Adds proxy information.
-        // TODO What is proper way to do this
-        //  (works for network Signature services like AWS and TSA Impls)
-        if (this.settings != null && this.settings.getActiveProxy() != null) {
-            Proxy proxy = settings.getActiveProxy();
-            if (StringUtils.isNotEmpty(proxy.getHost())) {
-                /*
-                "-J-Dhttp.proxyHost=" + proxy.getHost();
-                "-J-Dhttps.proxyHost=" + proxy.getHost();
-                "-J-Dftp.proxyHost=" + proxy.getHost();
-                 */
-            }
-            if (proxy.getPort() > 0) {
-                /*
-                "-J-Dhttp.proxyPort=" + proxy.getPort();
-                "-J-Dhttps.proxyPort=" + proxy.getPort();
-                "-J-Dftp.proxyPort=" + proxy.getPort();
-                 */
-            }
-
-            if (StringUtils.isNotEmpty(proxy.getNonProxyHosts())) {
-                /*
-                "-J-Dhttp.nonProxyHosts=\"" + proxy.getNonProxyHosts() + "\"";
-                "-J-Dftp.nonProxyHosts=\"" + proxy.getNonProxyHosts() + "\"");
-                 */
-            }
-        }
-
-
     }
 
 
@@ -469,9 +435,7 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
      */
     private Optional<Path> getFileFromArtifact(final Artifact artifact)
     {
-        if (artifact == null) {
-            throw new NullPointerException("artifact");
-        }
+        if (artifact == null) throw new NullPointerException("artifact");
 
         if (isZipFile(artifact)) {
             return Optional.of(artifact.getFile().toPath());

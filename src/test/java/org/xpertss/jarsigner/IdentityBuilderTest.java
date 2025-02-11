@@ -135,7 +135,7 @@ public class IdentityBuilderTest {
       assertNotNull(identity);
       assertEquals("foo_alias", identity.getName());
       assertEquals("DSA", identity.getPrivateKey().getAlgorithm());
-      assertEquals(1, identity.getCertificatePath().getCertificates().size());
+      assertEquals(1, identity.getCertificateChain().length);
 
 
       assertThat(identity.getCertificate(), instanceOf(X509Certificate.class));
@@ -264,7 +264,7 @@ public class IdentityBuilderTest {
       assertNotNull(identity);
       assertEquals("code", identity.getName());
       assertEquals("RSA", identity.getPrivateKey().getAlgorithm());
-      assertEquals(2, identity.getCertificatePath().getCertificates().size());
+      assertEquals(2, identity.getCertificateChain().length);
 
 
       assertThat(identity.getCertificate(), instanceOf(X509Certificate.class));
@@ -289,7 +289,7 @@ public class IdentityBuilderTest {
       assertNotNull(identity);
       assertEquals("self", identity.getName());
       assertEquals("RSA", identity.getPrivateKey().getAlgorithm());
-      assertEquals(1, identity.getCertificatePath().getCertificates().size());
+      assertEquals(1, identity.getCertificateChain().length);
 
 
       assertThat(identity.getCertificate(), instanceOf(X509Certificate.class));

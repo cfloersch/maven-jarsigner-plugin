@@ -7,7 +7,6 @@ import org.xpertss.crypto.pkcs.AlgorithmIdentifier;
 import javax.security.auth.x500.X500Principal;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertPath;
 import java.security.cert.X509Certificate;
 import java.util.*;
 
@@ -246,7 +245,9 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
    }
 
    /**
-    * Returns all certificates in this collection as an unmodifiable List.
+    * Returns all certificates in this collection as an unmodifiable List. This returns
+    * the certificates ordered from trust root to end-entity which is the ordering PKCS7
+    * maintains them.
     */
    public List<X509Certificate> getCertificates()
    {
@@ -289,35 +290,6 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
    }
 
 
-   /**
-    * Creates, adds, and returns a new {@link SignerInfo} initialized with the given X509
-    * certificate path and signature algorithm. It adds the certificate path to this SignedData
-    * utilizing the last element to initialize the SignerInfo that is added and returned.
-    * <p/>
-    * A CertPath holds its chain in reverse order where the most trusted cert is first and the
-    * signer cert is last.
-    *
-    *
-    * @param algorithm The signature algorithm being used to do the signing
-    * @param certPath The certificate path identifying the signer
-    * @return The SignerInfo initialized by signer certificate and algorithm
-    * @throws NoSuchAlgorithmException If the specified algorithm is not found in this system
-    */
-   public SignerInfo newSigner(String algorithm, CertPath certPath)
-      throws NoSuchAlgorithmException
-   {
-
-      Optional<X509Certificate> last = certPath.getCertificates().stream()
-                                          .map(certificate -> (X509Certificate) certificate)
-                                          .reduce((first, second) -> second);
-
-
-      SignerInfo signerInfo = new SignerInfo(last.get(), algorithm);
-      addSignerInfo(signerInfo);
-      certs.addCertPath(certPath);
-      get(3).setOptional(false);
-      return signerInfo;
-   }
 
 
    /**

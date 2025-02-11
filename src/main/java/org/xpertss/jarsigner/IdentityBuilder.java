@@ -34,13 +34,10 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.PKIXParameters;
 import java.security.cert.TrustAnchor;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  *  Used to parse arguments into an Identity which is loaded from an underlying KeyStore and or a
@@ -63,7 +60,7 @@ public class IdentityBuilder {
 
    private Provider provider;
 
-   private Path certPath;
+   private Path certChain;
 
    private boolean strict;
 
@@ -185,13 +182,13 @@ public class IdentityBuilder {
    /**
     * Specify the path to an X509 certificate chain file.
     *
-    * @param certPath Path to certificate chain file
+    * @param certChain Path to certificate chain file
     * @throws NoSuchFileException if the given file path does not exist or is unreadable
     */
-   public IdentityBuilder certificatePath(Path certPath)
+   public IdentityBuilder certificateChain(Path certChain)
       throws NoSuchFileException
    {
-      this.certPath = validate(certPath, "CertPath");
+      this.certChain = validate(certChain, "CertChain");
       return this;
    }
 
@@ -225,9 +222,11 @@ public class IdentityBuilder {
 
          CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
          CertPath cp = null;
-         if(certPath != null) {
-            try(InputStream input = Files.newInputStream(certPath)) {
-               cp = certificateFactory.generateCertPath(input);
+         if(certChain != null) {
+            try(InputStream input = Files.newInputStream(certChain)) {
+               Collection<? extends Certificate> certs = certificateFactory.generateCertificates(input);
+               List<Certificate> certificates = new ArrayList<>(certs);
+               cp = certificateFactory.generateCertPath(certificates);
             }
          } else {
             List<Certificate> certificates = Arrays.asList(priKeyEntry.getCertificateChain());
@@ -249,7 +248,10 @@ public class IdentityBuilder {
 
          PrivateKey privateKey = priKeyEntry.getPrivateKey();
 
-         CertPath finalCp = cp;
+         List<X509Certificate> chain = cp.getCertificates().stream()
+                                            .map(cert -> (X509Certificate) cert)
+                                            .collect(Collectors.toList());
+
          return new Identity() {
             @Override
             public String getName()
@@ -264,15 +266,15 @@ public class IdentityBuilder {
             }
 
             @Override
-            public Certificate getCertificate()
+            public X509Certificate getCertificate()
             {
-               return finalCp.getCertificates().get(0);
+               return chain.get(0);
             }
 
             @Override
-            public CertPath getCertificatePath()
+            public X509Certificate[] getCertificateChain()
             {
-               return finalCp;
+               return chain.toArray(new X509Certificate[0]);
             }
 
             @Override

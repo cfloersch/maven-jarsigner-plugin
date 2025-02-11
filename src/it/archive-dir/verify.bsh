@@ -35,10 +35,10 @@ if ( includedJar.getEntry( "META-INF/TESTING.SF" ) == null )
 {
     throw new Exception( "missing " + includedJarFile.getName() + "!/META-INF/TESTING.SF" );
 }
-System.out.println( "Checking for existence of " + includedJarFile.getName() + "!/META-INF/TESTING.DSA" );
-if ( includedJar.getEntry( "META-INF/TESTING.DSA" ) == null )
+System.out.println( "Checking for existence of " + includedJarFile.getName() + "!/META-INF/TESTING.RSA" );
+if ( includedJar.getEntry( "META-INF/TESTING.RSA" ) == null )
 {
-    throw new Exception( "missing " + includedJarFile.getName() + "!/META-INF/TESTING.DSA" );
+    throw new Exception( "missing " + includedJarFile.getName() + "!/META-INF/TESTING.RSA" );
 }
 includedJar.close();
 
@@ -55,10 +55,10 @@ if ( excludedJar.getEntry( "META-INF/TESTING.SF" ) != null )
 {
     throw new Exception( "present " + excludedJarFile.getName() + "!/META-INF/TESTING.SF" );
 }
-System.out.println( "Checking for absence of " + excludedJarFile.getName() + "!/META-INF/TESTING.DSA" );
-if ( excludedJar.getEntry( "META-INF/TESTING.DSA" ) != null )
+System.out.println( "Checking for absence of " + excludedJarFile.getName() + "!/META-INF/TESTING.RSA" );
+if ( excludedJar.getEntry( "META-INF/TESTING.RSA" ) != null )
 {
-    throw new Exception( "present " + excludedJarFile.getName() + "!/META-INF/TESTING.DSA" );
+    throw new Exception( "present " + excludedJarFile.getName() + "!/META-INF/TESTING.RSA" );
 }
 excludedJar.close();
 

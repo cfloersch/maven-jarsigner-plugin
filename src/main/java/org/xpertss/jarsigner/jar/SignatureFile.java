@@ -15,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.cert.CertPath;
+import java.security.cert.X509Certificate;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -107,7 +108,7 @@ public class SignatureFile {
 
 
 
-   public SignatureBlock generateBlock(Signature signature, CertPath certPath, TsaSigner tsaSigner)
+   public SignatureBlock generateBlock(Signature signature, TsaSigner tsaSigner, X509Certificate ... chain)
       throws SignatureException, NoSuchAlgorithmException
    {
       signature.update(main.getEncoded());
@@ -119,7 +120,7 @@ public class SignatureFile {
 
       SignedData signedData = new SignedData();
       signedData.setContentType(ContentInfo.DATA_OID);
-      SignerInfo signer = signedData.newSigner(signature.getAlgorithm(), certPath);
+      SignerInfo signer = signedData.newSigner(signature.getAlgorithm(), chain);
       signer.setEncryptedDigest(sigbytes);
 
       // TODO Create Unauthenticated Attribute for tsaSigner Timestamp
@@ -174,7 +175,7 @@ public class SignatureFile {
 
    private static String algorithmFor(String sigalg)
    {
-      if(sigalg.startsWith("RSA")) {
+      if(sigalg.endsWith("RSA")) {
          return "RSA";
       } else if(sigalg.endsWith("ECDSA")) {
          return "EC";

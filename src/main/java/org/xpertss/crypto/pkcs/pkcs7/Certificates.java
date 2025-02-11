@@ -82,7 +82,7 @@ public class Certificates extends ASN1SetOf {
    /**
     * Add a certificate chain to this Certificates object. This will iterate the chain from the
     * last element which is assumed to be the trust root, through to the signer certificate,
-    * adding each if, and oly if, it does not already exist in the collection.
+    * adding each if, and only if, it does not already exist in the collection.
     * 
     * @param chain The chain of certificates to add
     */
@@ -101,8 +101,8 @@ public class Certificates extends ASN1SetOf {
 
    /**
     * Add the certificates within a certificate path to this Certificates object. This will
-    * iterate the chain from the last element which is assumed to be the trust root, through to
-    * the signer certificate, adding each if, and oly if, it does not already exist in the
+    * iterate the path from the last element which is assumed to be the trust root, through to
+    * the signer certificate, adding each if, and only if, it does not already exist in the
     * collection.
     * <p/>
     * It is assumed that the certificate path contains {@link X509Certificate} instances. This
@@ -115,6 +115,7 @@ public class Certificates extends ASN1SetOf {
       List<X509Certificate> chain = certPath.getCertificates().stream()
                                        .map(cert -> (X509Certificate) cert)
                                        .collect(Collectors.toList());
+      Collections.reverse(chain);
       for(X509Certificate cert : chain) {
          X500Principal issuer = cert.getIssuerX500Principal();
          BigInteger serial = cert.getSerialNumber();
@@ -179,9 +180,13 @@ public class Certificates extends ASN1SetOf {
 
    /**
     * Returns all certificates in this collection as an unmodifiable List.
+    * <p/>
+    * A Certificates entity stores certificates from the trust root to the
+    * end-entity ordering.
     */
    public List<X509Certificate> getCertificates()
    {
+      // TODO Currently returns certs in Trust -> End-entity order. Should I reverse it?
       return Collections.unmodifiableList(certs);
    }
 

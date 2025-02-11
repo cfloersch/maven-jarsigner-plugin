@@ -16,16 +16,13 @@ import java.net.Proxy;
 import java.net.URI;
 
 /**
- * A timestamper that communicates with a Timestamping Authority (TSA)
- * over HTTP.
- *
+ * A timestamper that communicates with a Timestamping Authority (TSA) over HTTP.
+ * <p/>
  * It supports the Time-Stamp Protocol defined in:
  * <a href="http://www.ietf.org/rfc/rfc3161.txt">RFC 3161</a>.
  *
- * TODO Update to RFC 5816
+ * TODO Update to RFC 5816??
  * https://datatracker.ietf.org/doc/html/rfc5816
- *
- * TODO Might also be worth while to figure out the proxyHost/Port/etc
  */
 public class HttpTimestamper implements Timestamper {
 
@@ -90,13 +87,6 @@ public class HttpTimestamper implements Timestamper {
     public TimeStampResponse generateTimestamp(TimeStampRequest tsQuery)
         throws IOException
     {
-
-        // TODO Need to build a ProxyManager or something that allows us to determine
-        // what proxy to use for given URL given nonProxyHosts
-        // may also need user creds via Authenticator (no way to directly associate)
-        // generally speaking I don't think TSA require authentication so may be overkill
-        // We could of course just set the Authorization header to basic with the creds (assumes basic auth)
-
         Proxy proxy = Proxy.NO_PROXY;
         if(this.proxy != null) {
             proxy = this.proxy;

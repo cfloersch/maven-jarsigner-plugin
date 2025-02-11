@@ -13,13 +13,8 @@
         keystore generated via:
         keytool -genkey -alias test-01 -keypass key-passwd -keystore keystore -storepass store-passwd -validity 4096 -dname "cn=www.example.com, ou=None, L=Seattle, ST=Washington, o=ExampleOrg, c=US"
         -->
-        <keystore.path>@project.basedir@/src/it/keystore</keystore.path>
-        <keystore.storepass>store-passwd</keystore.storepass>
-
-        <jarsigner.keypass>key-passwd</jarsigner.keypass>
-
-        <!-- The following doesn't work as there is no way to map the property name into the POJO -->
-        <jarsigner.signature.algorithm>RSAwithSHA256</jarsigner.signature.algorithm>
+        <keystore.path>@project.basedir@/src/it/keystore.p12</keystore.path>
+        <keystore.storepass>changeme</keystore.storepass>
       </properties>
       <repositories>
         <repository>
