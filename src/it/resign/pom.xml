@@ -73,9 +73,10 @@
             <path>${keystore.path}</path>
             <storepass>${keystore.storepass}</storepass>
           </keystore>
-          <alias>test-01</alias>
+          <alias>code</alias>
           <sigfile>TESTING</sigfile>
-          <removeExistingSignatures>true</removeExistingSignatures>
+          <clean>true</clean>
+          <!-- TODO Add verify.bsh to ensure jxlayer does not include any signatures other than TESTING -->
           <archive>${project.build.directory}/deps/jxlayer-3.0.4.jar</archive>
         </configuration>
         <executions>

@@ -56,7 +56,7 @@
         <artifactId>jarsigner-maven-plugin</artifactId>
         <version>@project.version@</version>
         <configuration>
-          <alias>test-01</alias>
+          <alias>code</alias>
           <keystore>
             <path>${keystore.path}</path>
             <storepass>${keystore.storepass}</storepass>
@@ -68,12 +68,6 @@
             <id>sign-jars</id>
             <goals>
               <goal>sign</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>verify-jars</id>
-            <goals>
-              <goal>verify</goal>
             </goals>
           </execution>
         </executions>

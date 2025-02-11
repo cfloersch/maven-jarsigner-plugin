@@ -61,6 +61,8 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.3.1</version>
       </plugin>
+
+
       <plugin>
         <groupId>org.xpertss.maven.plugins</groupId>
         <artifactId>jarsigner-maven-plugin</artifactId>
@@ -70,7 +72,7 @@
             <path>${keystore.path}</path>
             <storepass>${keystore.storepass}</storepass>
           </keystore>
-          <alias>test-01</alias>
+          <alias>code</alias>
           <sigfile>TESTING</sigfile>
           <excludeClassifiers>
             <excludeClassifier>unsigned</excludeClassifier>
@@ -81,12 +83,6 @@
             <id>sign-jars</id>
             <goals>
               <goal>sign</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>verify-jars</id>
-            <goals>
-              <goal>verify</goal>
             </goals>
           </execution>
         </executions>

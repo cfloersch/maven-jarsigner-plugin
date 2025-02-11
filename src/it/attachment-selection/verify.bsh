@@ -33,10 +33,10 @@ if ( attachedJar.getEntry( "META-INF/TESTING.SF" ) != null )
 {
     throw new Exception( "present " + attachedJarFile.getName() + "!/META-INF/TESTING.SF" );
 }
-System.out.println( "Checking for absence of " + attachedJarFile.getName() + "!/META-INF/TESTING.DSA" );
-if ( attachedJar.getEntry( "META-INF/TESTING.DSA" ) != null )
+System.out.println( "Checking for absence of " + attachedJarFile.getName() + "!/META-INF/TESTING.RSA" );
+if ( attachedJar.getEntry( "META-INF/TESTING.RSA" ) != null )
 {
-    throw new Exception( "present " + attachedJarFile.getName() + "!/META-INF/TESTING.DSA" );
+    throw new Exception( "present " + attachedJarFile.getName() + "!/META-INF/TESTING.RSA" );
 }
 attachedJar.close();
 
