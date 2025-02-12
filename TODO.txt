@@ -7,3 +7,4 @@ TODO
   Modify Integration Tests
      Use My Signer to Sign and Apache jarsigner to verify
      Use Apache jarsigner to sign and my signer to verify
+  Add Slf4j logging into core classes
