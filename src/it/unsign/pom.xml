@@ -48,9 +48,9 @@
             <path>${keystore.path}</path>
             <storepass>${keystore.storepass}</storepass>
           </keystore>
-          <alias>test-01</alias>
+          <alias>code</alias>
           <sigfile>TESTING</sigfile>
-          <removeExistingSignatures>true</removeExistingSignatures>
+          <clean>true</clean>
         </configuration>
         <executions>
           <execution>

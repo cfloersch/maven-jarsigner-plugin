@@ -144,8 +144,8 @@ public class JavaArchive {
    {
       Set<ZipEntry> signatures = new TreeSet<>((first, second) -> first.getName().compareTo(second.getName()));
       Set<ZipEntry> entries = new LinkedHashSet<>();
-      Manifest manifest = null;
-      boolean corrupt = false;
+      Manifest manifest = new Manifest();
+      boolean corrupt = true; // Assume corrupt until successful parse of manifest
 
       for(Enumeration<? extends ZipEntry> files = source.entries(); files.hasMoreElements(); ) {
          ZipEntry entry = files.nextElement();
@@ -154,11 +154,10 @@ public class JavaArchive {
             if(ArchiveUtils.isManifest(name)) {
                try {
                   manifest = Manifest.parse(source.getInputStream(entry), clean);
+                  corrupt = false;
                } catch(CorruptManifestException cme) {
                   // TODO Do I just want to let this fail or continue on?
                   // I'd certainly like to log that we did it
-                  manifest = new Manifest();
-                  corrupt = true;
                }
             } else if(ArchiveUtils.isBlockOrSF(name)) {
                signatures.add(entry);

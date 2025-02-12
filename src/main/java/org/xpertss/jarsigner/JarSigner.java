@@ -170,7 +170,7 @@ public final class JarSigner {
                                                 .filter(ze -> !ze.getName().startsWith(PREFIX))
                                                 .collect(Collectors.toSet());
                 for(ZipEntry ze : signatures) {
-                    out.putNextEntry(ze);
+                    out.putNextEntry(new ZipEntry(ze.getName()));
                     try (InputStream in = archive.getInputStream(ze)) {
                         ArchiveUtils.copy(in, out);
                     }
@@ -182,7 +182,7 @@ public final class JarSigner {
 
             Set<ZipEntry> entries = archive.entries().collect(Collectors.toSet());
             for(ZipEntry ze : entries) {
-                out.putNextEntry(ze);
+                out.putNextEntry(new ZipEntry(ze.getName()));
                 try(InputStream in = archive.getInputStream(ze)) {
                     ArchiveUtils.copy(in, out);
                 }
