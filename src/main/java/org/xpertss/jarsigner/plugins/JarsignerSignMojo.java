@@ -250,14 +250,15 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
     {
         if(archive == null) throw new NullPointerException("archive");
         getLog().info(getMessage("processing", archive));
+        Path output = archive.resolveSibling(archive.getFileName() + ".sig");
         try {
-            Path output = archive.resolveSibling(archive.getFileName() + ".sig");
             try(ZipFile zipFile = new ZipFile(archive.toFile())) {
                 JarSigner signer = signerBuilder.build();
                 signer.sign(zipFile, output);
             }
             Files.move(output, archive, StandardCopyOption.REPLACE_EXISTING);
         } catch(Exception e) {
+            try { Files.delete(output); } catch(Exception ex) { }
             throw new MojoExecutionException(e);
         }
     }
