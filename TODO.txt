@@ -4,9 +4,9 @@ TODO
      Concurrency of Signing???
   Impl TsaSigner
      Finish validation checks
+  Add README example of using Sun PKCS11 impl & test if possible
   Modify Integration Tests
      Use Apache jarsigner to sign and my signer to verify
-     Add test which needs to add entries to existing signed jar manifest (aka should wipe old signatures away)
-  Add Slf4j logging into core classes
 
   For the trust store do I also need a storetype and storepass???
+

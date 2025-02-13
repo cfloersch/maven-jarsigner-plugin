@@ -34,7 +34,7 @@ Example usage
           </providers>
           <keystore>
             <path>NONE</path>
-            <provider>KMS</provider>
+            <storetype>KMS</storetype>
           </keystore>
           <certchain>kms-rsa4096-certchain.pem</certchain>
           <alias>test-01</alias>
@@ -105,12 +105,12 @@ Service  (KMS). This implementation allows you to define both parts of the ident
 ```xml
       <keystore>
         <path>NONE</path>
-        <provider>aws-kms</provider>
+        <storetype>KMS</storetype>
       </keystore>
       <certchain>kms-rsa4096-certchain.pem</certchain>
 ```
 
-In the above example the keystore is defined with a specific provider name and NO underlying file.
+In the above example the keystore is defined with a specific `storetype` name and NO underlying file.
 The keystore provides access to the underlying private key in a network centric and hardware manner.
 The associated certificate is specified separately from a file located on the disk. In this case the
 credentials necessary to access the keystore are provided in a more AWS centric way and do not need
@@ -126,7 +126,7 @@ database. By default this comes pre-installed with your JVM. This implementation
 specify an alternative trust store to use as a config parameter.
 
 ```xml
-   <truststore>../trusted-certs.p12</truststore>
+   <truststore>../trusted-certs.jks</truststore>
 ```
 
 The trust store is simply a standard Java KeyStore file located somewhere in your build or on the
@@ -153,7 +153,6 @@ do something like the following:
              <path>${keystore.file}</path>
              <storepass>${keystore.storepass}</storepass>
              <storetype>JKS</storetype>
-             <provider>SUN</provider>
           </keystore>
           <alias>test-01</alias>
           <keypass>${alias.keypass}</keypass>
@@ -202,7 +201,7 @@ and the key is really just a pointer to a network resource.
    <configuration>
       <keystore>
          <path>NONE</path>
-         <storepass>${keystore.storepass}</storepass>
+         <storetype>KMS</storetype>
          <provider>KMS</provider>
       </keystore>
       <alias>test-01</alias>
@@ -218,4 +217,6 @@ and the key is really just a pointer to a network resource.
 ```
 
 In the above example we use both the KMS keystore and signature algorithms but we use the SUN built in
-digest algorithm.
+digest algorithm. NOTE: It is unnecessary to provide the `provider` argument under keystore as the store
+type of KMS is unique. But the `provider` parameter under signature algorithm is required so as to avoid
+conflict with the Sun implementation of the same name.
