@@ -13,6 +13,7 @@ import org.apache.maven.shared.utils.StringUtils;
 import org.xpertss.crypto.asn1.AsnUtil;
 import org.xpertss.crypto.pkcs.pkcs7.ContentInfo;
 import org.xpertss.crypto.pkcs.pkcs7.SignedData;
+import org.xpertss.crypto.pkcs.pkcs7.SignerInfo;
 import org.xpertss.crypto.pkcs.tsp.TSTokenInfo;
 import org.xpertss.crypto.pkcs.tsp.TimeStampRequest;
 import org.xpertss.crypto.pkcs.tsp.TimeStampResponse;
@@ -25,6 +26,10 @@ import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.cert.CertPathValidatorException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -42,6 +47,8 @@ public final class TsaSigner {
 
     private String policyId;
     private String digest;
+
+    private TrustStore trustStore;
     private boolean strict;
 
     private Proxy proxy;
@@ -52,6 +59,7 @@ public final class TsaSigner {
         this.uri = builder.uri;
         this.policyId = builder.policyId;
         this.digest = builder.digestAlg;
+        this.trustStore = builder.trustStore;
         this.strict = builder.strict;
         this.proxy = builder.proxy;
     }
@@ -95,7 +103,8 @@ public final class TsaSigner {
      * @return A BER encoded ContentInfo structure.
      */
     public byte[] stamp(byte[] signature)
-       throws NoSuchAlgorithmException, IOException
+        throws NoSuchAlgorithmException, IOException,
+                CertificateException, CertPathValidatorException
     {
         BigInteger NONCE = new BigInteger(64, random);
 
@@ -143,39 +152,13 @@ public final class TsaSigner {
         }
 
         ContentInfo content = response.getToken();
-        // TODO Add check for ContentType
         SignedData singedData = (SignedData) content.getContent();
-
-        // Examine the TSA's certificate (if present)
-        /*
-        if(strict)
-
-        for (SignerInfo si: signedData.getSignerInfos()) {
-            // TODO How much do we want to validate about the TSA?
-            X509Certificate cert = si.getCertificate(tsToken);
-            if (cert == null) {
-                // Error, we've already set tsRequestCertificate = true
-                throw new CertificateException(
-                   "Certificate not included in timestamp token");
-            } else {
-                if (!cert.getCriticalExtensionOIDs().contains(
-                   EXTENDED_KEY_USAGE_OID)) {
-                    throw new CertificateException(
-                       "Certificate is not valid for timestamping");
-                }
-                List<String> keyPurposes = cert.getExtendedKeyUsage();
-                if (keyPurposes == null ||
-                   !keyPurposes.contains(KP_TIMESTAMPING_OID)) {
-                    throw new CertificateException(
-                       "Certificate is not valid for timestamping");
-                }
-            }
+        for(SignerInfo signer : singedData.getSignerInfos()) {
+            List<X509Certificate> chain = singedData.getCertificates(signer);
+            if (chain.isEmpty()) throw new CertificateException("Certificate not included in timestamp token");
+            if (strict) trustStore.validate(chain, KeyUsage.Timestamping);
         }
-         */
-
-
-
-        return AsnUtil.encode(response.getToken());
+        return AsnUtil.encode(content);
     }
 
     @Override
@@ -199,6 +182,8 @@ public final class TsaSigner {
         private URI uri;
         private String digestAlg;
         private String policyId;
+
+        private TrustStore trustStore;
         private boolean strict;
 
         private Proxy proxy;
@@ -242,6 +227,12 @@ public final class TsaSigner {
         public Builder strict(boolean value)
         {
             this.strict = value;
+            return this;
+        }
+
+        public Builder trustStore(TrustStore store)
+        {
+            this.trustStore = store;
             return this;
         }
 

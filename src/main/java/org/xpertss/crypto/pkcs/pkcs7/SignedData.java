@@ -231,6 +231,11 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
       return certs.getCertificate(issuer, serial);
    }
 
+   public X509Certificate getCertificate(SignerInfo signer)
+   {
+      return certs.getCertificate(signer.getIssuerDN(), signer.getSerialNumber());
+   }
+
    /**
     * This will return the certificate chain with the signer cert first followed by the
     * remainder of the chain. This will return {@code null} if a certificate with the
@@ -242,6 +247,11 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
    public List<X509Certificate> getCertificates(X500Principal issuer, BigInteger serial)
    {
       return certs.getCertificates(issuer, serial);
+   }
+
+   public List<X509Certificate> getCertificates(SignerInfo signer)
+   {
+      return certs.getCertificates(signer.getIssuerDN(), signer.getSerialNumber());
    }
 
    /**

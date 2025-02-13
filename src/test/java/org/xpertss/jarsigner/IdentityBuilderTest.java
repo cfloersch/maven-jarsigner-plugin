@@ -2,6 +2,7 @@ package org.xpertss.jarsigner;
 
 
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.NoSuchFileException;
@@ -82,41 +83,6 @@ public class IdentityBuilderTest {
 
 
 
-   @Test
-   public void testTrustStorePath()
-      throws Exception
-   {
-      IdentityBuilder builder = new IdentityBuilder();
-      builder.trustStore(Paths.get("src", "test", "truststore"));
-   }
-
-   @Test
-   public void testTrustStoreNONEPath()
-      throws Exception
-   {
-      IdentityBuilder builder = new IdentityBuilder();
-      assertThrows(NoSuchFileException.class, ()->{
-         builder.trustStore(Paths.get("NONE"));
-      });
-   }
-
-   @Test
-   public void testTrustStoreClearPath()
-      throws Exception
-   {
-      IdentityBuilder builder = new IdentityBuilder();
-      builder.trustStore(null);
-   }
-
-   @Test
-   public void testTrustStoreDoesNotExistPath()
-      throws Exception
-   {
-      IdentityBuilder builder = new IdentityBuilder();
-      assertThrows(NoSuchFileException.class, ()->{
-         builder.trustStore(Paths.get("does", "not", "exist"));
-      });
-   }
 
 
 
@@ -209,11 +175,15 @@ public class IdentityBuilderTest {
    public void testStrictBuild_NotSigningKey()
       throws Exception
    {
+      TrustStore trust = TrustStore.Builder.create()
+                           .trustStore(Paths.get("src", "test", "truststore"))
+                           .build();
+
       IdentityBuilder builder = new IdentityBuilder();
       CertPathValidatorException thrown = assertThrows(CertPathValidatorException.class, ()-> {
-         builder.trustStore(Paths.get("src", "test", "truststore"))
+         builder.trustStore(trust).strict(true)
                   .keyStore(Paths.get("src", "test", "keystore.p12"))
-                  .storeType("PKCS12").storePass(password("changeme")).alias("tls").strict(true).build();
+                  .storeType("PKCS12").storePass(password("changeme")).alias("tls").build();
       });
       assertNotNull(thrown);
    }
@@ -223,12 +193,17 @@ public class IdentityBuilderTest {
       throws Exception
    {
       // TODO On another machine will need truststore specified
+      TrustStore trust = TrustStore.Builder.create()
+              .trustStore(Paths.get("src", "test", "truststore"))
+              .build();
+
+
       IdentityBuilder builder = new IdentityBuilder();
       CertPathValidatorException thrown = assertThrows(CertPathValidatorException.class, ()-> {
          // will throw error on thursday
-         builder.trustStore(Paths.get("src", "test", "truststore"))
+         builder.trustStore(trust).strict(true)
                   .keyStore(Paths.get("src", "test", "keystore.p12")).storeType("PKCS12")
-                  .storePass(password("changeme")).alias("expired").strict(true).build();
+                  .storePass(password("changeme")).alias("expired").build();
       });
       assertNotNull(thrown);
    }
@@ -238,13 +213,17 @@ public class IdentityBuilderTest {
    public void testStrictBuild_ValidCodeSingingNoTrustStore()
       throws Exception
    {
+      TrustStore trust = TrustStore.Builder.create()
+              .trustStore(Paths.get("src", "test", "keystore"))
+              .build();
+
       IdentityBuilder builder = new IdentityBuilder();
       CertPathValidatorException thrown = assertThrows(CertPathValidatorException.class, ()-> {
-         builder.trustStore(Paths.get("src", "test", "keystore"))
+         builder.trustStore(trust).strict(true)
                      .keyStore(Paths.get("src", "test", "keystore.p12"))
                      .storeType("PKCS12")
                      .storePass(password("changeme"))
-                     .alias("code").strict(true).build();
+                     .alias("code").build();
       });
       assertNotNull(thrown);
    }
@@ -254,12 +233,16 @@ public class IdentityBuilderTest {
    public void testStrictBuild_ValidCodeSinging()
       throws Exception
    {
+      TrustStore trust = TrustStore.Builder.create()
+              .trustStore(Paths.get("src", "test", "truststore"))
+              .build();
+
       // TODO On another machine will need truststore specified
       IdentityBuilder builder = new IdentityBuilder();
-      Identity identity = builder.trustStore(Paths.get("src", "test", "truststore"))
+      Identity identity = builder.trustStore(trust).strict(true)
                               .keyStore(Paths.get("src", "test", "keystore.p12"))
                               .storeType("PKCS12").storePass(password("changeme"))
-                              .alias("code").strict(true).build();
+                              .alias("code").build();
 
       assertNotNull(identity);
       assertEquals("code", identity.getName());
@@ -275,15 +258,19 @@ public class IdentityBuilderTest {
 
    }
 
-   @Test
+   // TODO Do I really want to allow self signed?
+   //  Maybe check that using something other than PKIX Cert Path Validator?
+   @Test//@Disabled
    public void testStrictBuild_SelfSignedCodeSigner()
       throws Exception
    {
       // No need for trust store on this one
       IdentityBuilder builder = new IdentityBuilder();
-      Identity identity = builder.keyStore(Paths.get("src", "test", "keystore.p12"))
+      Identity identity = builder
+                              .strict(true)
+                              .keyStore(Paths.get("src", "test", "keystore.p12"))
                               .storeType("PKCS12").storePass(password("changeme"))
-                              .alias("self").strict(true).build();
+                              .alias("self").build();
 
 
       assertNotNull(identity);

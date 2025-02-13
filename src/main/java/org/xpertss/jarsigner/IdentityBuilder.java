@@ -13,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -24,18 +23,12 @@ import java.security.Provider;
 import java.security.Security;
 import java.security.UnrecoverableEntryException;
 import java.security.UnrecoverableKeyException;
-import java.security.cert.CertPath;
-import java.security.cert.CertPathValidator;
 import java.security.cert.CertPathValidatorException;
-import java.security.cert.CertSelector;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
-import java.security.cert.PKIXParameters;
-import java.security.cert.TrustAnchor;
 import java.security.cert.X509Certificate;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -54,7 +47,7 @@ public class IdentityBuilder {
    private String alias;
    private String storeType;
 
-   private Path trustStore;
+   private TrustStore trustStore;
    private Path keyStore;
 
    private Provider provider;
@@ -93,17 +86,13 @@ public class IdentityBuilder {
 
 
    /**
-    * Specify a path to a trust store file from which trusted certificates can be loaded.
-    * <p/>
-    * This must point at a JKS keystore that contains trusted certificates accessible.
+    * Specify a trust store that can be used to validate the signer certificate.
     *
-    * @param trustStore Path to the trust store file
-    * @throws NoSuchFileException If the path does not exist or is not readable.
+    * @param trustStore The TrustStore to utilize for certificate validation
     */
-   public IdentityBuilder trustStore(Path trustStore)
-      throws NoSuchFileException
+   public IdentityBuilder trustStore(TrustStore trustStore)
    {
-      this.trustStore = validate(trustStore, "Truststore");
+      this.trustStore = trustStore;
       return this;
    }
 
@@ -220,37 +209,35 @@ public class IdentityBuilder {
          KeyStore.PrivateKeyEntry priKeyEntry = (KeyStore.PrivateKeyEntry) entry;
 
          CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-         CertPath cp = null;
+         List<X509Certificate> chain = null;
          if(certChain != null) {
             try(InputStream input = Files.newInputStream(certChain)) {
                Collection<? extends Certificate> certs = certificateFactory.generateCertificates(input);
-               List<Certificate> certificates = new ArrayList<>(certs);
-               cp = certificateFactory.generateCertPath(certificates);
+               chain = certs.stream()
+                       .map(cert -> (X509Certificate) cert)
+                       .collect(Collectors.toList());
             }
          } else {
-            List<Certificate> certificates = Arrays.asList(priKeyEntry.getCertificateChain());
-            cp = certificateFactory.generateCertPath(certificates);
+            List<Certificate> certs = Arrays.asList(priKeyEntry.getCertificateChain());
+            chain = certs.stream()
+                                .map(cert -> (X509Certificate) cert)
+                                .collect(Collectors.toList());
          }
 
-         if(cp.getCertificates().isEmpty()) {
+
+         if(chain.isEmpty()) {
             throw new CertificateException("No signing certificate found");
          }
 
 
          if(strict) {
-            CertPathValidator validator = CertPathValidator.getInstance("PKIX");
-            PKIXParameters pkixParameters = new PKIXParameters(createTrustAnchorSet(store, trustStore));
-            pkixParameters.setRevocationEnabled(false);
-            pkixParameters.setTargetCertConstraints(new CodeSigningCertSelector());
-            validator.validate(cp, pkixParameters);
+            if(trustStore == null) trustStore = TrustStore.Builder.create().build();
+            trustStore.validate(chain, KeyUsage.CodeSigning);
          }
 
          PrivateKey privateKey = priKeyEntry.getPrivateKey();
 
-         List<X509Certificate> chain = cp.getCertificates().stream()
-                                            .map(cert -> (X509Certificate) cert)
-                                            .collect(Collectors.toList());
-
+         final List<X509Certificate> certChain = chain;
          return new Identity() {
             @Override
             public String getName()
@@ -267,13 +254,13 @@ public class IdentityBuilder {
             @Override
             public X509Certificate getCertificate()
             {
-               return chain.get(0);
+               return certChain.get(0);
             }
 
             @Override
             public X509Certificate[] getCertificateChain()
             {
-               return chain.toArray(new X509Certificate[0]);
+               return certChain.toArray(new X509Certificate[0]);
             }
 
             @Override
@@ -304,56 +291,6 @@ public class IdentityBuilder {
       return KeyStore.getInstance(type);
    }
 
-   private Set<TrustAnchor> createTrustAnchorSet(KeyStore keystore, Path trustStore)
-      throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException
-   {
-      Set<TrustAnchor> tas = new LinkedHashSet<>();
-      try {
-         KeyStore caks = getTrustStore(trustStore);
-         add(caks, Objects::nonNull, tas);
-      } catch (GeneralSecurityException | IOException  e) {
-         // Ignore, if cacerts cannot be loaded
-         if(trustStore != null) throw e;
-      }
-      add(keystore, cert -> cert.getSubjectDN().equals(cert.getIssuerDN()), tas);
-      return tas ;
-   }
-
-
-   private static void add(KeyStore store, Predicate<X509Certificate> filter, Set<TrustAnchor> tas)
-   {
-      try {
-         Enumeration<String> aliases = store.aliases();
-         while(aliases.hasMoreElements()) {
-            String a = aliases.nextElement();
-            try {
-               X509Certificate c = (X509Certificate) store.getCertificate(a);
-               if(filter.test(c) || store.isCertificateEntry(a)) {
-                  tas.add(new TrustAnchor(c, null));
-               }
-            } catch(Exception e2) {
-               // ignore, when an Entry does not include a cert
-            }
-         }
-      } catch(Exception e) { /* Ignore */ }
-   }
-
-   /**
-    * Returns the keystore with the configured CA certificates.
-    */
-   public static KeyStore getTrustStore(Path trustStore)
-      throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException
-   {
-      if(trustStore == null) {
-         trustStore = Paths.get(System.getProperty("java.home"), "lib", "security", "cacerts");
-      }
-      if(!Files.exists(trustStore)) return null;
-      try(InputStream in = Files.newInputStream(trustStore)) {
-         KeyStore store = KeyStore.getInstance(KeyStore.getDefaultType());
-         store.load(in, null);
-         return store;
-      }
-   }
 
 
    private static void destroy(KeyStore.PasswordProtection passwd)
@@ -367,54 +304,4 @@ public class IdentityBuilder {
 
 
 
-   public static class CodeSigningCertSelector implements CertSelector {
-
-      @Override
-      public boolean match(Certificate cert)
-      {
-         if (cert instanceof X509Certificate) {
-            X509Certificate xcert = (X509Certificate)cert;
-            return isSignatureOrNonRepudiation(xcert)
-                     && isAnyOrCodeSigning(xcert);
-         }
-         return false;
-      }
-
-      @Override
-      public Object clone()
-      {
-         try {
-            return super.clone();
-         } catch(CloneNotSupportedException e) {
-            throw new InternalError(e.toString(), e);
-         }
-      }
-
-      private boolean isSignatureOrNonRepudiation(X509Certificate xcert)
-      {
-         boolean[] keyUsage = xcert.getKeyUsage();
-         if (keyUsage != null) {
-            keyUsage = Arrays.copyOf(keyUsage, 9);
-            return keyUsage[0] || keyUsage[1];
-         }
-         return true;
-      }
-
-      private boolean isAnyOrCodeSigning(X509Certificate userCert)
-      {
-         try {
-            List<String> xKeyUsage = userCert.getExtendedKeyUsage();
-            if (xKeyUsage != null) {
-               if (!xKeyUsage.contains("2.5.29.37.0") // anyExtendedKeyUsage
-                  && !xKeyUsage.contains("1.3.6.1.5.5.7.3.3")) {  // codeSigning
-                  return false;
-               }
-            }
-         } catch (java.security.cert.CertificateParsingException e) {
-            return false;
-         }
-         return true;
-      }
-
-   }
 }

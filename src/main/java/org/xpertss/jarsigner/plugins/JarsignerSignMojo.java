@@ -26,11 +26,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.shared.utils.StringUtils;
-import org.xpertss.jarsigner.Identity;
-import org.xpertss.jarsigner.IdentityBuilder;
+import org.xpertss.jarsigner.*;
 import org.sonatype.plexus.components.sec.dispatcher.SecDispatcher;
-import org.xpertss.jarsigner.JarSigner;
-import org.xpertss.jarsigner.TsaSigner;
 import org.xpertss.jarsigner.jar.ArchiveUtils;
 
 /**
@@ -170,9 +167,14 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
         }
 
         try {
+            TrustStore trust = TrustStore.Builder.create()
+                                    .trustStore(toPath(truststore))
+                                    .build();
+
+
             IdentityBuilder builder = new IdentityBuilder();
             builder.strict(strict)
-                    .trustStore(toPath(truststore))
+                    .trustStore(trust)
                     .certificateChain(toPath(certchain))
                     .alias(alias).keyPass(create(keypass));
             if(keystore != null) {
@@ -186,11 +188,13 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
             TsaSigner tsaSigner = null;
             if(tsa != null && StringUtils.isNotEmpty(tsa.getUri())) {
                 URI tsaUri = URI.create(tsa.getUri());
-                Set<String> schemes = Stream.of("http", "https").collect(Collectors.toSet());
+                Set<String> schemes = Stream.of("http", "https")
+                                            .collect(Collectors.toSet());
                 if(schemes.contains(tsaUri.getScheme())) {
                     TsaSigner.Builder tsaBuilder = TsaSigner.Builder.of(tsaUri)
                             .digestAlgorithm(tsa.getDigestAlg())
                             .policyId(tsa.getPolicyId())
+                            .trustStore(trust)
                             .strict(strict)
                             .proxiedBy(findProxyFor(tsaUri));
 
