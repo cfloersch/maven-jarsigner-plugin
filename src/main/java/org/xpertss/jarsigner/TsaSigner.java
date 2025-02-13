@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.Proxy;
 import java.net.URI;
+import java.security.KeyStoreException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -103,8 +104,8 @@ public final class TsaSigner {
      * @return A BER encoded ContentInfo structure.
      */
     public byte[] stamp(byte[] signature)
-        throws NoSuchAlgorithmException, IOException,
-                CertificateException, CertPathValidatorException
+        throws NoSuchAlgorithmException, IOException, KeyStoreException,
+            CertificateException, CertPathValidatorException
     {
         BigInteger NONCE = new BigInteger(64, random);
 
@@ -156,7 +157,10 @@ public final class TsaSigner {
         for(SignerInfo signer : singedData.getSignerInfos()) {
             List<X509Certificate> chain = singedData.getCertificates(signer);
             if (chain.isEmpty()) throw new CertificateException("Certificate not included in timestamp token");
-            if (strict) trustStore.validate(chain, KeyUsage.Timestamping);
+            if (strict) {
+                if(trustStore == null) trustStore = TrustStore.Builder.create().build();
+                trustStore.validate(chain, KeyUsage.Timestamping);
+            }
         }
         return AsnUtil.encode(content);
     }

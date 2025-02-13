@@ -33,6 +33,7 @@ public class TrustStore {
     private PKIXParameters parameters;
 
 
+    // TODO Will concurrency create issues for PKIXParameters??
     private TrustStore(KeyStore trustStore, PKIXParameters parameters)
     {
         this.trustStore = trustStore;

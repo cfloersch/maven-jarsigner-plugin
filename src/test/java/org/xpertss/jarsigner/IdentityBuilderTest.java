@@ -260,7 +260,7 @@ public class IdentityBuilderTest {
 
    // TODO Do I really want to allow self signed?
    //  Maybe check that using something other than PKIX Cert Path Validator?
-   @Test//@Disabled
+   @Test@Disabled
    public void testStrictBuild_SelfSignedCodeSigner()
       throws Exception
    {
