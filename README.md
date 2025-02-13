@@ -80,6 +80,7 @@ any build machine.
         <configuration>
           <providers>
             <providerClass>xpertss.crypto.kms.provider.KmsProvider</providerClass>
+            <providerArg>SomeArgIfNeeded - Possibly AWS Creds</providerArg>
           </providers>
         </configuration>
       </plugin>
