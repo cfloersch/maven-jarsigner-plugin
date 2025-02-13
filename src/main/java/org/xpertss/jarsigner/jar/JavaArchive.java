@@ -28,6 +28,10 @@ import java.util.zip.ZipFile;
  */
 public class JavaArchive {
 
+   private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(JavaArchive.class);
+
+
+
    private final ZipFile source;
    private final Set<ZipEntry> entries;
    private final Set<ZipEntry> signatures;
@@ -157,7 +161,7 @@ public class JavaArchive {
                   corrupt = false;
                } catch(CorruptManifestException cme) {
                   // TODO Do I just want to let this fail or continue on?
-                  // I'd certainly like to log that we did it
+                  log.warn("Failed to parse existing manifest: " + cme.getMessage());
                }
             } else if(ArchiveUtils.isBlockOrSF(name)) {
                signatures.add(entry);
@@ -168,7 +172,14 @@ public class JavaArchive {
             entries.add(entry);
          }
       }
-      if(corrupt) signatures.clear();
+
+      // TODO Do I need this
+      /*
+      if(corrupt && !signatures.isEmpty()) {
+         log.warn("Manifest updated, clearing existing signatures!");
+         signatures.clear();
+      }
+       */
       return new JavaArchive(source, entries, signatures, manifest);
    }
 

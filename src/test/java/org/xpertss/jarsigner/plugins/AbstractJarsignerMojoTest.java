@@ -173,10 +173,20 @@ class AbstractJarsignerMojoTest {
     @Test
     public void testSingleArchive() throws Exception
     {
-        setField(objectUnderTest, "archive", new File("test.jar"));
+        Path simpleJar = Paths.get("src", "test", "simple.jar");
+        setField(objectUnderTest, "archive", simpleJar.toFile());
         objectUnderTest.execute();
         assertEquals(1, objectUnderTest.seen.size());
-        assertTrue(objectUnderTest.seen.contains(Paths.get("test.jar")));
+        assertTrue(objectUnderTest.seen.contains(simpleJar));
+    }
+
+    @Test
+    public void testNonExistentArchive() throws Exception
+    {
+        Path simpleJar = Paths.get("src", "test", "test.jar");
+        setField(objectUnderTest, "archive", simpleJar.toFile());
+        objectUnderTest.execute();
+        assertTrue(objectUnderTest.seen.isEmpty());
     }
 
     @Test

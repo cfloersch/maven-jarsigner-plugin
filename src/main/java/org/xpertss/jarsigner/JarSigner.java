@@ -52,6 +52,9 @@ import java.util.zip.ZipOutputStream;
  */
 public final class JarSigner {
 
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(JarSigner.class);
+
+
     /*
        NOTES: A Jar file can be signed multiple times. For each signing a
        different signerName should be used. When that occurs there will be
@@ -176,8 +179,7 @@ public final class JarSigner {
                     }
                 }
             } else if(archive.signatureCount() > 0) {
-                // Log the fact that we are discarding signatures
-                // They are discarded because modifying the manifest renders them invalid
+                log.warn("Manifest modified, existing signatures being discarded!");
             }
 
             Set<ZipEntry> entries = archive.entries().collect(Collectors.toSet());

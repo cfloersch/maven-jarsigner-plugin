@@ -42,6 +42,7 @@ public final class TsaSigner {
 
     private String policyId;
     private String digest;
+    private boolean strict;
 
     private Proxy proxy;
 
@@ -51,7 +52,8 @@ public final class TsaSigner {
         this.uri = builder.uri;
         this.policyId = builder.policyId;
         this.digest = builder.digestAlg;
-        this.proxy = proxy;
+        this.strict = builder.strict;
+        this.proxy = builder.proxy;
     }
 
 
@@ -146,6 +148,8 @@ public final class TsaSigner {
 
         // Examine the TSA's certificate (if present)
         /*
+        if(strict)
+
         for (SignerInfo si: signedData.getSignerInfos()) {
             // TODO How much do we want to validate about the TSA?
             X509Certificate cert = si.getCertificate(tsToken);
@@ -195,6 +199,7 @@ public final class TsaSigner {
         private URI uri;
         private String digestAlg;
         private String policyId;
+        private boolean strict;
 
         private Proxy proxy;
 
@@ -234,7 +239,11 @@ public final class TsaSigner {
             return this;
         }
 
-
+        public Builder strict(boolean value)
+        {
+            this.strict = value;
+            return this;
+        }
 
         public TsaSigner build()
         {

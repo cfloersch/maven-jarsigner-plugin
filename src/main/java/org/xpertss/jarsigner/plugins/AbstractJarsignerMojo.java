@@ -185,8 +185,11 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
         configure();
 
         List<Path> archives = findJarfiles();
+        if(archives.isEmpty()) {
+            getLog().info(getMessage("empty"));
+            return;
+        }
         processArchives(archives);
-
         getLog().info(getMessage("processed", archives.size()));
     }
 
@@ -289,6 +292,8 @@ public abstract class AbstractJarsignerMojo extends AbstractMojo {
         throws MojoExecutionException
     {
         if (this.archive != null) {
+            if(!ArchiveUtils.isZipFile(this.archive))
+                return Collections.emptyList();
             // Only process this, but nothing more
             return Collections.singletonList(this.archive.toPath());
         }

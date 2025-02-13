@@ -10,12 +10,14 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.security.KeyStore;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipFile;
 
 import org.apache.maven.plugin.MojoExecutionException;
@@ -167,8 +169,6 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
             threadCount = 1;
         }
 
-        getLog().debug("Keystore: " + keystore);
-
         try {
             IdentityBuilder builder = new IdentityBuilder();
             builder.strict(strict)
@@ -186,12 +186,19 @@ public class JarsignerSignMojo extends AbstractJarsignerMojo {
             TsaSigner tsaSigner = null;
             if(tsa != null && StringUtils.isNotEmpty(tsa.getUri())) {
                 URI tsaUri = URI.create(tsa.getUri());
-                TsaSigner.Builder tsaBuilder = TsaSigner.Builder.of(tsaUri)
-                        .digestAlgorithm(tsa.getDigestAlg()).policyId(tsa.getPolicyId())
-                        .proxiedBy(findProxyFor(tsaUri));
+                Set<String> schemes = Stream.of("http", "https").collect(Collectors.toSet());
+                if(schemes.contains(tsaUri.getScheme())) {
+                    TsaSigner.Builder tsaBuilder = TsaSigner.Builder.of(tsaUri)
+                            .digestAlgorithm(tsa.getDigestAlg())
+                            .policyId(tsa.getPolicyId())
+                            .strict(strict)
+                            .proxiedBy(findProxyFor(tsaUri));
 
-                tsaSigner = tsaBuilder.build();
-                getLog().debug("Loaded timestamp authority: " + tsaSigner);
+                    tsaSigner = tsaBuilder.build();
+                    getLog().debug("Loaded timestamp authority: " + tsaSigner);
+                } else {
+                    getLog().warn("Ignoring invalid timestamp authority: " + tsaUri);
+                }
             }
 
             if(StringUtils.isEmpty(sigfile)) {

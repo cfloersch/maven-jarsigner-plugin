@@ -100,7 +100,6 @@ Service  (KMS). This implementation allows you to define both parts of the ident
 ```xml
       <keystore>
         <path>NONE</path>
-        <storepass>${keystore.storepass}</storepass>
         <provider>aws-kms</provider>
       </keystore>
       <certchain>kms-rsa4096-certchain.pem</certchain>
@@ -108,7 +107,10 @@ Service  (KMS). This implementation allows you to define both parts of the ident
 
 In the above example the keystore is defined with a specific provider name and NO underlying file.
 The keystore provides access to the underlying private key in a network centric and hardware manner.
-The associated certificate is specified separately from a file located on the disk.
+The associated certificate is specified separately from a file located on the disk. In this case the
+credentials necessary to access the keystore are provided in a more AWS centric way and do not need
+to be included in the maven configuration.
+
 
 Trust Store
 -----------
@@ -145,8 +147,11 @@ do something like the following:
           <keystore>
              <path>${keystore.file}</path>
              <storepass>${keystore.storepass}</storepass>
+             <storetype>JKS</storetype>
+             <provider>SUN</provider>
           </keystore>
           <alias>test-01</alias>
+          <keypass>${alias.keypass}</keypass>
           <sigfile>TESTING</sigfile>
           <processMainArtifact>true</processMainArtifact>
           <tsa>
@@ -176,4 +181,36 @@ output a log line warning of the issue but will not fail. That is the behavior h
 which is the default value.
 
 Note that `processMainArtifact` is the exact same parameter as used in the Maven jarsigner. All of the parameters
-associated with the archives, and or directories to sign are the same. 
+associated with the archives, and or directories to sign are the same. Other parameters that are the same as 
+those in the Apache variant include `keypass`, `sigfile`, and `alias`.
+
+
+Designated Algorithms
+---------------------
+
+The JRE jarsigner allows you to specify signature and digest algorithms to use. However, there is no real way to
+associate those with a particular provider. When using third party providers like the AWS-KMS provider you must
+use it's variant of the signature algorithm with it's keys as the actual signing process is operating remotely
+and the key is really just a pointer to a network resource.
+
+```xml
+   <configuration>
+      <keystore>
+         <path>NONE</path>
+         <storepass>${keystore.storepass}</storepass>
+         <provider>KMS</provider>
+      </keystore>
+      <alias>test-01</alias>
+      <signature>
+         <algorithm>SHA386withRSA</algorithm>
+         <provider>KMS</provider>
+      </signature>
+      <digest>
+         <algorithm>SHA512</algorithm>
+         <provider>SUN</provider>
+      </digest>
+   </configuration>
+```
+
+In the above example we use both the KMS keystore and signature algorithms but we use the SUN built in
+digest algorithm.
