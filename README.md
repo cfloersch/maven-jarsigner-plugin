@@ -34,11 +34,15 @@ Example usage
           </providers>
           <keystore>
             <path>NONE</path>
-            <storepass>${keystore.storepass}</storepass>
+            <provider>KMS</provider>
           </keystore>
+          <certchain>kms-rsa4096-certchain.pem</certchain>
           <alias>test-01</alias>
           <sigfile>TESTING</sigfile>
-          <certchain>kms-rsa4096-certchain.pem</certchain>
+          <signature>
+            <algorithm>SHA386withRSA</algorithm>
+            <provider>KMS</provider>
+          </signature>
           <processMainArtifact>false</processMainArtifact>
           <archiveDirectory>target/classes/jars</archiveDirectory>
         </configuration>
