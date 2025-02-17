@@ -1,5 +1,6 @@
 package org.xpertss.jarsigner;
 
+import javax.security.auth.x500.X500Principal;
 import java.security.cert.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Enumeration of possible certificate chain and certificate path orderings.
  */
-public enum CertOrdering {
+public enum CertOrder {
 
     /**
      * Forward ordering is from end-entity -> trust anchor
@@ -39,7 +40,7 @@ public enum CertOrdering {
     public CertPath convertTo(CertPath certPath)
         throws CertificateException
     {
-        CertOrdering ordering = of(certPath);
+        CertOrder ordering = of(certPath);
         if(ordering != this) {
             List<? extends Certificate> copy = new ArrayList<>(certPath.getCertificates());
             Collections.reverse(copy);
@@ -58,7 +59,7 @@ public enum CertOrdering {
      */
     public X509Certificate[] convertTo(X509Certificate ... chain)
     {
-        CertOrdering ordering = of(chain);
+        CertOrder ordering = of(chain);
         if(ordering != this) {
             return convertTo(Arrays.asList(chain))
                         .toArray(new X509Certificate[0]);
@@ -77,7 +78,7 @@ public enum CertOrdering {
      */
     public List<X509Certificate> convertTo(List<X509Certificate> chain)
     {
-        CertOrdering ordering = of(chain);
+        CertOrder ordering = of(chain);
         if(ordering != this) {
             List<X509Certificate> copy = new ArrayList<>(chain);
             Collections.reverse(copy);
@@ -90,16 +91,12 @@ public enum CertOrdering {
 
 
 
-    // TODO What to do if they supply a single cert?
-    //  If self signed we can say Reverse?
-    //  If not self signed we say Forward?
-
     /**
      * A utility method to determine the current ordering of the supplied certificate path.
      *
      * @param certPath The path to determine ordering of
      */
-    public static CertOrdering of(CertPath certPath)
+    public static CertOrder of(CertPath certPath)
     {
         return of(certPath.getCertificates().stream()
                 .map(cert -> (X509Certificate) cert)
@@ -111,20 +108,27 @@ public enum CertOrdering {
      *
      * @param chain The chain to determine ordering of
      */
-    public static CertOrdering of(X509Certificate... chain)
+    public static CertOrder of(X509Certificate... chain)
     {
         if(chain.length == 0)
             throw new IllegalArgumentException("No chain presented");
-        // TODO if element at 0 is not self signed we need to actually dig in
-        //  test the ordering based on issuer/subject chain
-        //  There is one more short cut (if chain.length -1 == selfSigned we are for sure Forward)
         if(isSelfSigned(chain[0])) {
             return Reverse;
         } else if(chain.length > 1) {
             if(isSelfSigned(chain[chain.length - 1])) {
                 return Forward;
             } else {
-                // TODO Do the magic here
+                X500Principal subOne = chain[0].getSubjectX500Principal();
+                X500Principal issTwo = chain[1].getIssuerX500Principal();
+                X500Principal subTwo = chain[1].getSubjectX500Principal();
+                X500Principal issOne = chain[0].getIssuerX500Principal();
+                if(subOne.equals(issTwo)) {
+                    return Reverse;
+                } else if(issOne.equals(subTwo)) {
+                    return Forward;
+                } else {
+                    return Unknown;
+                }
             }
         }
         return Forward;
@@ -136,7 +140,7 @@ public enum CertOrdering {
      *
      * @param chain The chain to determine ordering of
      */
-    public static CertOrdering of(List<X509Certificate> chain)
+    public static CertOrder of(List<X509Certificate> chain)
     {
         return of(chain.toArray(new X509Certificate[0]));
     }

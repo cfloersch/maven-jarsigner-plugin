@@ -15,14 +15,14 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CertOrderingTest {
+class CertOrderTest {
 
     @Test
     public void testNullIsThrown()
     {
         CertPath certPath = null;
         assertThrows(NullPointerException.class, () -> {
-            CertOrdering.of(certPath);
+            CertOrder.of(certPath);
         });
     }
 
@@ -30,7 +30,7 @@ class CertOrderingTest {
     public void testIllegalArgumentIsThrown()
     {
         assertThrows(IllegalArgumentException.class, () -> {
-            CertOrdering.of(new X509Certificate[0]);
+            CertOrder.of(new X509Certificate[0]);
         });
     }
 
@@ -38,7 +38,7 @@ class CertOrderingTest {
     public void testIllegalArgumentIsThrownTwo()
     {
         assertThrows(IllegalArgumentException.class, () -> {
-            CertOrdering.of();
+            CertOrder.of();
         });
     }
 
@@ -49,14 +49,14 @@ class CertOrderingTest {
         Path path = Paths.get("src", "test", "resources", "certs", "server-cert-path.crt");
         try(InputStream in = Files.newInputStream(path)) {
             CertPath certPath = factory.generateCertPath(in, "PKCS7");
-            assertEquals(CertOrdering.Reverse, CertOrdering.of(certPath));
+            assertEquals(CertOrder.Reverse, CertOrder.of(certPath));
         }
     }
 
     @Test
     public void testChainOrdering() throws Exception {
         X509Certificate[] chain = loadChain();
-        assertEquals(CertOrdering.Forward, CertOrdering.of(chain));
+        assertEquals(CertOrder.Forward, CertOrder.of(chain));
     }
 
     @Test
@@ -66,9 +66,9 @@ class CertOrderingTest {
         Path path = Paths.get("src", "test", "resources", "certs", "server-cert-path.crt");
         try(InputStream in = Files.newInputStream(path)) {
             CertPath certPath = factory.generateCertPath(in, "PKCS7");
-            assertEquals(CertOrdering.Reverse, CertOrdering.of(certPath));
-            CertPath copy = CertOrdering.Forward.convertTo(certPath);
-            assertEquals(CertOrdering.Forward, CertOrdering.of(copy));
+            assertEquals(CertOrder.Reverse, CertOrder.of(certPath));
+            CertPath copy = CertOrder.Forward.convertTo(certPath);
+            assertEquals(CertOrder.Forward, CertOrder.of(copy));
         }
     }
 
@@ -76,32 +76,32 @@ class CertOrderingTest {
     public void testTrustAnchor() throws Exception
     {
         X509Certificate[] chain = loadChain();
-        assertEquals(CertOrdering.Reverse, CertOrdering.of(chain[2]));
+        assertEquals(CertOrder.Reverse, CertOrder.of(chain[2]));
     }
 
     @Test
     public void testEndEntity() throws Exception
     {
         X509Certificate[] chain = loadChain();
-        assertEquals(CertOrdering.Forward, CertOrdering.of(chain[0]));
+        assertEquals(CertOrder.Forward, CertOrder.of(chain[0]));
     }
 
     @Test
     public void testIntermediary() throws Exception
     {
         X509Certificate[] chain = loadChain();
-        assertEquals(CertOrdering.Forward, CertOrdering.of(chain[1]));
+        assertEquals(CertOrder.Forward, CertOrder.of(chain[1]));
     }
 
     @Test
     public void testEndAndIntermediary() throws Exception
     {
         X509Certificate[] chain = loadChain();
-        assertEquals(CertOrdering.Forward, CertOrdering.of(Arrays.copyOf(chain, 2)));
+        assertEquals(CertOrder.Forward, CertOrder.of(Arrays.copyOf(chain, 2)));
     }
 
 
-    @Disabled
+    //@Disabled
     @Test
     public void testReverseNoTrustAnchor() throws Exception
     {
@@ -110,7 +110,7 @@ class CertOrderingTest {
         X509Certificate[] copy = new X509Certificate[2];
         copy[0] = chain[1];
         copy[1] = chain[0];
-        assertEquals(CertOrdering.Reverse, CertOrdering.of(copy));
+        assertEquals(CertOrder.Reverse, CertOrder.of(copy));
     }
 
 
