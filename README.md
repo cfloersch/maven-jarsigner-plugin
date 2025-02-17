@@ -130,10 +130,35 @@ specify an alternative trust store to use as a config parameter.
 ```
 
 The trust store is simply a standard Java KeyStore file located somewhere in your build or on the
-build system. it contains trusted certificates including self-signed certificates your organization
+build system. It contains trusted certificates including self-signed certificates your organization
 may manage.
 
 Most users will not need this, but for those that do. Now you have a solution.
+
+
+Timestamp Authorities
+---------------------
+
+[RFC5035](https://www.ietf.org/rfc/rfc5035.txt) defines a network centric timestamping service
+that can be used to timestamp our signatures. When you timestamp a JAR file using a jarsigner, 
+it essentially records the exact time the file was signed, which ensures that even if the code
+signing certificate used to sign it expires later on, the signature remains valid and trusted, 
+preventing warnings or issues when users try to run the application; in simpler terms, it acts 
+as a "proof of when the file was signed" even after the certificate expires.
+
+
+```xml
+       <configuration>
+          <tsa>
+             <uri>http://timestamp.digicert.com</uri>
+             <policyId>2.16.840.1.114412.7.1</policyId>
+             <digestAlg>SHA-386</digestAlg>
+          </tsa>
+       </configuration>
+```
+
+The above example uses the digicert timestamp authority to timestamp our signatures. The policyId
+is specific to digicert and we are requesting they use the SHA-386 digest algorithm.
 
 
 Compatibility
@@ -220,3 +245,28 @@ In the above example we use both the KMS keystore and signature algorithms but w
 digest algorithm. NOTE: It is unnecessary to provide the `provider` argument under keystore as the store
 type of KMS is unique. But the `provider` parameter under signature algorithm is required so as to avoid
 conflict with the Sun implementation of the same name.
+
+
+PKCS11 Example
+--------------
+
+Another common use case is to utilize a PKCS11 hardware token system to provide our keys and or
+signature services.
+
+```xml
+   <configuration>
+      <providers>
+          <providerClass>sun.security.pkcs11.sunPKCS11</providerClass>
+          <providerArg>path/to/pkcs11/properties.cfg</providerArg>
+      </providers>
+      <keystore>
+         <path>NONE</path>
+         <storetype>PKCS11</storetype>
+         <provider>SunPKCS11</provider>
+      </keystore>
+   </configuration>
+```
+
+The above example illustrates dynamically loading the Sun PKCS11 provider and supplying it with needed
+configuration information. It also shows us specifying the PKCS11 keystore type along with an optional,
+and probably unnecessary provider name.
