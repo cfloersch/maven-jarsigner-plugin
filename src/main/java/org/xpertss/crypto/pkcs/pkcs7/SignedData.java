@@ -251,6 +251,14 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
 
    public List<X509Certificate> getCertificates(SignerInfo signer)
    {
+      /*
+        NOTE: Certificate Paths are Forward based (Subject -> Trust Anchor) or
+            Reverse (Trust Anchor -> Subject).
+        Since Sun's PKIX CertPath validation generally operates in the FORWARD direction
+            I always return my chains in this ordering. But in PKCS7 they are stored in
+            REVERSE ordering. PKIXCertPathChecker's MUST support reverse but forward is
+            preferred
+       */
       return certs.getCertificates(signer.getIssuerDN(), signer.getSerialNumber());
    }
 

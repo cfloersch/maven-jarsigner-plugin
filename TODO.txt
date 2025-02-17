@@ -8,3 +8,7 @@ TODO
 For the trust store do I also need a storetype and storepass???
     Is it sufficiently safe for concurrency?
 
+When it comes to certificate chain (or path) building I currently
+ use the Issuer/Subject name chaining method. A better model might
+ be to use the AuthorityKeyIdentifier and SubjectKeyIdentifier that
+ are generally included as X509 Extensions.

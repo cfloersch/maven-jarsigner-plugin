@@ -264,9 +264,16 @@ signature services.
          <storetype>PKCS11</storetype>
          <provider>SunPKCS11</provider>
       </keystore>
+      <alias>test-01</alias>
+      <signature>
+          <algorithm>SHA256withRSA</algorithm>
+          <provider>SunPKCS11</provider>
+      </signature>
    </configuration>
 ```
 
 The above example illustrates dynamically loading the Sun PKCS11 provider and supplying it with needed
 configuration information. It also shows us specifying the PKCS11 keystore type along with an optional,
 and probably unnecessary provider name.
+
+For more information please see the [JDK PKCS11 Docs](https://docs.oracle.com/javase/8/docs/technotes/guides/security/p11guide.html)

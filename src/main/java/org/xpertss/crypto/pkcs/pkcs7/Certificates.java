@@ -36,6 +36,14 @@ import java.util.stream.Collectors;
  */
 public class Certificates extends ASN1SetOf {
 
+   /*
+      TODO Impl this as Tagged Type so I can mark myself optional true/false
+       rather than forcing my container to do it for me
+
+      certs = new Certificates();
+      add(new ASN1TaggedType(0, certs, false, true));
+    */
+
    /**
     * The certificate factory that is used for decoding certificates.
     */
@@ -115,6 +123,8 @@ public class Certificates extends ASN1SetOf {
       List<X509Certificate> chain = certPath.getCertificates().stream()
                                        .map(cert -> (X509Certificate) cert)
                                        .collect(Collectors.toList());
+
+      // TODO I need to figure out if I need to reverse and not just assume
       Collections.reverse(chain);
       for(X509Certificate cert : chain) {
          X500Principal issuer = cert.getIssuerX500Principal();
@@ -160,6 +170,7 @@ public class Certificates extends ASN1SetOf {
     */
    public List<X509Certificate> getCertificates(X500Principal issuer, BigInteger serial)
    {
+      // TODO Maybe use AuthorityKeyIdentifier/SubjectKeyIdentifier instead of names
       if (issuer == null || serial == null)
          throw new NullPointerException("Issuer or serial number!");
       ArrayList<X509Certificate> chain = new ArrayList<>();
