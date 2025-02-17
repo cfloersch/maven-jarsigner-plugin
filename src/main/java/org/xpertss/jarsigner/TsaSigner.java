@@ -36,10 +36,9 @@ import java.util.Objects;
 /**
  * An implementation of time stamp protocol that interacts with a TSA and produces a
  * timestamp token that can be included in our signature.
+ *
+ * @see <a href="https://www.ietf.org/rfc/rfc5035.txt">RFC-5035</a>
  */
-// Sun Timestamper Impl
-// https://github.com/JetBrains/jdk8u_jdk/tree/master/src/share/classes/sun/security/timestamp
-// https://www.ietf.org/rfc/rfc5035.txt
 public final class TsaSigner {
 
     private final SecureRandom random = new SecureRandom();
@@ -128,17 +127,10 @@ public final class TsaSigner {
             throw new IOException("TSAPolicyID changed in timestamp token");
         }
 
-        // TODO A bunch of validation of NONCE, Hashes, Digest Alg, policyId, etc
-        /*
-        try {
-            if (!tstInfo.getHashAlgorithm().equals(AlgorithmId.get(digest))) {
-                throw new IOException("Digest algorithm not " + digest + " in "
-                   + "timestamp token");
-            }
-        } catch (NoSuchAlgorithmException nase) {
-            throw new IllegalArgumentException();   // should have been caught before
+        if (!tstInfo.getHashAlgorithm().equals(request.getHashAlgorithm())) {
+            throw new IOException("Digest algorithm not " + digest + " in "
+               + "timestamp token");
         }
-        */
 
         if (!MessageDigest.isEqual(tstInfo.getHashedMessage(),
                                     request.getHashedMessage())) {
