@@ -128,16 +128,11 @@ public class SignatureFile {
          SignerInfo signer = signedData.newSigner(signature.getAlgorithm(), chain);
          signer.setEncryptedDigest(sigbytes);
 
-         // TODO Create Unauthenticated Attribute for tsaSigner Timestamp
          if (tsaSigner != null) {
             byte[] ts = tsaSigner.stamp(sigbytes);
-
             ASN1ObjectIdentifier oid = new ASN1ObjectIdentifier("1.2.840.113549.1.9.16.2.14");
-            Attribute attribute = new Attribute(oid, new ASN1OctetString(ts));
-
-            // Attributes unauth = (tsaSigner != null) ? tsaSigner.stamp(sigbytes) : null;
-            // signer.addUnauthenticatedAttribute(unauth);
-
+            Attribute unauth = new Attribute(oid, new ASN1OctetString(ts));
+            signer.addUnauthenticatedAttribute(unauth);
          }
 
          ContentInfo content = new ContentInfo(signedData);

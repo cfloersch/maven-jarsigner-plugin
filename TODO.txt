@@ -1,5 +1,5 @@
 TODO
-  Finish timestamp impl in SignatureFile
+  Add better tests for Timestamp Attributes in SignatureBlock
   Test Maven Plugins
      Concurrency of Signing???
   Modify Integration Tests
