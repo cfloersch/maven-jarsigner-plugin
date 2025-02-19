@@ -3,6 +3,7 @@ package org.xpertss.crypto.pkcs.pkcs9;
 import org.xpertss.crypto.asn1.*;
 import org.xpertss.crypto.pkcs.PKCSRegistry;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -22,6 +23,9 @@ import java.util.*;
  * encountered whose type cannot be resolved by that registry or any of the global registries.
  */
 public class Attributes extends ASN1SetOf {
+
+   private Map<ASN1ObjectIdentifier,Attribute> attributes = new LinkedHashMap<>();
+
    /**
     * The registry that is used to resolve attribute values.
     */
@@ -57,11 +61,6 @@ public class Attributes extends ASN1SetOf {
 
 
 
-   // TODO Creator methods for instances to be encoded
-
-
-
-
    /**
     * Returns the first attribute of the given type that is found in this instance.
     *
@@ -72,26 +71,19 @@ public class Attributes extends ASN1SetOf {
    public Attribute getAttribute(ASN1ObjectIdentifier oid)
    {
       if (oid == null) throw new NullPointerException("Need an OID!");
-      for (Iterator<ASN1Type> i = iterator(); i.hasNext();) {
-         Attribute attribute = (Attribute) i.next();
-         if (attribute.getOID().equals(oid))
-            return attribute;
-      }
-      return null;
+      return attributes.get(oid);
    }
 
 
    /**
-    * Returns <code>true</code> if an attribute of the given type exists in this instance. This
-    * method calls <code>getAttribute(ASN1ObjectIdentifier)</code>. Do not use it if you want
-    * to retrieve the attribute subsequent to this method call anyway.
+    * Returns <code>true</code> if an attribute of the given type exists in this instance.
     *
     * @param oid The type of the attribute.
     * @return <code>true</code> if an attribute with the given OID exists.
     */
    public boolean containsAttribute(ASN1ObjectIdentifier oid)
    {
-      return (getAttribute(oid) != null);
+      return attributes.containsKey(oid);
    }
 
 
@@ -106,6 +98,23 @@ public class Attributes extends ASN1SetOf {
    {
       return (Attribute) get(index);
    }
+
+
+   /**
+    * This will add the given attribute if, and only if, an attribute with
+    * the given OID does not already exist in the sequence.
+    *
+    * @param attr The attribute to add
+    */
+   public void addAttribute(Attribute attr)
+   {
+      if(attributes.putIfAbsent(attr.getOID(), attr) == null) {
+         super.add(attr);
+      }
+   }
+
+
+
 
 
    /**
@@ -136,6 +145,19 @@ public class Attributes extends ASN1SetOf {
       add(attribute);
       return attribute;
    }
+
+   @Override
+   public void decode(Decoder dec)
+           throws IOException
+   {
+      super.decode(dec);
+      for (Iterator<ASN1Type> i = iterator(); i.hasNext();) {
+         Attribute attribute = (Attribute) i.next();
+         attributes.put(attribute.getOID(), attribute);
+      }
+
+   }
+
 }
 
 

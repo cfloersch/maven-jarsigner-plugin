@@ -415,7 +415,7 @@ public class SignerInfo extends ASN1Sequence {
    public void addAuthenticatedAttribute(Attribute attr)
    {
       if (attr == null) throw new NullPointerException("Need an attribute!");
-      auth.add(attr);
+      auth.addAttribute(attr);
    }
 
 
@@ -441,7 +441,7 @@ public class SignerInfo extends ASN1Sequence {
    public void addUnauthenticatedAttribute(Attribute attr)
    {
       if (attr == null) throw new NullPointerException("Need an attribute!");
-      this.attr.add(attr);
+      this.attr.addAttribute(attr);
    }
 
 

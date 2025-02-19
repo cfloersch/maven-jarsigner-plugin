@@ -24,14 +24,16 @@ class AttributesTest {
         Attribute attribute = new Attribute(oid, new ASN1OctetString(TS));
 
         Attributes attributes = new Attributes();
-        attributes.add(attribute);
+        attributes.addAttribute(attribute);
 
         byte[] encoded = AsnUtil.encode(attributes);
         Attributes decoded = AsnUtil.decode(new Attributes(), encoded);
 
         assertEquals(attributes.size(), decoded.size());
+
         Attribute attr = decoded.getAttribute(oid);
         assertNotNull(attr);
+
         ASN1Type value = attr.valueAt(0);
         assertNotNull(value);
         assertInstanceOf(ASN1OctetString.class, value);
