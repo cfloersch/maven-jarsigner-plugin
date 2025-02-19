@@ -1,6 +1,6 @@
 package org.xpertss.jarsigner;
 
-import org.junit.jupiter.api.Disabled;
+
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
@@ -101,11 +101,9 @@ class CertOrderTest {
     }
 
 
-    //@Disabled
     @Test
     public void testReverseNoTrustAnchor() throws Exception
     {
-        // TODO Fix this
         X509Certificate[] chain = loadChain();
         X509Certificate[] copy = new X509Certificate[2];
         copy[0] = chain[1];
