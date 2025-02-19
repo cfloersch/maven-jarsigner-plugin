@@ -99,8 +99,9 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
       content = new ContentInfo();
       add(content);
 
-      certs = new Certificates();
-      add(new ASN1TaggedType(0, certs, false, true));
+      certs = new Certificates(0);
+      add(certs);
+      //add(new ASN1TaggedType(0, certs, false, true));
 
       crls = new ASN1SetOf(ASN1Opaque.class);
       add(new ASN1TaggedType(1, crls, false, true));
@@ -332,7 +333,6 @@ public class SignedData extends ASN1Sequence implements ASN1RegisteredType {
       SignerInfo signerInfo = new SignerInfo(first.get(), algorithm);
       addSignerInfo(signerInfo);
       certs.addCertChain(certChain);
-      get(3).setOptional(false);
       return signerInfo;
    }
 

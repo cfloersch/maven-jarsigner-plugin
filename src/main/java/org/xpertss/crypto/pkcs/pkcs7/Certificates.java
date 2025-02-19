@@ -1,11 +1,6 @@
 package org.xpertss.crypto.pkcs.pkcs7;
 
-import org.xpertss.crypto.asn1.ASN1CollectionOf;
-import org.xpertss.crypto.asn1.ASN1SetOf;
-import org.xpertss.crypto.asn1.ASN1Opaque;
-import org.xpertss.crypto.asn1.ASN1Exception;
-import org.xpertss.crypto.asn1.Decoder;
-import org.xpertss.crypto.asn1.Encoder;
+import org.xpertss.crypto.asn1.*;
 import org.xpertss.crypto.utils.CertOrder;
 import org.xpertss.crypto.utils.CertificateUtils;
 
@@ -30,17 +25,9 @@ import java.math.*;
  * ASN1Opaque} type. Therefor, the structure of certificates is not decoded immediately,
  * only the identifier and length octets are decoded. Certificate decoding takes place
  * in a postprocessing step which generates transparent certificate representations
- * using a X.509 certificate factory.
+ * using an X.509 certificate factory.
  */
-public class Certificates extends ASN1SetOf {
-
-   /*
-      TODO Impl this as Tagged Type so I can mark myself optional true/false
-       rather than forcing my container to do it for me
-
-      certs = new Certificates();
-      add(new ASN1TaggedType(0, certs, false, true));
-    */
+public class Certificates extends ASN1TaggedType {
 
    /**
     * The certificate factory that is used for decoding certificates.
@@ -49,12 +36,19 @@ public class Certificates extends ASN1SetOf {
 
    private final List<X509Certificate> certs = new ArrayList<>();
 
+   private ASN1SetOf certSet;
+
+
    /**
     * Creates an instance ready for decoding.
     */
-   public Certificates()
+   public Certificates(int tag)
    {
-      super(ASN1Opaque.class);
+      super(tag);
+      certSet = new ASN1SetOf(ASN1Opaque.class);
+      certSet.setExplicit(false);
+      setInnerType(certSet);
+      setOptional(true);
    }
 
 
@@ -92,6 +86,7 @@ public class Certificates extends ASN1SetOf {
     */
    public void addCertChain(X509Certificate ... chain)
    {
+      chain = CertOrder.Forward.convertTo(chain);
       for(int i = chain.length - 1; i >= 0; i--) {
          X509Certificate cert = chain[i];
          X500Principal issuer = cert.getIssuerX500Principal();
@@ -175,7 +170,7 @@ public class Certificates extends ASN1SetOf {
             next = issuer;
          } else if(next != null && next.equals(cert.getSubjectX500Principal())) {
             chain.add(cert);
-            if(isSelfSigned(cert)) return Collections.unmodifiableList(chain);
+            if(CertificateUtils.isSelfSigned(cert)) return Collections.unmodifiableList(chain);
             next = cert.getIssuerX500Principal();
          }
       }
@@ -190,7 +185,8 @@ public class Certificates extends ASN1SetOf {
     */
    public List<X509Certificate> getCertificates()
    {
-      // TODO Currently returns certs in Trust -> End-entity order. Should I reverse it?
+      // TODO Currently returns certs in Trust -> End-entity (aka Reverse) order.
+      //  Should I reverse it?
       return Collections.unmodifiableList(certs);
    }
 
@@ -286,8 +282,8 @@ public class Certificates extends ASN1SetOf {
          }
       }
 
-      for(int i = 0; i < size(); i++) {
-         ASN1Opaque o = (ASN1Opaque) get(i);
+      for(int i = 0; i < certSet.size(); i++) {
+         ASN1Opaque o = (ASN1Opaque) certSet.get(i);
          try(InputStream in = new ByteArrayInputStream(o.getEncoded())) {
             X509Certificate cert = (X509Certificate) factory.generateCertificate(in);
             certs.add(cert);
@@ -311,10 +307,10 @@ public class Certificates extends ASN1SetOf {
       throws IOException
    {
       if(!isOptional()) {
-         clear();
+         certSet.clear();
          for(X509Certificate cert : certs) {
             try {
-               add(new ASN1Opaque(cert.getEncoded()));
+               certSet.add(new ASN1Opaque(cert.getEncoded()));
             } catch(CertificateException e) {
                throw new ASN1Exception(e);
             }
@@ -325,11 +321,6 @@ public class Certificates extends ASN1SetOf {
 
 
 
-
-   private static boolean isSelfSigned(X509Certificate cert)
-   {
-      return cert.getSubjectDN().equals(cert.getIssuerDN());
-   }
 
 
 }
