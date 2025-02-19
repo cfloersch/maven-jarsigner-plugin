@@ -23,10 +23,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.Proxy;
 import java.net.URI;
-import java.security.KeyStoreException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.security.*;
 import java.security.cert.CertPathValidatorException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -103,58 +100,62 @@ public final class TsaSigner {
      * @return A BER encoded ContentInfo structure.
      */
     public byte[] stamp(byte[] signature)
-        throws NoSuchAlgorithmException, IOException, KeyStoreException,
-            CertificateException, CertPathValidatorException
+        throws CertificateException, SignatureException, IOException
     {
         BigInteger NONCE = new BigInteger(64, random);
 
         digest = (StringUtils.isEmpty(digest)) ? "SHA-256" : digest;
+        try {
+            MessageDigest md = MessageDigest.getInstance(digest);
+            TimeStampRequest request = new TimeStampRequest(md.getAlgorithm(), md.digest(signature));
+            if (StringUtils.isNotEmpty(policyId)) request.setPolicy(policyId);
+            request.setNonce(NONCE);
+            request.setRequestCertificate(true);
 
-        MessageDigest md = MessageDigest.getInstance(digest);
-        TimeStampRequest request = new TimeStampRequest(md.getAlgorithm(), md.digest(signature));
-        if(StringUtils.isNotEmpty(policyId)) request.setPolicy(policyId);
-        request.setNonce(NONCE);
-        request.setRequestCertificate(true);
-
-        HttpTimestamper timestamper = new HttpTimestamper(uri, proxy);
-        TimeStampResponse response = timestamper.generateTimestamp(request);
-        if(response.getStatusCode() > 1) {
-            throw new IOException("Error generating timestamp: " + response.getStatusCodeAsText());
-        }
-        TSTokenInfo tstInfo = response.getTimestampTokenInfo();
-
-        if (StringUtils.isNotEmpty(policyId) && !policyId.equals(tstInfo.getPolicyID())) {
-            throw new IOException("TSAPolicyID changed in timestamp token");
-        }
-
-        if (!tstInfo.getHashAlgorithm().equals(request.getHashAlgorithm())) {
-            throw new IOException("Digest algorithm not " + digest + " in "
-               + "timestamp token");
-        }
-
-        if (!MessageDigest.isEqual(tstInfo.getHashedMessage(),
-                                    request.getHashedMessage())) {
-            throw new IOException("Digest octets changed in timestamp token");
-        }
-
-        BigInteger replyNonce = tstInfo.getNonce();
-        if (replyNonce == null) {
-            throw new IOException("Nonce missing in timestamp token");
-        } else if(!replyNonce.equals(NONCE)) {
-            throw new IOException("Nonce changed in timestamp token");
-        }
-
-        ContentInfo content = response.getToken();
-        SignedData singedData = (SignedData) content.getContent();
-        for(SignerInfo signer : singedData.getSignerInfos()) {
-            List<X509Certificate> chain = singedData.getCertificates(signer);
-            if (chain.isEmpty()) throw new CertificateException("Certificate not included in timestamp token");
-            if (strict) {
-                if(trustStore == null) trustStore = TrustStore.Builder.create().build();
-                trustStore.validate(chain, KeyUsage.Timestamping);
+            HttpTimestamper timestamper = new HttpTimestamper(uri, proxy);
+            TimeStampResponse response = timestamper.generateTimestamp(request);
+            if (response.getStatusCode() > 1) {
+                throw new IOException("Error generating timestamp: " + response.getStatusCodeAsText());
             }
+
+            // TODO If granted with Mods some of the following will likely fail
+            TSTokenInfo tstInfo = response.getTimestampTokenInfo();
+
+            if (StringUtils.isNotEmpty(policyId) && !policyId.equals(tstInfo.getPolicyID())) {
+                throw new SignatureException("TSAPolicyID not honored!");
+            }
+
+            if (!tstInfo.getHashAlgorithm().equals(request.getHashAlgorithm())) {
+                throw new SignatureException("Requested digest algorithm not honored!");
+            }
+
+            if (!MessageDigest.isEqual(tstInfo.getHashedMessage(),
+                    request.getHashedMessage())) {
+                throw new SignatureException("Digest octets changed in response token");
+            }
+
+            BigInteger replyNonce = tstInfo.getNonce();
+            if (replyNonce == null) {
+                throw new SignatureException("Nonce missing in timestamp token");
+            } else if (!replyNonce.equals(NONCE)) {
+                throw new SignatureException("Nonce changed in timestamp token");
+            }
+
+            ContentInfo content = response.getToken();
+            SignedData singedData = (SignedData) content.getContent();
+            for (SignerInfo signer : singedData.getSignerInfos()) {
+                List<X509Certificate> chain = singedData.getCertificates(signer);
+                if (chain.isEmpty()) throw new CertificateException("Certificate not included in timestamp token");
+                if (strict && trustStore != null) {
+                    trustStore.validate(chain, KeyUsage.Timestamping);
+                }
+            }
+            return AsnUtil.encode(content);
+        } catch(NoSuchAlgorithmException e) {
+            throw new SignatureException(e);
+        } catch(CertPathValidatorException e) {
+            throw new CertificateException(e);
         }
-        return AsnUtil.encode(content);
     }
 
     @Override

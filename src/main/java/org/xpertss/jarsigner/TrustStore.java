@@ -29,11 +29,10 @@ import java.util.Set;
  */
 public class TrustStore {
 
-    private KeyStore trustStore;
-    private PKIXParameters parameters;
+    private final KeyStore trustStore;
+    private final PKIXParameters parameters;
 
 
-    // TODO Will concurrency create issues for PKIXParameters??
     private TrustStore(KeyStore trustStore, PKIXParameters parameters)
     {
         this.trustStore = trustStore;
@@ -41,7 +40,7 @@ public class TrustStore {
     }
 
 
-    // TODO Other methods here
+    // TODO Other methods here (make sure they are thread safe)
 
 
     /**
@@ -60,13 +59,15 @@ public class TrustStore {
             CertificateFactory factory = CertificateFactory.getInstance("X.509");
             CertPath cp = factory.generateCertPath(chain);
             CertPathValidator validator = CertPathValidator.getInstance("PKIX");
-            parameters.setRevocationEnabled(false);
-            parameters.setTargetCertConstraints(keyUsage.getConstraints());
-            validator.validate(cp, parameters);
+            PKIXParameters params = (PKIXParameters) parameters.clone();
+            params.setRevocationEnabled(false);
+            params.setTargetCertConstraints(keyUsage.getConstraints());
+            validator.validate(cp, params);
         } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
             throw new CertPathValidatorException("Unable to perform certificate path validation", e);
         }
     }
+
 
 
     /**
@@ -110,10 +111,11 @@ public class TrustStore {
                 while (aliases.hasMoreElements()) {
                     String a = aliases.nextElement();
                     X509Certificate c = (X509Certificate) store.getCertificate(a);
-                    if (c != null || store.isCertificateEntry(a)) {
+                    if (c != null && store.isCertificateEntry(a)) {
                         tas.add(new TrustAnchor(c, null));
                     }
                 }
+                if(tas.isEmpty()) throw new KeyStoreException("No trust anchors found in store");
                 PKIXParameters pkixParameters = new PKIXParameters(tas);
                 return new TrustStore(store, pkixParameters);
             } catch(InvalidAlgorithmParameterException e) {

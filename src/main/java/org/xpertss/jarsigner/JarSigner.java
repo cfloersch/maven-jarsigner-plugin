@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.security.*;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Locale;
 import java.util.Objects;
@@ -139,12 +140,14 @@ public final class JarSigner {
      * @param file The input archive to sign
      * @param output The output path to write the signed archive contents to
      * @throws IOException If an IO error occurs
-     * @throws InvalidKeyException
-     *      If the key returned by the identity doesn't match the signature algorithm
+     * @throws InvalidKeyException If the key returned by the identity doesn't match the
+     *      signature algorithm
      * @throws SignatureException if an error occurs generating the signature
+     * @throws CertificateException if there was an error validating, parsing, or loading
+     *      certificates
      */
     public void sign(ZipFile file, Path output)
-       throws IOException, InvalidKeyException, SignatureException, NoSuchAlgorithmException
+       throws SignatureException, CertificateException, InvalidKeyException, IOException
     {
         JavaArchive archive = JavaArchive.from(file, clean);
         SignatureFile sigfile = archive.generateSignatureFile(signerName, digest);

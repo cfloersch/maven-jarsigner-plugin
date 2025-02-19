@@ -14,7 +14,7 @@ import java.io.OutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
 import java.security.SignatureException;
-import java.security.cert.CertPath;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -109,7 +109,7 @@ public class SignatureFile {
 
 
    public SignatureBlock generateBlock(Signature signature, TsaSigner tsaSigner, X509Certificate ... chain)
-      throws SignatureException, NoSuchAlgorithmException
+      throws SignatureException, CertificateException, IOException
    {
       signature.update(main.getEncoded());
       for(Section section : sections.values()) {
@@ -118,25 +118,29 @@ public class SignatureFile {
       byte[] sigbytes = signature.sign();
 
 
-      SignedData signedData = new SignedData();
-      signedData.setContentType(ContentInfo.DATA_OID);
-      SignerInfo signer = signedData.newSigner(signature.getAlgorithm(), chain);
-      signer.setEncryptedDigest(sigbytes);
-
-      // TODO Create Unauthenticated Attribute for tsaSigner Timestamp
-      // Attributes unauth = (tsaSigner != null) ? tsaSigner.stamp(sigbytes) : null;
-      // signer.addUnauthenticatedAttribute(unauth);
-
-
-      ContentInfo content = new ContentInfo(signedData);
-
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
-      try(DEREncoder encoder = new DEREncoder(baos)) {
-         content.encode(encoder);
-      } catch(IOException e) {
+      try {
+         SignedData signedData = new SignedData();
+         signedData.setContentType(ContentInfo.DATA_OID);
+         SignerInfo signer = signedData.newSigner(signature.getAlgorithm(), chain);
+         signer.setEncryptedDigest(sigbytes);
+
+         // TODO Create Unauthenticated Attribute for tsaSigner Timestamp
+         if (tsaSigner != null) {
+            byte[] ts = tsaSigner.stamp(sigbytes);
+
+            // Attributes unauth = (tsaSigner != null) ? tsaSigner.stamp(sigbytes) : null;
+            // signer.addUnauthenticatedAttribute(unauth);
+
+         }
+
+         ContentInfo content = new ContentInfo(signedData);
+         try (DEREncoder encoder = new DEREncoder(baos)) {
+            content.encode(encoder);
+         }
+      } catch(NoSuchAlgorithmException e) {
          throw new SignatureException(e);
       }
-
       return new SignatureBlock(name, algorithmFor(signature.getAlgorithm()), baos.toByteArray());
    }
 

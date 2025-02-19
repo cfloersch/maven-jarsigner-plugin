@@ -213,9 +213,7 @@ public class IdentityBuilderTest {
    public void testStrictBuild_ValidCodeSingingNoTrustStore()
       throws Exception
    {
-      TrustStore trust = TrustStore.Builder.create()
-              .trustStore(Paths.get("src", "test", "keystore"))
-              .build();
+      TrustStore trust = TrustStore.Builder.create().build();
 
       IdentityBuilder builder = new IdentityBuilder();
       CertPathValidatorException thrown = assertThrows(CertPathValidatorException.class, ()-> {
