@@ -2,7 +2,6 @@ TODO
   Finish timestamp impl in SignatureFile
   Test Maven Plugins
      Concurrency of Signing???
-  Add README example of using Sun PKCS11 impl & test if possible
   Modify Integration Tests
      Use Apache jarsigner to sign and my signer to verify
 

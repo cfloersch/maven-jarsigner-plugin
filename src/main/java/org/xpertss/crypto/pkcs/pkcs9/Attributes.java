@@ -49,13 +49,12 @@ public class Attributes extends ASN1SetOf {
    public Attributes(OIDRegistry registry)
    {
       super(0);
-
-      if (registry == null) {
-         this.registry = PKCSRegistry.getDefaultRegistry();
-         return;
-      }
-      this.registry = registry;
+      this.registry = (registry != null) ? registry
+                     : PKCSRegistry.getDefaultRegistry();
    }
+
+
+
 
 
    // TODO Creator methods for instances to be encoded

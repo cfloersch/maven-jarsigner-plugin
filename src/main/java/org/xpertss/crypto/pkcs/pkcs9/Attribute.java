@@ -209,6 +209,7 @@ public class Attribute extends ASN1Sequence implements ASN1RegisteredType {
     */
    public Attribute(ASN1ObjectIdentifier oid, ASN1Type value)
    {
+      // TODO maybe an array of values? Generic to make sure they are same type?
       super(2);
       if (oid == null) throw new NullPointerException("Need an OID!");
       if (value == null) value = new ASN1Null();
@@ -229,6 +230,7 @@ public class Attribute extends ASN1Sequence implements ASN1RegisteredType {
     */
    public Attribute(ASN1RegisteredType value)
    {
+      // TODO Make this an array? Validate all of same type?
       super(2);
 
       if (value == null) throw new NullPointerException("Need a value!");

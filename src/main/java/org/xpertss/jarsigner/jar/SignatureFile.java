@@ -1,10 +1,13 @@
 package org.xpertss.jarsigner.jar;
 
 
+import org.xpertss.crypto.asn1.ASN1ObjectIdentifier;
+import org.xpertss.crypto.asn1.ASN1OctetString;
 import org.xpertss.crypto.asn1.DEREncoder;
 import org.xpertss.crypto.pkcs.pkcs7.ContentInfo;
 import org.xpertss.crypto.pkcs.pkcs7.SignedData;
 import org.xpertss.crypto.pkcs.pkcs7.SignerInfo;
+import org.xpertss.crypto.pkcs.pkcs9.Attribute;
 import org.xpertss.jarsigner.TsaSigner;
 
 
@@ -128,6 +131,9 @@ public class SignatureFile {
          // TODO Create Unauthenticated Attribute for tsaSigner Timestamp
          if (tsaSigner != null) {
             byte[] ts = tsaSigner.stamp(sigbytes);
+
+            ASN1ObjectIdentifier oid = new ASN1ObjectIdentifier("1.2.840.113549.1.9.16.2.14");
+            Attribute attribute = new Attribute(oid, new ASN1OctetString(ts));
 
             // Attributes unauth = (tsaSigner != null) ? tsaSigner.stamp(sigbytes) : null;
             // signer.addUnauthenticatedAttribute(unauth);

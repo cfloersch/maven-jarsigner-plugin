@@ -209,6 +209,18 @@ public class ASN1TaggedType extends ASN1AbstractType {
 
 
 
+   public boolean isOptional()
+   {
+      return inner.isOptional();
+   }
+
+   public void setOptional(boolean optional)
+   {
+      inner.setOptional(optional);
+   }
+
+
+
    public void encode(Encoder enc)
       throws IOException
    {

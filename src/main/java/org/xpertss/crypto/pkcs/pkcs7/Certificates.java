@@ -27,7 +27,7 @@ import java.math.*;
  * in a postprocessing step which generates transparent certificate representations
  * using an X.509 certificate factory.
  */
-public class Certificates extends ASN1TaggedType {
+public class Certificates extends ASN1SetOf {
 
    /**
     * The certificate factory that is used for decoding certificates.
@@ -36,19 +36,12 @@ public class Certificates extends ASN1TaggedType {
 
    private final List<X509Certificate> certs = new ArrayList<>();
 
-   private ASN1SetOf certSet;
-
-
    /**
     * Creates an instance ready for decoding.
     */
-   public Certificates(int tag)
+   public Certificates()
    {
-      super(tag);
-      certSet = new ASN1SetOf(ASN1Opaque.class);
-      certSet.setExplicit(false);
-      setInnerType(certSet);
-      setOptional(true);
+      super(ASN1Opaque.class);
    }
 
 
@@ -81,12 +74,11 @@ public class Certificates extends ASN1TaggedType {
     * Add a certificate chain to this Certificates object. This will iterate the chain from the
     * last element which is assumed to be the trust root, through to the signer certificate,
     * adding each if, and only if, it does not already exist in the collection.
-    * 
+    *
     * @param chain The chain of certificates to add
     */
    public void addCertChain(X509Certificate ... chain)
    {
-      chain = CertOrder.Forward.convertTo(chain);
       for(int i = chain.length - 1; i >= 0; i--) {
          X509Certificate cert = chain[i];
          X500Principal issuer = cert.getIssuerX500Principal();
@@ -123,7 +115,7 @@ public class Certificates extends ASN1TaggedType {
       }
       setOptional(certs.isEmpty());
    }
-   
+
 
 
 
@@ -141,7 +133,7 @@ public class Certificates extends ASN1TaggedType {
          throw new NullPointerException("Issuer or serial number!");
       for(X509Certificate cert : certs) {
          if(issuer.equals(cert.getIssuerX500Principal())
-               && serial.equals(cert.getSerialNumber())) {
+                 && serial.equals(cert.getSerialNumber())) {
             return cert;
          }
       }
@@ -170,7 +162,7 @@ public class Certificates extends ASN1TaggedType {
             next = issuer;
          } else if(next != null && next.equals(cert.getSubjectX500Principal())) {
             chain.add(cert);
-            if(CertificateUtils.isSelfSigned(cert)) return Collections.unmodifiableList(chain);
+            if(isSelfSigned(cert)) return Collections.unmodifiableList(chain);
             next = cert.getIssuerX500Principal();
          }
       }
@@ -185,8 +177,7 @@ public class Certificates extends ASN1TaggedType {
     */
    public List<X509Certificate> getCertificates()
    {
-      // TODO Currently returns certs in Trust -> End-entity (aka Reverse) order.
-      //  Should I reverse it?
+      // TODO Currently returns certs in Trust -> End-entity order. Should I reverse it?
       return Collections.unmodifiableList(certs);
    }
 
@@ -266,7 +257,7 @@ public class Certificates extends ASN1TaggedType {
     * @exception IOException if an IO error occurs
     */
    public void decode(Decoder decoder)
-      throws IOException
+           throws IOException
    {
       super.decode(decoder);
 
@@ -282,8 +273,8 @@ public class Certificates extends ASN1TaggedType {
          }
       }
 
-      for(int i = 0; i < certSet.size(); i++) {
-         ASN1Opaque o = (ASN1Opaque) certSet.get(i);
+      for(int i = 0; i < size(); i++) {
+         ASN1Opaque o = (ASN1Opaque) get(i);
          try(InputStream in = new ByteArrayInputStream(o.getEncoded())) {
             X509Certificate cert = (X509Certificate) factory.generateCertificate(in);
             certs.add(cert);
@@ -304,13 +295,13 @@ public class Certificates extends ASN1TaggedType {
     * @exception IOException if guess what...
     */
    public void encode(Encoder enc)
-      throws IOException
+           throws IOException
    {
       if(!isOptional()) {
-         certSet.clear();
+         clear();
          for(X509Certificate cert : certs) {
             try {
-               certSet.add(new ASN1Opaque(cert.getEncoded()));
+               add(new ASN1Opaque(cert.getEncoded()));
             } catch(CertificateException e) {
                throw new ASN1Exception(e);
             }
@@ -321,6 +312,11 @@ public class Certificates extends ASN1TaggedType {
 
 
 
+
+   private static boolean isSelfSigned(X509Certificate cert)
+   {
+      return cert.getSubjectDN().equals(cert.getIssuerDN());
+   }
 
 
 }
