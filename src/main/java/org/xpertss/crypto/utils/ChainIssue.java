@@ -1,4 +1,4 @@
-package org.xpertss.jarsigner;
+package org.xpertss.crypto.utils;
 
 public enum ChainIssue {
 

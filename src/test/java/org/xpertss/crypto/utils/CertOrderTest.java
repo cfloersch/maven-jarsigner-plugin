@@ -1,4 +1,4 @@
-package org.xpertss.jarsigner;
+package org.xpertss.crypto.utils;
 
 
 import org.junit.jupiter.api.Test;
@@ -11,6 +11,7 @@ import java.security.cert.CertPath;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import java.util.List;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,6 +72,41 @@ class CertOrderTest {
             assertEquals(CertOrder.Forward, CertOrder.of(copy));
         }
     }
+
+    @Test
+    public void testReOrderingUnnecessary_onArray() throws Exception
+    {
+        X509Certificate[] chain = loadChain();
+        X509Certificate[] ordered = CertOrder.Forward.convertTo(chain);
+        assertSame(chain, ordered);
+    }
+
+    @Test
+    public void testReOrderingUnnecessary_onPath() throws Exception
+    {
+        CertificateFactory factory = CertificateFactory.getInstance("X509");
+        Path path = Paths.get("src", "test", "resources", "certs", "server-cert-path.crt");
+        try(InputStream in = Files.newInputStream(path)) {
+            CertPath certPath = factory.generateCertPath(in, "PKCS7");
+            CertPath ordered = CertOrder.Reverse.convertTo(certPath);
+            assertSame(certPath, ordered);
+        }
+    }
+
+    @Test
+    public void testReOrderingUnnecessary_onList() throws Exception
+    {
+        CertificateFactory factory = CertificateFactory.getInstance("X509");
+        Path path = Paths.get("src", "test", "resources", "certs", "server-cert-path.crt");
+        try(InputStream in = Files.newInputStream(path)) {
+            CertPath certPath = factory.generateCertPath(in, "PKCS7");
+            X509Certificate[] chain = CertificateUtils.toX509Chain(certPath);
+            List<X509Certificate> certs = Arrays.asList(chain);
+            List<X509Certificate> ordered = CertOrder.Reverse.convertTo(certs);
+            assertSame(certs, ordered);
+        }
+    }
+
 
     @Test
     public void testTrustAnchor() throws Exception

@@ -1,4 +1,4 @@
-package org.xpertss.jarsigner;
+package org.xpertss.crypto.utils;
 
 import javax.security.auth.x500.X500Principal;
 import java.security.cert.*;
@@ -9,6 +9,15 @@ import java.util.List;
 
 /**
  * Enumeration of possible certificate chain and certificate path orderings.
+ * <p/>
+ * This takes a number of shortcuts. For example: If the first certificate is
+ * self-signed it returns Reverse. If the last certificate is self-signed it
+ * returns Forward. It does not actually evaluate the inner certificates to
+ * ensure they are actually a chain. The one exception to this is if none of
+ * the certificates in the chain are self-signed and there are at least two
+ * certs in the chain. In this case we utilize the issuer/subject distinguished
+ * names to determine order. If consecutive certs are not Issuer -> Subject
+ * they are considered disjointed and an error is thrown.
  */
 public enum CertOrder {
 
@@ -20,12 +29,8 @@ public enum CertOrder {
     /**
      * Reverse ordering is from trust anchor -> end-entity
      */
-    Reverse,
+    Reverse;
 
-    /**
-     * If a single cert is supplied
-     */
-    Unknown;
 
 
     /**
@@ -34,8 +39,9 @@ public enum CertOrder {
      * a new CertPath is created and returned.
      *
      * @param certPath The certificate path to re-order
+     * @throws IllegalArgumentException if the path is zero size or it is disjointed
      * @throws CertificateException If the cert path is of an unsupported type or if
-     *      generating a reversed cert path
+     *      generating a reversed cert path fails
      */
     public CertPath convertTo(CertPath certPath)
         throws CertificateException
@@ -56,6 +62,7 @@ public enum CertOrder {
      * array, otherwise a new array is created and returned.
 
      * @param chain The certificate chain to re-order
+     * @throws IllegalArgumentException if the chain is zero size or it is disjointed
      */
     public X509Certificate[] convertTo(X509Certificate ... chain)
     {
@@ -75,6 +82,7 @@ public enum CertOrder {
      * list, otherwise a new list is created and returned.
 
      * @param chain The certificate chain to re-order
+     * @throws IllegalArgumentException if the chain is zero size or it is disjointed
      */
     public List<X509Certificate> convertTo(List<X509Certificate> chain)
     {
@@ -95,6 +103,7 @@ public enum CertOrder {
      * A utility method to determine the current ordering of the supplied certificate path.
      *
      * @param certPath The path to determine ordering of
+     * @throws IllegalArgumentException if the path is zero size or it is disjointed
      */
     public static CertOrder of(CertPath certPath)
     {
@@ -107,15 +116,16 @@ public enum CertOrder {
      * A utility method to determine the current ordering of the supplied certificate chain.
      *
      * @param chain The chain to determine ordering of
+     * @throws IllegalArgumentException if the chain is zero size or it is disjointed
      */
     public static CertOrder of(X509Certificate... chain)
     {
         if(chain.length == 0)
             throw new IllegalArgumentException("No chain presented");
-        if(isSelfSigned(chain[0])) {
+        if(CertificateUtils.isSelfSigned(chain[0])) {
             return Reverse;
         } else if(chain.length > 1) {
-            if(isSelfSigned(chain[chain.length - 1])) {
+            if(CertificateUtils.isSelfSigned(chain[chain.length - 1])) {
                 return Forward;
             } else {
                 X500Principal subOne = chain[0].getSubjectX500Principal();
@@ -127,7 +137,7 @@ public enum CertOrder {
                 } else if(issOne.equals(subTwo)) {
                     return Forward;
                 } else {
-                    return Unknown;
+                    throw new IllegalArgumentException("disjointed chain provided");
                 }
             }
         }
@@ -139,6 +149,7 @@ public enum CertOrder {
      * A utility method to determine the current ordering of the supplied certificate chain.
      *
      * @param chain The chain to determine ordering of
+     * @throws IllegalArgumentException if the chain is zero size or it is disjointed
      */
     public static CertOrder of(List<X509Certificate> chain)
     {
@@ -146,8 +157,4 @@ public enum CertOrder {
     }
 
 
-    private static boolean isSelfSigned(X509Certificate cert)
-    {
-        return cert.getSubjectDN().equals(cert.getIssuerDN());
-    }
 }

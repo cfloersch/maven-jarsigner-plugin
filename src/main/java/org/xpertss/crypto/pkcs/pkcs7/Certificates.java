@@ -6,6 +6,8 @@ import org.xpertss.crypto.asn1.ASN1Opaque;
 import org.xpertss.crypto.asn1.ASN1Exception;
 import org.xpertss.crypto.asn1.Decoder;
 import org.xpertss.crypto.asn1.Encoder;
+import org.xpertss.crypto.utils.CertOrder;
+import org.xpertss.crypto.utils.CertificateUtils;
 
 import javax.security.auth.x500.X500Principal;
 import java.io.*;
@@ -15,7 +17,6 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.*;
 import java.math.*;
-import java.util.stream.Collectors;
 
 /**
  * Represents a set of certificates. The ASN.1 structure of this type is:
@@ -30,9 +31,6 @@ import java.util.stream.Collectors;
  * only the identifier and length octets are decoded. Certificate decoding takes place
  * in a postprocessing step which generates transparent certificate representations
  * using a X.509 certificate factory.
- * <p/>
- * TODO I notice this does not define the ASN1Choice aspect and always assumes
- * we have a SetOf
  */
 public class Certificates extends ASN1SetOf {
 
@@ -70,8 +68,6 @@ public class Certificates extends ASN1SetOf {
     * @param cert The certificate to add.
     * @return <code>true</code> if the certificate was added and <code>false</code> if it
     *    already existed.
-    *
-    * TODO Probably don't need this one as certChain and certPath should be better alternatives
     */
    public boolean addCertificate(X509Certificate cert)
    {
@@ -120,12 +116,9 @@ public class Certificates extends ASN1SetOf {
     */
    public void addCertPath(CertPath certPath)
    {
-      List<X509Certificate> chain = certPath.getCertificates().stream()
-                                       .map(cert -> (X509Certificate) cert)
-                                       .collect(Collectors.toList());
+      X509Certificate[] chain = CertificateUtils.toX509Chain(certPath);
+      chain = CertOrder.Reverse.convertTo(chain);
 
-      // TODO I need to figure out if I need to reverse and not just assume
-      Collections.reverse(chain);
       for(X509Certificate cert : chain) {
          X500Principal issuer = cert.getIssuerX500Principal();
          BigInteger serial = cert.getSerialNumber();

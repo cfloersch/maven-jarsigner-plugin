@@ -85,7 +85,7 @@ public enum KeyUsage {
                 List<String> xKeyUsage = userCert.getExtendedKeyUsage();
                 if (xKeyUsage != null) {
                     if (!xKeyUsage.contains("2.5.29.37.0") // anyExtendedKeyUsage
-                            && !xKeyUsage.contains(extUsageOid)) {  // codeSigning
+                            && !xKeyUsage.contains(extUsageOid)) {
                         return false;
                     }
                 }
