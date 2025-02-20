@@ -11,12 +11,13 @@
 1.2.840.113549.1.9.6 = org.xpertss.crypto.pkcs.pkcs7.SignerInfo
 
 # pkcs-9 SignatureTimestampToken (technically a ContentInfo)
-1.2.840.113549.1.9.16.2.14 = org.xpertss.crypto.asn1.ASN1OctetString
+1.2.840.113549.1.9.16.2.14 = org.xpertss.crypto.pkcs.pkcs7.ContentInfo
 
-# TODO What is this 1.2.840.113549.1.9.16.2.12  (id-aa-signingCertificate) -- Some sort of hash
-# TODO What is this 1.2.840.113549.1.9.16.2.47  (id-aa-signingCertificateV2) -- Full signer cert??
+# pkcs-9 Signing Certificate
+#1.2.840.113549.1.9.16.2.12 = org.xpertss.crypto.asn1.ASN1Opaque
+# pkcs-9 Signing CertificateV2
+#1.2.840.113549.1.9.16.2.47 = org.xpertss.crypto.asn1.ASN1Opaque
 
-# TODO: Need to add RandomNonce
 
 # pkcs-7 types
 1.2.840.113549.1.7.1 = org.xpertss.crypto.pkcs.pkcs7.Data

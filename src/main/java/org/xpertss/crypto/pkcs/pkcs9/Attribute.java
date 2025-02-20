@@ -1,6 +1,7 @@
 package org.xpertss.crypto.pkcs.pkcs9;
 
 import org.xpertss.crypto.asn1.*;
+import org.xpertss.crypto.pkcs.PKCSRegistry;
 
 import java.io.*;
 import java.util.*;
@@ -165,11 +166,7 @@ public class Attribute extends ASN1Sequence implements ASN1RegisteredType {
     */
    public Attribute()
    {
-      super(2);
-      type = new ASN1ObjectIdentifier();
-      values = new ASN1SetOf(ASN1OpenType.class);
-      add(type);
-      add(values);
+      this(PKCSRegistry.getDefaultRegistry());
    }
 
 

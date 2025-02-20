@@ -2,44 +2,59 @@ package org.xpertss.crypto.pkcs.pkcs9;
 
 import org.junit.jupiter.api.Test;
 import org.xpertss.crypto.asn1.ASN1ObjectIdentifier;
-import org.xpertss.crypto.asn1.ASN1OctetString;
 import org.xpertss.crypto.asn1.ASN1Type;
 import org.xpertss.crypto.asn1.AsnUtil;
+import org.xpertss.crypto.pkcs.pkcs7.ContentInfo;
+import sun.security.pkcs.PKCS9Attribute;
+import sun.security.pkcs.PKCS9Attributes;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class AttributesTest {
 
-    private static final byte[] TS = {
-            0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-            0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-            0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
-            0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F
-    };
-
     @Test
-    public void testSimpleTimeStampAttribute() throws Exception
+    public void testCompareWithSun() throws Exception
     {
+        byte[] ts = load("timestamps", "DigitCert.ts");
         ASN1ObjectIdentifier oid = new ASN1ObjectIdentifier("1.2.840.113549.1.9.16.2.14");
-        Attribute attribute = new Attribute(oid, new ASN1OctetString(TS));
 
-        Attributes attributes = new Attributes();
-        attributes.addAttribute(attribute);
+        PKCS9Attribute[] atts = new PKCS9Attribute[] {
+                new PKCS9Attribute(PKCS9Attribute.SIGNATURE_TIMESTAMP_TOKEN_STR, ts)
+        };
 
-        byte[] encoded = AsnUtil.encode(attributes);
+        PKCS9Attributes unauthAttrs = new PKCS9Attributes(atts);
+        byte[] encoded = unauthAttrs.getDerEncoding();
+
+
         Attributes decoded = AsnUtil.decode(new Attributes(), encoded);
-
-        assertEquals(attributes.size(), decoded.size());
+        assertEquals(1, decoded.size());
 
         Attribute attr = decoded.getAttribute(oid);
+        assertEquals(1, attr.valueCount());
         assertNotNull(attr);
 
         ASN1Type value = attr.valueAt(0);
         assertNotNull(value);
-        assertInstanceOf(ASN1OctetString.class, value);
-        assertArrayEquals(TS, ((ASN1OctetString)value).getByteArray());
+        assertInstanceOf(ContentInfo.class, value);
+        ContentInfo content = (ContentInfo) value;
+        assertEquals(new ASN1ObjectIdentifier("1.2.840.113549.1.7.2"), content.getContentType());
+
     }
 
-    // TODO What other tests can I add here??
 
+
+
+
+
+
+    private static byte[] load(String directory, String file) throws Exception
+    {
+        Path manifestPath = Paths.get("src","test", "resources", directory, file);
+        return Files.readAllBytes(manifestPath);
+    }
 }
