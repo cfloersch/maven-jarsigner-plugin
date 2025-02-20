@@ -97,14 +97,14 @@ public class PKCSRegistry extends OIDRegistry {
    protected ASN1Type getLocalASN1Type(ASN1ObjectIdentifier oid)
    {
       Class<?> c = map_.get(oid);
-      if(c == null) return new ASN1Opaque();
+      ASN1Type result = null;
       try {
-         return (ASN1Type)c.newInstance();
+         result = (ASN1Type) c.newInstance();
       } catch(Exception ex) {
-         return super.getLocalASN1Type(oid);
+         result = super.getLocalASN1Type(oid);
       }
+      return (result != null) ? result : new ASN1Opaque();
    }
-
 
 
    /**
